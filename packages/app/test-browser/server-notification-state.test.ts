@@ -1,10 +1,13 @@
-import { beforeAll, expect, mock, setSystemTime, test, vi } from "bun:test"
+import { beforeAll, beforeEach, expect, mock, setSystemTime, test, vi } from "bun:test"
 import { createEffect, createRoot } from "solid-js"
 import { createStore } from "solid-js/store"
 import type { OpenCodeEvent } from "@opencode/client/promise"
 import type { ServerConnection } from "@/runtime/server/registry"
 import { ServerScope } from "@/runtime/server/scope"
 import type { Tab } from "@/shell/tabs/tabs"
+import type { createNotificationCoordinator } from "@/shell/notifications/coordinator"
+
+type NotificationDelivery = Parameters<ReturnType<typeof createNotificationCoordinator>["system"]>[1]
 
 // SAFETY: this is the key format `ServerConnection.key` produces for a local server.
 const server = "local\nhttp://localhost:4096" as ServerConnection.Key
@@ -13,7 +16,25 @@ const session = { id: "session-1", title: "Test session", location: { directory:
 
 const alerts: string[] = []
 
-const tabs = { store: new Array<Tab>() }
+const sounds: string[] = []
+
+const clicks: Array<() => void> = []
+
+const selected: string[] = []
+
+const preferences = { notifications: true, sound: true, autoApprove: false }
+
+const tabs = {
+  store: new Array<Tab>(),
+  addSessionTab: (input: { server: ServerConnection.Key; sessionId: string }) => ({
+    type: "session" as const,
+    ...input,
+  }),
+  rememberSessionRoute: () => {},
+  select: (tab: Tab) => {
+    if (tab.type === "session") selected.push(tab.sessionId)
+  },
+}
 
 let createServerNotificationState: typeof import("@/shell/notifications/notification").createServerNotificationState
 
@@ -36,16 +57,28 @@ beforeAll(async () => {
     ...real.platform,
     usePlatform: () => ({
       platform: "web",
-      notify: async (title: string) => {
+      notify: async (title: string, _description?: string, onClick?: () => void) => {
         alerts.push(title)
+
+        if (onClick) clicks.push(onClick)
       },
     }),
   }))
   mock.module("@/settings/model", () => ({
     ...real.settings,
     useSettings: () => ({
-      sounds: { agentEnabled: () => false, errorsEnabled: () => false },
-      notifications: { agent: () => true, errors: () => true },
+      sounds: {
+        agentEnabled: () => false,
+        errorsEnabled: () => false,
+        permissionsEnabled: () => preferences.sound,
+        permissions: () => "alert-01",
+      },
+      notifications: {
+        agent: () => preferences.notifications,
+        errors: () => true,
+        permissions: () => preferences.notifications,
+      },
+      permissions: { autoApproves: () => preferences.autoApprove },
     }),
   }))
   mock.module("@/runtime/i18n/language", () => ({
@@ -53,7 +86,115 @@ beforeAll(async () => {
     useLanguage: () => ({ t: (key: string) => key }),
   }))
   mock.module("@/shell/tabs/tabs", () => ({ ...real.tabs, useTabs: () => tabs }))
+  mock.module("@/shell/notifications/sound", () => ({
+    playSoundById: async (id: string) => {
+      sounds.push(id)
+    },
+  }))
   createServerNotificationState = (await import("@/shell/notifications/notification")).createServerNotificationState
+})
+
+beforeEach(() => {
+  alerts.length = 0
+  sounds.length = 0
+  clicks.length = 0
+  selected.length = 0
+  Object.assign(preferences, { notifications: true, sound: true, autoApprove: false })
+})
+
+test.each(
+  [
+    { name: "permission request" },
+    { name: "sound only", notifications: false, expected: "sound" },
+    { name: "notification only", sound: false, expected: "notification" },
+    { name: "auto-approved request", autoApprove: true, expected: "none" },
+    { name: "resolved request", pending: false, expected: "none" },
+    { name: "request resolved while queued", resolve: true, expected: "none" },
+    { name: "closed session", tab: "unrelated", expected: "none" },
+    { name: "child request with root tab", tab: "root" },
+    { name: "question", kind: "question" as const },
+    { name: "disabled question notification", kind: "question" as const, notifications: false, expected: "sound" },
+    { name: "disabled question sound", kind: "question" as const, sound: false, expected: "notification" },
+    { name: "question answered while queued", kind: "question" as const, resolve: true, expected: "none" },
+    { name: "answered question", kind: "question" as const, pending: false, expected: "none" },
+    { name: "other form", kind: "other" as const, expected: "none" },
+  ].map((options) => ({
+    kind: "permission" as const,
+    notifications: true,
+    sound: true,
+    autoApprove: false,
+    pending: true,
+    resolve: false,
+    tab: session.id,
+    expected: "both",
+    ...options,
+  })),
+)("request alerts: $name", async (options) => {
+  Object.assign(preferences, options)
+  tabs.store = [{ type: "session", server, sessionId: options.tab }]
+  const listeners = new Array<(event: OpenCodeEvent) => void>()
+  const deliveries = new Array<NotificationDelivery>()
+  const pending = { value: options.pending }
+
+  const dispose = createRoot((dispose) => {
+    createState({
+      sdk: {
+        scope: ServerScope.local,
+        event: {
+          listen: (listener: (event: OpenCodeEvent) => void) => {
+            listeners.push(listener)
+
+            return () => {}
+          },
+        },
+      },
+      data: {
+        session: {
+          get: () => ({ ...session, parentID: "root" }),
+          root: () => "root",
+          permission: { list: () => (pending.value ? [{ id: "request-1" }] : []) },
+          form: { list: () => (pending.value ? [{ id: "request-1" }] : []) },
+        },
+      },
+      coordinator: {
+        sound: async (_key: string, run: NotificationDelivery) => {
+          deliveries.push(run)
+        },
+        system: async (_key: string, run: NotificationDelivery) => {
+          deliveries.push(run)
+        },
+      },
+    })
+
+    return dispose
+  })
+
+  try {
+    listeners.forEach((listener) =>
+      // SAFETY: only the request identity, session and form kind are read by the handler.
+      listener({
+        type: options.kind === "permission" ? "permission.asked" : "form.created",
+        data:
+          options.kind === "permission"
+            ? { sessionID: session.id, id: "request-1" }
+            : { form: { sessionID: session.id, id: "request-1", metadata: { kind: options.kind } } },
+      } as never),
+    )
+    await Promise.resolve()
+
+    if (options.resolve) pending.value = false
+    await Promise.all(deliveries.map((run) => run()))
+
+    const notified = options.expected === "both" || options.expected === "notification"
+    expect(alerts).toEqual(
+      notified ? [options.kind === "permission" ? "notification.permission.title" : "notification.question.title"] : [],
+    )
+    expect(sounds).toEqual(options.expected === "both" || options.expected === "sound" ? ["alert-01"] : [])
+    clicks.forEach((click) => click())
+    expect(selected).toEqual(notified ? [options.tab] : [])
+  } finally {
+    dispose()
+  }
 })
 
 test.each([
