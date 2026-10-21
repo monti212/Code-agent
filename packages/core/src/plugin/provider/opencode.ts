@@ -131,7 +131,7 @@ export const OpencodePlugin = define<HttpClient.HttpClient | Bus.Service | Scope
 
     yield* ctx.integration.transform((editor) => {
       editor.update("opencode", (integration) => {
-        integration.name = "OpenCode"
+        integration.name = "OpenCode Zen"
       })
       editor.method.update(oauth(http))
       editor.method.update({ integrationID: "opencode", method: { type: "key", label: "API key (service account)" } })
