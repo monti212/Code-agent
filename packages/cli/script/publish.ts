@@ -7,6 +7,7 @@ import { existsSync } from "fs"
 import { chmod, rm, utimes } from "node:fs/promises"
 import path from "node:path"
 import { UpdateArtifact } from "../../../script/update-artifact"
+import { Brand } from "@opencode/util/brand"
 
 const dir = fileURLToPath(new URL("..", import.meta.url))
 const root = path.resolve(process.env.OPENCODE_CLI_DIST ?? path.join(dir, "dist"))
@@ -72,7 +73,7 @@ async function publishDistribution(input: {
         scripts: { postinstall: "node ./postinstall.mjs" },
         version,
         license: pkg.license,
-        repository: { type: "git", url: "git+https://github.com/anomalyco/opencode.git" },
+        repository: { type: "git", url: `git+${Brand.repository}.git` },
         os: ["darwin", "linux", "win32"],
         cpu: ["arm64", "x64"],
         optionalDependencies: binaries,
@@ -126,9 +127,8 @@ async function publishDistribution(input: {
 await publishDistribution({
   root,
   name: pkg.name,
-  command: "opencode",
-  legacyCommand: "opencode2",
-  binary: "opencode",
+  command: Brand.command,
+  binary: Brand.command,
   packagePrefix: "@opencode/cli-",
   artifact: "cli",
 })
@@ -136,8 +136,8 @@ if (Script.channel !== "latest" && existsSync(path.join(root, "node"))) {
   await publishDistribution({
     root: path.join(root, "node"),
     name: "@opencode/cli-node",
-    command: "opencode2-node",
-    binary: "opencode2-node",
+    command: `${Brand.command}-node`,
+    binary: `${Brand.command}-node`,
     packagePrefix: "@opencode/cli-node-",
     artifact: "cli-node",
   })

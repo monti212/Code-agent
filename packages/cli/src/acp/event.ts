@@ -8,6 +8,7 @@ import type {
 } from "@opencode/client/promise"
 import { partsToContentChunks, type ReplayPart } from "./content"
 import { ACPError } from "./error"
+import { Brand } from "@opencode/util/brand"
 import { replyPermission, syncEditedFiles } from "./permission"
 import {
   completedToolUpdate,
@@ -579,7 +580,7 @@ function response(
   if (error?.type === "provider.auth") throw new ACPError.AuthRequiredError()
   if (error && error.type !== "aborted" && error.type !== "provider.content-filter") {
     throw new ACPError.ServiceFailureError({
-      safeMessage: error.message || "OpenCode prompt failed",
+      safeMessage: error.message || `${Brand.name} prompt failed`,
       service: "session",
       errorName: error.type,
     })

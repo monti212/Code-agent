@@ -16,15 +16,15 @@ import {
   type ConnectMethod,
 } from "./shared"
 
+// Uhuru is U Code's own provider; every other integration is a third party.
 const integrationPriority = new Map([
-  ["opencode-go", 0],
-  ["opencode", 1],
-  ["openai", 2],
-  ["github-copilot", 3],
-  ["google", 4],
-  ["anthropic", 5],
-  ["openrouter", 6],
-  ["vercel", 7],
+  ["uhuru", 0],
+  ["openai", 1],
+  ["github-copilot", 2],
+  ["google", 3],
+  ["anthropic", 4],
+  ["openrouter", 5],
+  ["vercel", 6],
 ])
 
 export default Runtime.handler(
@@ -89,7 +89,7 @@ const findIntegration = Effect.fn("cli.auth.login.integration")(function* (clien
       options: available.map((integration) => {
         const option = { value: integration.id, label: integration.name, hint: integration.id }
         if (integration.connections.length > 0) return { ...option, hint: "connected" }
-        if (integration.id === "opencode") return { ...option, hint: "recommended" }
+        if (integration.id === "uhuru") return { ...option, hint: "recommended" }
         return option
       }),
     }),

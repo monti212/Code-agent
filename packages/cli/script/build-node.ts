@@ -7,6 +7,7 @@ import os from "node:os"
 import path from "node:path"
 import { build } from "vite"
 import { Script } from "@opencode/script"
+import { Brand } from "@opencode/util/brand"
 import pkg from "../package.json"
 import { collectNodeAssets, copyNodeAssets, hashNodeAssets, seaAssetMap } from "./node-assets"
 import { mainConfig } from "../vite.node.config"
@@ -111,7 +112,7 @@ for (const target of targets) {
   if (bundleOnly) continue
 
   const name = `cli-node-${targetName(target)}`
-  const binary = target.platform === "win32" ? "opencode2-node.exe" : "opencode2-node"
+  const binary = target.platform === "win32" ? `${Brand.command}-node.exe` : `${Brand.command}-node`
   const output = path.join(outdir, name, "bin", binary)
   if (!builder) throw new Error("Node SEA builder is unavailable")
   await mkdir(path.dirname(output), { recursive: true })
@@ -141,7 +142,7 @@ for (const target of targets) {
         name: `@opencode/${name}`,
         version: Script.version,
         license: pkg.license,
-        repository: { type: "git", url: "git+https://github.com/anomalyco/opencode.git" },
+        repository: { type: "git", url: `git+${Brand.repository}.git` },
         os: [target.platform],
         cpu: [target.arch],
       },
