@@ -4,6 +4,7 @@ import { execFile, spawn } from "node:child_process"
 import { promisify } from "node:util"
 import { app } from "electron"
 import { Context, Effect, FileSystem, Layer, Path } from "effect"
+import { Brand } from "@opencode/util/brand"
 import installer from "../../../../../install?raw"
 import { DesktopPaths } from "../paths"
 import { parseCliVersion } from "./cli-version"
@@ -37,7 +38,7 @@ export const layer = Layer.effect(
       if (!cli.binary) return yield* Effect.fail(new Error("Bundled CLI executable is unavailable"))
       const home = app.getPath("home")
       yield* runInstaller(cli.binary, home)
-      return path.join(home, ".opencode", "bin", "opencode")
+      return path.join(home, `.${Brand.app}`, "bin", Brand.command)
     })
     return Service.of({ resolve, install })
   }),
@@ -167,9 +168,9 @@ const runInstaller = Effect.fn("DesktopCli.installForUser")(function* (binary: s
 })
 
 function executableName() {
-  return process.platform === "win32" ? "opencode-cli.exe" : "opencode-cli"
+  return process.platform === "win32" ? `${Brand.command}-cli.exe` : `${Brand.command}-cli`
 }
 
 function developmentExecutableName() {
-  return process.platform === "win32" ? "opencode-cli-dev.exe" : "opencode-cli-dev"
+  return process.platform === "win32" ? `${Brand.command}-cli-dev.exe` : `${Brand.command}-cli-dev`
 }

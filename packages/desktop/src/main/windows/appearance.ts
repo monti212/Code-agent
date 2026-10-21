@@ -9,6 +9,7 @@ import { emitIpcEvent } from "../ipc-events"
 import type { DesktopPaths } from "../paths"
 import { BACKGROUND_COLOR_KEY, PINCH_ZOOM_ENABLED_KEY } from "../storage/keys"
 import { getStore } from "../storage/store"
+import { Brand } from "@opencode/util/brand"
 
 const oc2Theme = oc2ThemeJson as DesktopTheme
 const oc2Background = {
@@ -26,7 +27,7 @@ let backgroundColor: string | undefined
 export function windowAppearance(path: Path.Path, paths: DesktopPaths.Resolved) {
   const mode = tone()
   return {
-    title: "OpenCode",
+    title: Brand.name,
     icon: iconPath(path, paths),
     backgroundColor: getBackgroundColor() ?? oc2Background[mode],
     ...(process.platform === "darwin"

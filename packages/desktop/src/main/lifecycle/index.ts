@@ -12,6 +12,7 @@ import { getLastFocusedWindow, makeMainWindows, setAppQuitting, setRelaunchHandl
 import { acquireApplicationLock, configureApplication } from "./environment"
 import { initializeFirstLaunchOnboarding } from "./onboarding"
 import { Shutdown } from "./shutdown"
+import { Brand } from "@opencode/util/brand"
 
 export interface Interface {
   readonly relaunch: () => void
@@ -54,7 +55,7 @@ const runtime = Layer.effect(
       )
     }
     const secondInstance = (_event: Event, argv: string[]) => {
-      const urls = argv.filter((arg) => arg.startsWith("opencode://"))
+      const urls = argv.filter((arg) => arg.startsWith(`${Brand.command}://`))
       if (urls.length) {
         runFork(Effect.logInfo("deep link received via second-instance", { urls }))
         emitDeepLinks(urls)

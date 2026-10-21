@@ -11,8 +11,6 @@ if (channel === "prod" && !Bun.env.OPENCODE_CLI_DIST) {
 await $`bun ./scripts/copy-icons.ts ${channel}`
 await $`bun ./scripts/copy-metainfo.ts ${channel}`
 
-if (channel === "dev") await downloadCliToResources()
-if ((channel === "beta" || channel === "prod") && Bun.env.OPENCODE_CLI_DIST) {
-  await copyBuiltCliToResources(Bun.env.OPENCODE_CLI_DIST)
-}
-if (channel === "beta" && !Bun.env.OPENCODE_CLI_DIST) await downloadCliToResources("beta")
+// U Code publishes no CLI packages, so every channel bundles a locally built CLI when one is supplied.
+if (Bun.env.OPENCODE_CLI_DIST) await copyBuiltCliToResources(Bun.env.OPENCODE_CLI_DIST)
+if (!Bun.env.OPENCODE_CLI_DIST) await downloadCliToResources(channel === "beta" ? "beta" : undefined)

@@ -5,6 +5,7 @@ import { app, crashReporter, netLog, shell } from "electron"
 import { Context, Effect, FileSystem, Layer, Logger, Option, Path, References, Stream } from "effect"
 import { homedir } from "node:os"
 import { VERSION } from "../constants"
+import { Brand } from "@opencode/util/brand"
 
 const MAX_LOG_AGE_DAYS = 7
 const TAIL_LINES = 1000
@@ -131,7 +132,7 @@ function exportDebugLogsEffect(fs: FileSystem.FileSystem, path: Path.Path) {
       )
     }
 
-    const output = path.join(app.getPath("downloads"), `opencode-debug-${stamp()}.zip`)
+    const output = path.join(app.getPath("downloads"), `${Brand.command}-debug-${stamp()}.zip`)
     return yield* Effect.gen(function* () {
       yield* Effect.logInfo("exporting debug logs", { output })
       const files = [
@@ -229,7 +230,7 @@ function manifest(path: Path.Path) {
 function serverLogRoots(path: Path.Path) {
   const xdgData = process.env.XDG_DATA_HOME || path.join(homedir(), ".local", "share")
   return [
-    ...new Set([path.join(xdgData, "opencode", "log"), path.join(app.getPath("userData"), "opencode", "log")]),
+    ...new Set([path.join(xdgData, Brand.app, "log"), path.join(app.getPath("userData"), Brand.app, "log")]),
   ]
 }
 

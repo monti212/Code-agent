@@ -1,7 +1,8 @@
 import { app, autoUpdater } from "electron"
 import pkg from "electron-updater"
 import { Effect } from "effect"
-import { CHANNEL } from "../constants"
+import { Brand } from "@opencode/util/brand"
+import { CHANNEL, UPDATE_FEED } from "../constants"
 import { openExternalURL } from "../files"
 import { setAppQuitting } from "../windows"
 import type { Platform } from "./index"
@@ -9,7 +10,7 @@ import { requiresStableMacInstaller, stableMacDownload } from "./migration"
 
 const updateClient = pkg.autoUpdater
 const restartTimeout = 10_000
-const stableArtifact = "https://opencode.ai/update/api/latest/desktop/opencode"
+const stableArtifact = `${UPDATE_FEED}/update/api/latest/desktop/${Brand.command}`
 
 export const make = Effect.gen(function* () {
   const external = requiresStableMacInstaller(process.platform, CHANNEL)
@@ -39,9 +40,9 @@ export const make = Effect.gen(function* () {
       try: async () => {
         if (external) {
           const response = await fetch(stableArtifact)
-          if (!response.ok) throw new Error(`Stable OpenCode update check failed: ${response.status}`)
+          if (!response.ok) throw new Error(`Stable ${Brand.name} update check failed: ${response.status}`)
           const download = stableMacDownload(await response.json(), process.arch)
-          if (!download) throw new Error("Stable OpenCode download is unavailable")
+          if (!download) throw new Error(`Stable ${Brand.name} download is unavailable`)
           return { mode: "external", ...download } as const
         }
         const result = await updateClient.checkForUpdates()

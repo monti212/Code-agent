@@ -5,20 +5,22 @@ import { getCACertificates, setDefaultCACertificates } from "node:tls"
 import { app } from "electron"
 import contextMenu from "electron-context-menu"
 import { Effect, FileSystem, Path } from "effect"
+import { Brand } from "@opencode/util/brand"
 import { CHANNEL } from "../constants"
 import { DesktopPaths } from "../paths"
 import { getUserShell, loadShellEnv } from "../service/shell-env"
 import { registerRendererProtocol, setDockIcon } from "../windows"
 
 const appNames: Record<string, string> = {
-  dev: "OpenCode Dev",
-  beta: "OpenCode Beta",
-  prod: "OpenCode",
+  dev: `${Brand.name} Dev`,
+  beta: `${Brand.name} Beta`,
+  prod: Brand.name,
 }
+// The Tauri U Code app owns xyz.orionx.ucode; the Electron desktop app is its own installation.
 const appIDs: Record<string, string> = {
-  dev: "ai.opencode.desktop.dev",
-  beta: "ai.opencode.desktop.beta",
-  prod: "ai.opencode.desktop",
+  dev: "xyz.orionx.ucode.desktop.dev",
+  beta: "xyz.orionx.ucode.desktop.beta",
+  prod: "xyz.orionx.ucode.desktop",
 }
 const testOnboarding = process.env.OPENCODE_TEST_ONBOARDING === "1"
 const jsCallStackFeature = "DocumentPolicyIncludeJSCallStacksInCrashReports"
@@ -31,8 +33,8 @@ export const configureApplication = Effect.fn("Application.configure")(function*
   } catch {}
   process.env.OPENCODE_DISABLE_EMBEDDED_WEB_UI = "true"
 
-  const appID = app.isPackaged ? appIDs[CHANNEL] : "ai.opencode.desktop.dev"
-  app.setName(app.isPackaged ? appNames[CHANNEL] : "OpenCode Dev")
+  const appID = app.isPackaged ? appIDs[CHANNEL] : appIDs.dev
+  app.setName(app.isPackaged ? appNames[CHANNEL] : appNames.dev)
   app.setAppUserModelId(appID)
   app.commandLine.appendSwitch("proxy-bypass-list", "<-loopback>")
   const features = app.commandLine.getSwitchValue("enable-features")
@@ -74,7 +76,7 @@ export const prepareDesktop = Effect.gen(function* () {
   const path = yield* Path.Path
   const paths = yield* DesktopPaths.resolve
   if (app.isPackaged || process.env.OPENCODE_DESKTOP_DISABLE_PROTOCOL_REGISTRATION !== "1")
-    app.setAsDefaultProtocolClient("opencode")
+    app.setAsDefaultProtocolClient(Brand.command)
   yield* registerRendererProtocol()
   setDockIcon(path, paths)
 })
@@ -92,7 +94,7 @@ const createTestRoot = Effect.fn("Application.createTestRoot")(function* () {
   const fs = yield* FileSystem.FileSystem
   const path = yield* Path.Path
   const root = testOnboarding
-    ? path.join(tmpdir(), `opencode-onboarding-${randomUUID()}`)
+    ? path.join(tmpdir(), `${Brand.command}-onboarding-${randomUUID()}`)
     : app.isPackaged
       ? undefined
       : process.env.OPENCODE_DESKTOP_TEST_ROOT
