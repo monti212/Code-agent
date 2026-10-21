@@ -1,3 +1,4 @@
+import { Brand } from "@opencode/util/brand"
 import { createResource, lazy, Show, Suspense } from "solid-js"
 import { createStore } from "solid-js/store"
 import { useMutation } from "@tanstack/solid-query"
@@ -64,7 +65,7 @@ export function ConnectServerScreen() {
   return (
     <main data-component="connect-server" aria-labelledby="server-connect-title">
       <div class="server-connect-content">
-        <div class="server-connect-brand" role="img" aria-label="OpenCode">
+        <div class="server-connect-brand" role="img" aria-label={Brand.name}>
           <Wordmark />
         </div>
         <header>
@@ -170,7 +171,7 @@ export function ConnectServerScreen() {
           </Show>
           <footer>
             <p>{language.t("server.connect.pair.description")}</p>
-            <code dir="ltr">opencode pair</code>
+            <code dir="ltr">{Brand.command} pair</code>
           </footer>
         </Show>
       </div>

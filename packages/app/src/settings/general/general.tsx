@@ -1,3 +1,4 @@
+import { Brand } from "@opencode/util/brand"
 import { Component, Show, createMemo, createResource } from "solid-js"
 import { createMediaQuery } from "@solid-primitives/media"
 import { Button } from "@opencode/ui/button"
@@ -213,7 +214,7 @@ const AppearanceSection: Component<{ controller: AppearanceSettingsController }>
           description={
             <>
               {language.t("settings.general.row.theme.description")}{" "}
-              <ExternalLink class="settings-link" href="https://opencode.ai/docs/themes/">
+              <ExternalLink class="settings-link" href={Brand.docsURL("themes/")}>
                 {language.t("common.learnMore")}
               </ExternalLink>
             </>

@@ -1,3 +1,4 @@
+import { Brand } from "@opencode/util/brand"
 import { Component } from "solid-js"
 import { Select } from "@opencode/ui/select"
 import { TextInput } from "@opencode/ui/text-input"
@@ -103,7 +104,7 @@ export const SettingsAppearance: Component = () => {
               description={
                 <>
                   {language.t("settings.general.row.theme.description")}{" "}
-                  <ExternalLink class="settings-link" href="https://opencode.ai/docs/themes/">
+                  <ExternalLink class="settings-link" href={Brand.docsURL("themes/")}>
                     {language.t("common.learnMore")}
                   </ExternalLink>
                 </>

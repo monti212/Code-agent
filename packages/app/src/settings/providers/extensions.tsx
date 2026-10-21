@@ -1,3 +1,4 @@
+import { Brand } from "@opencode/util/brand"
 import { Component, For, createEffect, createMemo, createResource } from "solid-js"
 import { Icon } from "@opencode/ui/icon"
 import { Switch } from "@opencode/ui/switch"
@@ -144,7 +145,7 @@ export const SettingsExtensions: Component<{
                 <span class="settings-extension-heading text-13-medium">
                   {language.t("settings.extensions.availableAll")}
                 </span>
-                <ExternalLink class="settings-extension-link text-13-regular" href="https://opencode.ai/docs/skills/">
+                <ExternalLink class="settings-extension-link text-13-regular" href={Brand.docsURL("skills/")}>
                   {language.t("settings.extensions.addSkills")}
                 </ExternalLink>
               </div>

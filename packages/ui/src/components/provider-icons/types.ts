@@ -15,6 +15,7 @@ export const iconNames = [
   "venice",
   "v0",
   "upstage",
+  "uhuru",
   "togetherai",
   "synthetic",
   "submodel",

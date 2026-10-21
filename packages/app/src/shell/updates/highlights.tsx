@@ -1,3 +1,4 @@
+import { Brand } from "@opencode/util/brand"
 import { createEffect, onCleanup } from "solid-js"
 import { createStore } from "solid-js/store"
 import { Schema } from "effect"
@@ -9,7 +10,8 @@ import { persisted } from "@/runtime/persistence/storage"
 import { Persistence } from "@/runtime/persistence/schema"
 import { DialogReleaseNotes, type Highlight } from "@/shell/updates/release-notes"
 
-const CHANGELOG_URL = "https://opencode.ai/changelog.json"
+// U Code release notes; a missing file shows nothing, so upstream notes never leak in.
+const CHANGELOG_URL = `${Brand.home}/changelog.json`
 
 export const HighlightsStore = Persistence.struct({
   version: Schema.UndefinedOr(Schema.String),
