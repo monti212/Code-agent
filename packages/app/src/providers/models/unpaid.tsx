@@ -13,7 +13,7 @@ import { useLanguage } from "@/runtime/i18n/language"
 import { ModelTooltip } from "./tooltip"
 
 type ModelState = ModelSelection
-const featuredProviders = ["opencode-go", "opencode", "openai", "anthropic", "google", "github-copilot"]
+const featuredProviders = ["uhuru", "openai", "anthropic", "google", "github-copilot", "openrouter"]
 const displayModelName = (name: string) => name.replace(/\s+(?:\(free\)|free)$/i, "")
 
 export const DialogSelectModelUnpaid: Component<{ model?: ModelState }> = (props) => {
@@ -76,48 +76,6 @@ export const DialogSelectModelUnpaid: Component<{ model?: ModelState }> = (props
       </DialogHeader>
       <DialogBody class="max-h-[calc(100vh_-_68px)] min-h-0 flex-none gap-0 overflow-y-auto px-2 pb-2">
         <div ref={listEl} class="flex min-h-0 flex-col">
-          <div data-section="free-models" class="flex w-full flex-col items-start pb-3">
-            <div class="flex h-8 w-full flex-none select-none flex-row items-center px-3 pb-2">
-              <div class="flex h-5 items-center text-[13px] font-[440] leading-5 tracking-[-0.04px] text-v2-text-text-muted [font-family:var(--v2-font-family-sans)] [font-variant-numeric:tabular-nums] [font-variation-settings:'slnt'_0]">
-                {language.t("dialog.model.unpaid.freeModels.title")}
-              </div>
-            </div>
-            <For each={freeModels()}>
-              {(item) => (
-                <Tooltip
-                  class="w-full"
-                  placement="right-start"
-                  gutter={6}
-                  openDelay={0}
-                  contentStyle={{ "font-family": "var(--v2-font-family-sans)" }}
-                  value={
-                    <ModelTooltip
-                      model={{ ...item, name: displayModelName(item.name) }}
-                      latest={item.latest}
-                      free={isFree(item)}
-                      v2
-                    />
-                  }
-                >
-                  <button
-                    type="button"
-                    class="flex w-full scroll-my-3.5 flex-row items-center gap-1.5 rounded-md px-3 py-2 text-left text-[13px] font-[530] leading-5 tracking-[-0.04px] text-v2-text-text-base [font-family:var(--v2-font-family-sans)] [font-variation-settings:'slnt'_0] hover:bg-v2-overlay-simple-overlay-hover focus:bg-v2-overlay-simple-overlay-hover focus:outline-none"
-                    onClick={() => selectModel(item)}
-                  >
-                    <span class="min-w-0 truncate">{displayModelName(item.name)}</span>
-                    <Badge class="shrink-0">{language.t("model.tag.free")}</Badge>
-                    <Show when={item.latest}>
-                      <Badge class="shrink-0">{language.t("model.tag.latest")}</Badge>
-                    </Show>
-                    <Show when={currentKey() === modelKey(item)}>
-                      <Icon name="check" class="ml-auto size-4 shrink-0 text-v2-icon-icon-base" />
-                    </Show>
-                  </button>
-                </Tooltip>
-              )}
-            </For>
-          </div>
-
           <div class="flex w-full flex-col">
             <div class="flex w-full flex-col items-start rounded-lg border-[0.5px] border-v2-border-border-muted bg-v2-background-bg-layer-02 p-2.5 pt-2">
               <div class="flex h-8 w-full select-none items-center px-0.5 pb-2">
@@ -147,13 +105,9 @@ export const DialogSelectModelUnpaid: Component<{ model?: ModelState }> = (props
                       <ProviderIcon id={provider.id} class="mt-0.5 size-4 shrink-0 text-v2-icon-icon-base" />
                       <span class="flex min-w-0 flex-col">
                         <span class="truncate">{provider.name}</span>
-                        <Show when={provider.id === "opencode" || provider.id === "opencode-go"}>
+                        <Show when={provider.id === "uhuru"}>
                           <span class="truncate font-[440] text-v2-text-text-muted">
-                            {language.t(
-                              provider.id === "opencode"
-                                ? "dialog.provider.opencode.tagline"
-                                : "dialog.provider.opencodeGo.tagline",
-                            )}
+                            {language.t("dialog.provider.uhuru.tagline")}
                           </span>
                         </Show>
                       </span>
@@ -170,6 +124,50 @@ export const DialogSelectModelUnpaid: Component<{ model?: ModelState }> = (props
               </div>
             </div>
           </div>
+
+          <Show when={freeModels().length > 0}>
+            <div data-section="free-models" class="flex w-full flex-col items-start pt-3">
+              <div class="flex h-8 w-full flex-none select-none flex-row items-center px-3 pb-2">
+                <div class="flex h-5 items-center text-[13px] font-[440] leading-5 tracking-[-0.04px] text-v2-text-text-muted [font-family:var(--v2-font-family-sans)] [font-variant-numeric:tabular-nums] [font-variation-settings:'slnt'_0]">
+                  {language.t("dialog.model.unpaid.freeModels.title")}
+                </div>
+              </div>
+              <For each={freeModels()}>
+                {(item) => (
+                  <Tooltip
+                    class="w-full"
+                    placement="right-start"
+                    gutter={6}
+                    openDelay={0}
+                    contentStyle={{ "font-family": "var(--v2-font-family-sans)" }}
+                    value={
+                      <ModelTooltip
+                        model={{ ...item, name: displayModelName(item.name) }}
+                        latest={item.latest}
+                        free={isFree(item)}
+                        v2
+                      />
+                    }
+                  >
+                    <button
+                      type="button"
+                      class="flex w-full scroll-my-3.5 flex-row items-center gap-1.5 rounded-md px-3 py-2 text-left text-[13px] font-[530] leading-5 tracking-[-0.04px] text-v2-text-text-base [font-family:var(--v2-font-family-sans)] [font-variation-settings:'slnt'_0] hover:bg-v2-overlay-simple-overlay-hover focus:bg-v2-overlay-simple-overlay-hover focus:outline-none"
+                      onClick={() => selectModel(item)}
+                    >
+                      <span class="min-w-0 truncate">{displayModelName(item.name)}</span>
+                      <Badge class="shrink-0">{language.t("model.tag.free")}</Badge>
+                      <Show when={item.latest}>
+                        <Badge class="shrink-0">{language.t("model.tag.latest")}</Badge>
+                      </Show>
+                      <Show when={currentKey() === modelKey(item)}>
+                        <Icon name="check" class="ml-auto size-4 shrink-0 text-v2-icon-icon-base" />
+                      </Show>
+                    </button>
+                  </Tooltip>
+                )}
+              </For>
+            </div>
+          </Show>
         </div>
       </DialogBody>
     </Dialog>

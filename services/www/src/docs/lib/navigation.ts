@@ -9,7 +9,7 @@ export interface DocsNavGroup {
 }
 
 export interface DocsSection {
-  key: "docs" | "cli" | "build" | "api" | "console"
+  key: "docs" | "cli" | "build" | "api"
   title: string
   landingSlug: string
   groups: DocsNavGroup[]
@@ -54,7 +54,7 @@ export const docsSections: DocsSection[] = [
       },
       {
         items: [
-          { title: "Migrate from V1", slug: "migrate-v1" },
+          { title: "Migrate from opencode V1", slug: "migrate-v1" },
           { title: "Troubleshooting", slug: "troubleshooting" },
         ],
       },
@@ -128,21 +128,6 @@ export const docsSections: DocsSection[] = [
       {
         title: "API",
         items: [{ title: "Overview", slug: "api" }],
-      },
-    ],
-  },
-  {
-    key: "console",
-    title: "Console",
-    landingSlug: "console",
-    groups: [
-      {
-        items: [
-          { title: "Intro", slug: "console" },
-          { title: "Models", slug: "console/models" },
-          { title: "Websearch", slug: "console/websearch" },
-          { title: "Go", slug: "console/go" },
-        ],
       },
     ],
   },

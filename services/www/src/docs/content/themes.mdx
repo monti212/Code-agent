@@ -5,7 +5,7 @@ title: "Themes"
 Choose a theme from the terminal UI by pressing `Ctrl+P`, selecting **Open settings**, and opening **Theme**. You can also
 set it directly in your global CLI config:
 
-```json title="~/.config/opencode/cli.json"
+```json title="~/.config/ucode/cli.json"
 {
   "theme": {
     "name": "tokyonight",
@@ -14,17 +14,17 @@ set it directly in your global CLI config:
 }
 ```
 
-Themes belong to the terminal client. Put theme selection in `cli.json`, not `opencode.json`. See
+Themes belong to the terminal client. Put theme selection in `cli.json`, not `ucode.json`. See
 [CLI config](/cli/config) for the config location and other terminal settings.
 
 ## Modes
 
 Use `system` to follow your terminal's appearance, or lock the theme to one mode:
 
-```json title="~/.config/opencode/cli.json"
+```json title="~/.config/ucode/cli.json"
 {
   "theme": {
-    "name": "opencode",
+    "name": "ucode",
     "mode": "dark"
   }
 }
@@ -36,13 +36,13 @@ Use `system` to follow your terminal's appearance, or lock the theme to one mode
 | `dark`   | Always uses the dark theme.                   |
 | `light`  | Always uses the light theme.                  |
 
-If a custom theme provides only one mode, OpenCode uses that mode when the other is requested.
+If a custom theme provides only one mode, U Code uses that mode when the other is requested.
 
 ## Builtins
 
 Select a built-in theme by its name:
 
-```json title="~/.config/opencode/cli.json"
+```json title="~/.config/ucode/cli.json"
 {
   "theme": {
     "name": "catppuccin"
@@ -55,16 +55,16 @@ Available themes include:
 - `aura`, `ayu`, `carbonfox`, `cobalt2`, `cursor`, `dracula`, `everforest`, `flexoki`
 - `catppuccin`, `catppuccin-frappe`, `catppuccin-macchiato`
 - `github`, `gruvbox`, `kanagawa`, `material`, `matrix`, `mercury`, `monokai`, `nightowl`, `nord`
-- `one-dark`, `opencode`, `orng`, `lucent-orng`, `osaka-jade`, `palenight`, `rosepine`
+- `one-dark`, `ucode`, `orng`, `lucent-orng`, `osaka-jade`, `palenight`, `rosepine`
 - `solarized`, `synthwave84`, `tokyonight`, `vercel`, `vesper`, `zenburn`
 
-The `system` theme is available when OpenCode can read your terminal palette.
+The `system` theme is available when U Code can read your terminal palette.
 
 ## Files
 
 To create a global theme named `ocean`, save this file:
 
-```json title="~/.config/opencode/themes/ocean.json"
+```json title="~/.config/ucode/themes/ocean.json"
 {
   "version": 2,
   "dark": {
@@ -83,10 +83,10 @@ theme name.
 
 | Scope   | Directory                                  |
 | ------- | ------------------------------------------ |
-| Global  | `~/.config/opencode/themes/`               |
-| Project | `.opencode/themes/` in the project tree    |
+| Global  | `~/.config/ucode/themes/`               |
+| Project | `.ucode/themes/` in the project tree    |
 
-OpenCode reads `.json` files only. A theme closer to the current directory replaces a global or parent theme with the
+U Code reads `.json` files only. A theme closer to the current directory replaces a global or parent theme with the
 same name.
 
 ## Format
@@ -109,7 +109,7 @@ Every V2 theme declares `version: 2` and at least one of `light` or `dark`:
 }
 ```
 
-Custom themes inherit unspecified values from the built-in OpenCode theme. To base one mode on the other, add
+Custom themes inherit unspecified values from the built-in U Code theme. To base one mode on the other, add
 `mergeMode: true` to the mode containing the overrides:
 
 ```json title="themes/ocean.json"

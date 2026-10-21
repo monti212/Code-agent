@@ -18,11 +18,11 @@ it.live(
       Response.json({ version: "2.0.0-local-123" }),
       Response.json({ version: "0.0.0-beta-19059" }, { status: 503 }),
     ]) {
-      const result = yield* RemoteCli.latestBeta().pipe(
+      const result = yield* RemoteCli.latestBeta("https://registry.example").pipe(
         Effect.provideService(
           HttpClient.HttpClient,
           HttpClient.make((request) => {
-            expect(request.url).toBe("https://registry.npmjs.org/@opencode%2fcli/beta")
+            expect(request.url).toBe("https://registry.example/@opencode%2fcli/beta")
             return Effect.succeed(HttpClientResponse.fromWeb(request, response))
           }),
         ),
@@ -42,10 +42,10 @@ posix(
     const spawner = yield* ChildProcessSpawner.ChildProcessSpawner
     const dir = yield* fs.makeTempDirectoryScoped({ prefix: "remote-cli-" })
     const home = path.join(dir, "home with ' quotes")
-    yield* fs.makeDirectory(path.join(home, ".opencode/bin"), { recursive: true })
+    yield* fs.makeDirectory(path.join(home, ".ucode/bin"), { recursive: true })
     yield* fs.makeDirectory(path.join(dir, "bin"))
-    const managed = path.join(home, ".opencode/bin/opencode")
-    const external = path.join(dir, "bin/opencode")
+    const managed = path.join(home, ".ucode/bin/ucode")
+    const external = path.join(dir, "bin/ucode")
     yield* fs.writeFileString(managed, "#!/bin/sh\nprintf 'OpenCode v2.0.0\\n'\n", { mode: 0o755 })
     yield* fs.writeFileString(external, "#!/bin/sh\nprintf 'OpenCode v2.1.0\\n'\n", { mode: 0o755 })
     const run = (script: string) =>
@@ -63,9 +63,26 @@ posix(
   }),
 )
 
+it.live(
+  "fetches nothing while no U Code package registry exists",
+  Effect.gen(function* () {
+    const result = yield* RemoteCli.latestBeta().pipe(
+      Effect.provideService(
+        HttpClient.HttpClient,
+        HttpClient.make(() => Effect.die("must not request a registry")),
+      ),
+      Effect.result,
+    )
+    expect(result._tag).toBe("Failure")
+    expect(() => RemoteCli.archiveUrl("linux-x64-baseline-musl", "2.0.0-beta.1")).toThrow(
+      "U Code CLI packages are not published yet",
+    )
+  }),
+)
+
 test("pins platform-specific artifacts and rejects unsafe inputs", () => {
-  expect(RemoteCli.archiveUrl("linux-x64-baseline-musl", "2.0.0-beta.1")).toBe(
-    "https://registry.npmjs.org/@opencode/cli-linux-x64-baseline-musl/-/cli-linux-x64-baseline-musl-2.0.0-beta.1.tgz",
+  expect(RemoteCli.archiveUrl("linux-x64-baseline-musl", "2.0.0-beta.1", "https://registry.example")).toBe(
+    "https://registry.example/@opencode/cli-linux-x64-baseline-musl/-/cli-linux-x64-baseline-musl-2.0.0-beta.1.tgz",
   )
   expect(() => RemoteCli.installScript({ version: '2.0.0"; whoami', source: { type: "installer" } })).toThrow()
   expect(() => RemoteCli.archiveUrl("linux-x64;whoami", "2.0.0")).toThrow()
@@ -79,7 +96,7 @@ posix(
     const spawner = yield* ChildProcessSpawner.ChildProcessSpawner
     const dir = yield* fs.makeTempDirectoryScoped({ prefix: "remote-install-" })
     yield* fs.makeDirectory(path.join(dir, "package/bin"), { recursive: true })
-    yield* fs.writeFileString(path.join(dir, "package/bin/opencode"), "#!/bin/sh\nprintf 'OpenCode v2.0.0\\n'\n", {
+    yield* fs.writeFileString(path.join(dir, "package/bin/ucode"), "#!/bin/sh\nprintf 'OpenCode v2.0.0\\n'\n", {
       mode: 0o755,
     })
     const archive = path.join(dir, "archive.tgz")
@@ -101,13 +118,11 @@ posix(
         }),
       )
     expect(yield* run({ version: "2.0.0", source: { type: "download", url: server.url.href } })).toBe(0)
-    expect(yield* fs.readFileString(path.join(dir, ".opencode/bin/opencode"))).toContain("2.0.0")
-    expect(
-      yield* run({ version: "2.0.0", directory: ".opencode/desktop-ssh/2.0.0", source: { type: "archive" } }),
-    ).toBe(0)
-    expect(yield* fs.readFileString(path.join(dir, ".opencode/desktop-ssh/2.0.0/opencode"))).toContain("2.0.0")
+    expect(yield* fs.readFileString(path.join(dir, ".ucode/bin/ucode"))).toContain("2.0.0")
+    expect(yield* run({ version: "2.0.0", directory: ".ucode/desktop-ssh/2.0.0", source: { type: "archive" } })).toBe(0)
+    expect(yield* fs.readFileString(path.join(dir, ".ucode/desktop-ssh/2.0.0/ucode"))).toContain("2.0.0")
     expect(yield* run({ version: "2.1.0", source: { type: "archive" } })).not.toBe(0)
-    expect(yield* fs.readFileString(path.join(dir, ".opencode/bin/opencode"))).toContain("2.0.0")
-    expect(yield* fs.readDirectory(path.join(dir, ".opencode/bin"))).toEqual(["opencode"])
+    expect(yield* fs.readFileString(path.join(dir, ".ucode/bin/ucode"))).toContain("2.0.0")
+    expect(yield* fs.readDirectory(path.join(dir, ".ucode/bin"))).toEqual(["ucode"])
   }),
 )

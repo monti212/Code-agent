@@ -1,14 +1,14 @@
 ---
 title: Windows (WSL)
-description: En iyi deneyim icin opencode'u WSL'de calistirin.
+description: En iyi deneyim icin U Code'u WSL'de calistirin.
 ---
 
 import { Steps } from "@astrojs/starlight/components"
 
-opencode Windows'ta dogrudan calisabilir, ancak en iyi deneyim icin [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install) kullanmanizi oneriyoruz. WSL, opencode ozellikleriyle sorunsuz calisan bir Linux ortami saglar.
+U Code Windows'ta dogrudan calisabilir, ancak en iyi deneyim icin [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install) kullanmanizi oneriyoruz. WSL, U Code ozellikleriyle sorunsuz calisan bir Linux ortami saglar.
 
 :::tip[Neden WSL?]
-WSL, daha iyi dosya sistemi performansi, tam terminal destegi ve opencode'un dayandigi gelistirme araclariyla uyumluluk sunar.
+WSL, daha iyi dosya sistemi performansi, tam terminal destegi ve U Code'un dayandigi gelistirme araclariyla uyumluluk sunar.
 :::
 
 ---
@@ -21,21 +21,24 @@ WSL, daha iyi dosya sistemi performansi, tam terminal destegi ve opencode'un day
 
    Henuz yuklemediyseniz resmi Microsoft rehberini kullanarak [WSL kurulumunu](https://learn.microsoft.com/en-us/windows/wsl/install) yapin.
 
-2. **opencode'u WSL icine yukleyin**
+2. **U Code'u WSL icine yukleyin**
 
-   WSL hazir olduktan sonra WSL terminalini acin ve opencode'u [kurulum yontemlerinden](/docs/) biriyle yukleyin.
+   WSL hazir olduktan sonra WSL terminalini acin ve U Code'u [kurulum yontemlerinden](/docs/) biriyle yukleyin.
 
    ```bash
-   curl -fsSL https://opencode.ai/install | bash
+   git clone https://github.com/monti212/Code-agent
+   cd Code-agent
+   bun install
+   bun run dev
    ```
 
-3. **opencode'u WSL icinden kullanin**
+3. **U Code'u WSL icinden kullanin**
 
-   Proje dizininize gidin (`/mnt/c/`, `/mnt/d/` vb. ile Windows dosyalarina erisebilirsiniz) ve opencode'u calistirin.
+   Proje dizininize gidin (`/mnt/c/`, `/mnt/d/` vb. ile Windows dosyalarina erisebilirsiniz) ve U Code'u calistirin.
 
    ```bash
    cd /mnt/c/Users/YourName/project
-   opencode
+   ucode
    ```
 
 </Steps>
@@ -44,12 +47,12 @@ WSL, daha iyi dosya sistemi performansi, tam terminal destegi ve opencode'un day
 
 ## Masaüstü uygulaması + WSL sunucusu
 
-opencode Desktop kullanmak isteyip sunucuyu WSL'de calistirmak istiyorsaniz:
+U Code Desktop kullanmak isteyip sunucuyu WSL'de calistirmak istiyorsaniz:
 
 1. **Sunucuyu WSL'de baslatin** ve dis baglantilara izin vermek icin `--hostname 0.0.0.0` kullanin:
 
    ```bash
-   opencode serve --hostname 0.0.0.0 --port 4096
+   ucode serve --hostname 0.0.0.0 --port 4096
    ```
 
 2. **Desktop uygulamasini** `http://localhost:4096` adresine baglayin
@@ -59,10 +62,10 @@ Kurulumunuzda `localhost` calismiyorsa bunun yerine WSL IP adresini kullanin (WS
 :::
 
 :::caution
-`--hostname 0.0.0.0` kullaniyorsaniz sunucuyu guvene almak icin `OPENCODE_SERVER_PASSWORD` ayarlayin.
+`--hostname 0.0.0.0` kullaniyorsaniz sunucuyu guvene almak icin `UCODE_SERVER_PASSWORD` ayarlayin.
 
 ```bash
-OPENCODE_SERVER_PASSWORD=your-password opencode serve --hostname 0.0.0.0
+UCODE_SERVER_PASSWORD=your-password ucode serve --hostname 0.0.0.0
 ```
 
 :::
@@ -73,15 +76,15 @@ OPENCODE_SERVER_PASSWORD=your-password opencode serve --hostname 0.0.0.0
 
 Windows'ta en iyi web deneyimi icin:
 
-1. **`opencode web` komutunu PowerShell yerine WSL terminalinde calistirin**:
+1. **`ucode web` komutunu PowerShell yerine WSL terminalinde calistirin**:
 
    ```bash
-   opencode web --hostname 0.0.0.0
+   ucode web --hostname 0.0.0.0
    ```
 
-2. **Windows tarayicinizdan** `http://localhost:<port>` adresini acin (opencode URL'yi yazdirir)
+2. **Windows tarayicinizdan** `http://localhost:<port>` adresini acin (U Code URL'yi yazdirir)
 
-`opencode web` komutunu WSL'den calistirmak, dosya sistemi erisimi ve terminal entegrasyonunu daha tutarli hale getirirken tarayicidan erisimi korur.
+`ucode web` komutunu WSL'den calistirmak, dosya sistemi erisimi ve terminal entegrasyonunu daha tutarli hale getirirken tarayicidan erisimi korur.
 
 ---
 
@@ -97,17 +100,17 @@ Ornek:
 
 ```bash
 cd /mnt/c/Users/YourName/Documents/project
-opencode
+ucode
 ```
 
 :::tip
-En sorunsuz deneyim icin deponuzu WSL dosya sistemine (ornegin `~/code/` altina) klonlayip opencode'u orada calistirmayi dusunun.
+En sorunsuz deneyim icin deponuzu WSL dosya sistemine (ornegin `~/code/` altina) klonlayip U Code'u orada calistirmayi dusunun.
 :::
 
 ---
 
 ## İpuçları
 
-- Windows suruculerinde duran projelerde opencode'u WSL icinde calistirin - dosya erisimi daha sorunsuz olur
-- Butunlesik bir gelistirme akisi icin opencode ile birlikte VS Code [WSL eklentisini](https://code.visualstudio.com/docs/remote/wsl) kullanin
-- opencode konfigurasyonunuz ve oturumlariniz WSL ortaminda `~/.local/share/opencode/` konumunda saklanir
+- Windows suruculerinde duran projelerde U Code'u WSL icinde calistirin - dosya erisimi daha sorunsuz olur
+- Butunlesik bir gelistirme akisi icin U Code ile birlikte VS Code [WSL eklentisini](https://code.visualstudio.com/docs/remote/wsl) kullanin
+- U Code konfigurasyonunuz ve oturumlariniz WSL ortaminda `~/.local/share/ucode/` konumunda saklanir

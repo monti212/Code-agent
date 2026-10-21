@@ -39,6 +39,7 @@ import type {
   SetSessionModeResponse,
 } from "@agentclientprotocol/sdk"
 import { OPENCODE_VERSION } from "../version"
+import { Brand } from "@opencode/util/brand"
 import { SessionMessage } from "@opencode/schema/session-message"
 import {
   buildConfigOptions,
@@ -180,13 +181,13 @@ export function make(input: { readonly client: OpenCodeClient; readonly connecti
       capabilities.writeTextFile = params.clientCapabilities?.fs?.writeTextFile === true
       capabilities.childSessionUpdates = params.clientCapabilities?._meta?.[ChildSessionUpdatesCapability] === true
       const authMethod: AuthMethod = {
-        description: "Run `opencode auth login` in the terminal",
-        name: "Login with opencode",
+        description: `Run \`${Brand.command} auth login\` in the terminal`,
+        name: `Login with ${Brand.name}`,
         id: AuthMethodID,
       }
       if (params.clientCapabilities?._meta?.["terminal-auth"] === true) {
         authMethod._meta = {
-          "terminal-auth": { command: "opencode", args: ["auth", "login"], label: "OpenCode Login" },
+          "terminal-auth": { command: Brand.command, args: ["auth", "login"], label: `${Brand.name} Login` },
         }
       }
       return {
@@ -199,7 +200,7 @@ export function make(input: { readonly client: OpenCodeClient; readonly connecti
           _meta: { [ChildSessionUpdatesCapability]: true },
         },
         authMethods: [authMethod],
-        agentInfo: { name: "OpenCode", version: OPENCODE_VERSION },
+        agentInfo: { name: Brand.name, version: OPENCODE_VERSION },
       }
     },
     authenticate: async (params) => {

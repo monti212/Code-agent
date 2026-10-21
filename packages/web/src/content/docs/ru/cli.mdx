@@ -1,30 +1,30 @@
 ---
 title: CLI
-description: Параметры и команда opencode CLI.
+description: Параметры и команда U Code CLI.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 
-CLI opencode по умолчанию запускает [TUI](/docs/tui) при запуске без каких-либо аргументов.
+CLI U Code по умолчанию запускает [TUI](/docs/tui) при запуске без каких-либо аргументов.
 
 ```bash
-opencode
+ucode
 ```
 
-Но он также принимает команды, описанные на этой странице. Это позволяет вам программно взаимодействовать с opencode.
+Но он также принимает команды, описанные на этой странице. Это позволяет вам программно взаимодействовать с U Code.
 
 ```bash
-opencode run "Explain how closures work in JavaScript"
+ucode run "Explain how closures work in JavaScript"
 ```
 
 ---
 
 ### tui
 
-Запустите TUI opencode.
+Запустите TUI U Code.
 
 ```bash
-opencode [project]
+ucode [project]
 ```
 
 #### Флаги
@@ -44,36 +44,36 @@ opencode [project]
 
 ## Команды
 
-CLI opencode также имеет следующие команды.
+CLI U Code также имеет следующие команды.
 
 ---
 
 ### agent
 
-Управляйте агентами для opencode.
+Управляйте агентами для U Code.
 
 ```bash
-opencode agent [command]
+ucode agent [command]
 ```
 
 ---
 
 ### attach
 
-Подключите терминал к уже работающему внутреннему серверу opencode, запущенному с помощью команд `serve` или `web`.
+Подключите терминал к уже работающему внутреннему серверу U Code, запущенному с помощью команд `serve` или `web`.
 
 ```bash
-opencode attach [url]
+ucode attach [url]
 ```
 
-Это позволяет использовать TUI с удаленным сервером opencode. Например:
+Это позволяет использовать TUI с удаленным сервером U Code. Например:
 
 ```bash
 # Start the backend server for web/mobile access
-opencode web --port 4096 --hostname 0.0.0.0
+ucode web --port 4096 --hostname 0.0.0.0
 
 # In another terminal, attach the TUI to the running backend
-opencode attach http://10.20.30.40:4096
+ucode attach http://10.20.30.40:4096
 ```
 
 #### Флаги
@@ -84,8 +84,8 @@ opencode attach http://10.20.30.40:4096
 | <nobr><code>{"--continue"}</code></nobr> | `-c`     | Продолжить последний сеанс                                                                       |
 | <nobr><code>{"--session"}</code></nobr>  | `-s`     | Идентификатор сеанса для продолжения                                                             |
 | <nobr><code>{"--fork"}</code></nobr>     |          | Создать ответвление сеанса при продолжении (используйте с `--continue` или `--session`)          |
-| <nobr><code>{"--password"}</code></nobr> | `-p`     | Пароль базовой аутентификации (по умолчанию `OPENCODE_SERVER_PASSWORD`)                          |
-| <nobr><code>{"--username"}</code></nobr> | `-u`     | Имя пользователя базовой аутентификации (по умолчанию `OPENCODE_SERVER_USERNAME` или `opencode`) |
+| <nobr><code>{"--password"}</code></nobr> | `-p`     | Пароль базовой аутентификации (по умолчанию `UCODE_SERVER_PASSWORD`)                          |
+| <nobr><code>{"--username"}</code></nobr> | `-u`     | Имя пользователя базовой аутентификации (по умолчанию `UCODE_SERVER_USERNAME` или `ucode`) |
 
 ---
 
@@ -94,7 +94,7 @@ opencode attach http://10.20.30.40:4096
 Создайте нового агента с пользовательской конфигурацией.
 
 ```bash
-opencode agent create
+ucode agent create
 ```
 
 Эта команда поможет вам создать новый агент с настраиваемой системной подсказкой и настройкой инструмента.
@@ -106,7 +106,7 @@ opencode agent create
 Перечислите всех доступных агентов.
 
 ```bash
-opencode agent list
+ucode agent list
 ```
 
 ---
@@ -116,20 +116,20 @@ opencode agent list
 Команда для управления учетными данными и входом в систему для провайдеров.
 
 ```bash
-opencode auth [command]
+ucode auth [command]
 ```
 
 ---
 
 #### login
 
-opencode использует список провайдеров с [Models.dev](https://models.dev), поэтому вы можете использовать `opencode auth login` для настройки ключей API для любого поставщика, которого вы хотите использовать. Это хранится в `~/.local/share/opencode/auth.json`.
+U Code использует список провайдеров с [Models.dev](https://models.dev), поэтому вы можете использовать `ucode auth login` для настройки ключей API для любого поставщика, которого вы хотите использовать. Это хранится в `~/.local/share/ucode/auth.json`.
 
 ```bash
-opencode auth login
+ucode auth login
 ```
 
-Когда opencode запускается, он загружает поставщиков из файла учетных данных. И если в ваших средах определены какие-либо ключи или файл `.env` в вашем проекте.
+Когда U Code запускается, он загружает поставщиков из файла учетных данных. И если в ваших средах определены какие-либо ключи или файл `.env` в вашем проекте.
 
 ---
 
@@ -138,13 +138,13 @@ opencode auth login
 Перечисляет всех проверенных поставщиков, которые хранятся в файле учетных данных.
 
 ```bash
-opencode auth list
+ucode auth list
 ```
 
 Или короткая версия.
 
 ```bash
-opencode auth ls
+ucode auth ls
 ```
 
 ---
@@ -154,7 +154,7 @@ opencode auth ls
 Выключает вас из провайдера, удаляя его из файла учетных данных.
 
 ```bash
-opencode auth logout
+ucode auth logout
 ```
 
 ---
@@ -164,7 +164,7 @@ opencode auth logout
 Управляйте агентом GitHub для автоматизации репозитория.
 
 ```bash
-opencode github [command]
+ucode github [command]
 ```
 
 ---
@@ -174,10 +174,10 @@ opencode github [command]
 Установите агент GitHub в свой репозиторий.
 
 ```bash
-opencode github install
+ucode github install
 ```
 
-Это настроит необходимый рабочий процесс GitHub Actions и проведет вас через процесс настройки. [Подробнее](/docs/github).
+Это настроит необходимый рабочий процесс GitHub Actions и проведет вас через процесс настройки. Подробнее.
 
 ---
 
@@ -186,7 +186,7 @@ opencode github install
 Запустите агент GitHub. Обычно это используется в действиях GitHub.
 
 ```bash
-opencode github run
+ucode github run
 ```
 
 ##### Флаги
@@ -203,7 +203,7 @@ opencode github run
 Управляйте серверами протокола контекста модели.
 
 ```bash
-opencode mcp [command]
+ucode mcp [command]
 ```
 
 ---
@@ -213,7 +213,7 @@ opencode mcp [command]
 Добавьте сервер MCP в свою конфигурацию.
 
 ```bash
-opencode mcp add
+ucode mcp add
 ```
 
 Эта команда поможет вам добавить локальный или удаленный сервер MCP.
@@ -225,13 +225,13 @@ opencode mcp add
 Перечислите все настроенные серверы MCP и состояние их подключения.
 
 ```bash
-opencode mcp list
+ucode mcp list
 ```
 
 Или используйте короткую версию.
 
 ```bash
-opencode mcp ls
+ucode mcp ls
 ```
 
 ---
@@ -241,7 +241,7 @@ opencode mcp ls
 Аутентификация с помощью сервера MCP с поддержкой OAuth.
 
 ```bash
-opencode mcp auth [name]
+ucode mcp auth [name]
 ```
 
 Если вы не укажете имя сервера, вам будет предложено выбрать один из доступных серверов с поддержкой OAuth.
@@ -249,13 +249,13 @@ opencode mcp auth [name]
 Вы также можете перечислить серверы с поддержкой OAuth и их статус аутентификации.
 
 ```bash
-opencode mcp auth list
+ucode mcp auth list
 ```
 
 Или используйте короткую версию.
 
 ```bash
-opencode mcp auth ls
+ucode mcp auth ls
 ```
 
 ---
@@ -265,7 +265,7 @@ opencode mcp auth ls
 Удалите учетные данные OAuth для сервера MCP.
 
 ```bash
-opencode mcp logout [name]
+ucode mcp logout [name]
 ```
 
 ---
@@ -275,7 +275,7 @@ opencode mcp logout [name]
 Отладка проблем с подключением OAuth для сервера MCP.
 
 ```bash
-opencode mcp debug <name>
+ucode mcp debug <name>
 ```
 
 ---
@@ -285,7 +285,7 @@ opencode mcp debug <name>
 Перечислите все доступные модели от настроенных поставщиков.
 
 ```bash
-opencode models [provider]
+ucode models [provider]
 ```
 
 Эта команда отображает все модели, доступные у настроенных вами поставщиков, в формате `provider/model`.
@@ -295,7 +295,7 @@ opencode models [provider]
 При желании вы можете передать идентификатор поставщика, чтобы фильтровать модели по этому поставщику.
 
 ```bash
-opencode models anthropic
+ucode models anthropic
 ```
 
 #### Флаги
@@ -305,36 +305,36 @@ opencode models anthropic
 | <nobr><code>{"--refresh"}</code></nobr> | Обновите кеш моделей на сайте models.dev.                                         |
 | <nobr><code>{"--verbose"}</code></nobr> | Используйте более подробный вывод модели (включая метаданные, такие как затраты). |
 
-Используйте флаг `--refresh` для обновления списка кэшированных моделей. Это полезно, когда к поставщику добавлены новые модели и вы хотите увидеть их в opencode.
+Используйте флаг `--refresh` для обновления списка кэшированных моделей. Это полезно, когда к поставщику добавлены новые модели и вы хотите увидеть их в U Code.
 
 ```bash
-opencode models --refresh
+ucode models --refresh
 ```
 
 ---
 
 ### run
 
-Запустите opencode в неинтерактивном режиме, передав приглашение напрямую.
+Запустите U Code в неинтерактивном режиме, передав приглашение напрямую.
 
 ```bash
-opencode run [message..]
+ucode run [message..]
 ```
 
 Это полезно для создания сценариев, автоматизации или когда вам нужен быстрый ответ без запуска полного TUI. Например.
 
-```bash "opencode run"
-opencode run Explain the use of context in Go
+```bash "ucode run"
+ucode run Explain the use of context in Go
 ```
 
-Вы также можете подключиться к работающему экземпляру `opencode serve`, чтобы избежать холодной загрузки сервера MCP при каждом запуске:
+Вы также можете подключиться к работающему экземпляру `ucode serve`, чтобы избежать холодной загрузки сервера MCP при каждом запуске:
 
 ```bash
 # Start a headless server in one terminal
-opencode serve
+ucode serve
 
 # In another terminal, run commands that attach to it
-opencode run --attach http://localhost:4096 "Explain async/await in JavaScript"
+ucode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 ```
 
 #### Флаги
@@ -351,9 +351,9 @@ opencode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 | <nobr><code>{"--file"}</code></nobr>     | `-f`     | Файл(ы) для прикрепления к сообщению                                                             |
 | <nobr><code>{"--format"}</code></nobr>   |          | Формат: по умолчанию (отформатированный) или json (необработанные события JSON).                 |
 | <nobr><code>{"--title"}</code></nobr>    |          | Название сеанса (использует усеченное приглашение, если значение не указано)                     |
-| <nobr><code>{"--attach"}</code></nobr>   |          | Подключитесь к работающему серверу opencode (например, http://localhost:4096)                    |
-| <nobr><code>{"--password"}</code></nobr> | `-p`     | Пароль базовой аутентификации (по умолчанию `OPENCODE_SERVER_PASSWORD`)                          |
-| <nobr><code>{"--username"}</code></nobr> | `-u`     | Имя пользователя базовой аутентификации (по умолчанию `OPENCODE_SERVER_USERNAME` или `opencode`) |
+| <nobr><code>{"--attach"}</code></nobr>   |          | Подключитесь к работающему серверу U Code (например, http://localhost:4096)                    |
+| <nobr><code>{"--password"}</code></nobr> | `-p`     | Пароль базовой аутентификации (по умолчанию `UCODE_SERVER_PASSWORD`)                          |
+| <nobr><code>{"--username"}</code></nobr> | `-u`     | Имя пользователя базовой аутентификации (по умолчанию `UCODE_SERVER_USERNAME` или `ucode`) |
 | <nobr><code>{"--dir"}</code></nobr>      |          | Каталог для выполнения или путь на удалённом сервере при подключении                             |
 | <nobr><code>{"--variant"}</code></nobr>  |          | Вариант модели (уровень рассуждений для провайдера)                                              |
 | <nobr><code>{"--thinking"}</code></nobr> |          | Показать блоки размышлений                                                                       |
@@ -363,13 +363,13 @@ opencode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 
 ### serve
 
-Запустите автономный сервер opencode для доступа к API. Полный HTTP-интерфейс можно найти в [server docs](/docs/server).
+Запустите автономный сервер U Code для доступа к API. Полный HTTP-интерфейс можно найти в [server docs](/docs/server).
 
 ```bash
-opencode serve
+ucode serve
 ```
 
-При этом запускается HTTP-сервер, который обеспечивает доступ API к функциям opencode без интерфейса TUI. Установите `OPENCODE_SERVER_PASSWORD`, чтобы включить базовую аутентификацию HTTP (имя пользователя по умолчанию — `opencode`).
+При этом запускается HTTP-сервер, который обеспечивает доступ API к функциям U Code без интерфейса TUI. Установите `UCODE_SERVER_PASSWORD`, чтобы включить базовую аутентификацию HTTP (имя пользователя по умолчанию — `ucode`).
 
 #### Флаги
 
@@ -384,20 +384,20 @@ opencode serve
 
 ### session
 
-Управляйте сессиями opencode.
+Управляйте сессиями U Code.
 
 ```bash
-opencode session [command]
+ucode session [command]
 ```
 
 ---
 
 #### list
 
-Перечислите все сеансы opencode.
+Перечислите все сеансы U Code.
 
 ```bash
-opencode session list
+ucode session list
 ```
 
 ##### Флаги
@@ -411,10 +411,10 @@ opencode session list
 
 ### stats
 
-Покажите статистику использования токенов и затрат для ваших сеансов opencode.
+Покажите статистику использования токенов и затрат для ваших сеансов U Code.
 
 ```bash
-opencode stats
+ucode stats
 ```
 
 #### Флаги
@@ -433,7 +433,7 @@ opencode stats
 Экспортируйте данные сеанса в формате JSON.
 
 ```bash
-opencode export [sessionID]
+ucode export [sessionID]
 ```
 
 Если вы не укажете идентификатор сеанса, вам будет предложено выбрать один из доступных сеансов.
@@ -442,30 +442,29 @@ opencode export [sessionID]
 
 ### import
 
-Импортируйте данные сеанса из файла JSON или URL-адреса общего ресурса opencode.
+Импортируйте данные сеанса из файла JSON или URL-адреса общего ресурса U Code.
 
 ```bash
-opencode import <file>
+ucode import <file>
 ```
 
-Вы можете импортировать из локального файла или URL-адреса общего ресурса opencode.
+Вы можете импортировать из локального файла или URL-адреса общего ресурса U Code.
 
 ```bash
-opencode import session.json
-opencode import https://opncd.ai/s/abc123
+ucode import session.json
 ```
 
 ---
 
 ### web
 
-Запустите автономный сервер opencode с веб-интерфейсом.
+Запустите автономный сервер U Code с веб-интерфейсом.
 
 ```bash
-opencode web
+ucode web
 ```
 
-При этом запускается HTTP-сервер и открывается веб-браузер для доступа к opencode через веб-интерфейс. Установите `OPENCODE_SERVER_PASSWORD`, чтобы включить базовую аутентификацию HTTP (имя пользователя по умолчанию — `opencode`).
+При этом запускается HTTP-сервер и открывается веб-браузер для доступа к U Code через веб-интерфейс. Установите `UCODE_SERVER_PASSWORD`, чтобы включить базовую аутентификацию HTTP (имя пользователя по умолчанию — `ucode`).
 
 #### Флаги
 
@@ -483,7 +482,7 @@ opencode web
 Запустите сервер ACP (агент-клиентский протокол).
 
 ```bash
-opencode acp
+ucode acp
 ```
 
 Эта команда запускает сервер ACP, который обменивается данными через stdin/stdout с использованием nd-JSON.
@@ -500,10 +499,10 @@ opencode acp
 
 ### uninstall
 
-Удалите opencode и удалите все связанные файлы.
+Удалите U Code и удалите все связанные файлы.
 
 ```bash
-opencode uninstall
+ucode uninstall
 ```
 
 #### Флаги
@@ -519,22 +518,22 @@ opencode uninstall
 
 ### upgrade
 
-Обновляет opencode до последней версии или определенной версии.
+Обновляет U Code до последней версии или определенной версии.
 
 ```bash
-opencode upgrade [target]
+ucode upgrade [target]
 ```
 
 Чтобы обновиться до последней версии.
 
 ```bash
-opencode upgrade
+ucode upgrade
 ```
 
 Для обновления до определенной версии.
 
 ```bash
-opencode upgrade v0.1.48
+ucode upgrade v0.1.48
 ```
 
 #### Флаги
@@ -547,7 +546,7 @@ opencode upgrade v0.1.48
 
 ## Глобальные флаги
 
-CLI opencode принимает следующие глобальные флаги.
+CLI U Code принимает следующие глобальные флаги.
 
 | Флаг                                       | Короткий | Описание                                   |
 | ------------------------------------------ | -------- | ------------------------------------------ |
@@ -560,34 +559,34 @@ CLI opencode принимает следующие глобальные флаг
 
 ## Переменные среды
 
-opencode можно настроить с помощью переменных среды.
+U Code можно настроить с помощью переменных среды.
 
 | Переменная                            | Тип                 | Описание                                                                         |
 | ------------------------------------- | ------------------- | -------------------------------------------------------------------------------- |
-| `OPENCODE_AUTO_SHARE`                 | логическое значение | Автоматически делиться сеансами                                                  |
-| `OPENCODE_GIT_BASH_PATH`              | строка              | Путь к исполняемому файлу Git Bash в Windows                                     |
-| `OPENCODE_CONFIG`                     | строка              | Путь к файлу конфигурации                                                        |
-| `OPENCODE_TUI_CONFIG`                 | строка              | Путь к файлу конфигурации TUI                                                    |
-| `OPENCODE_CONFIG_DIR`                 | строка              | Путь к каталогу конфигурации                                                     |
-| `OPENCODE_CONFIG_CONTENT`             | строка              | Встроенное содержимое конфигурации json                                          |
-| `OPENCODE_DISABLE_AUTOUPDATE`         | логическое значение | Отключить автоматическую проверку обновлений                                     |
-| `OPENCODE_DISABLE_PRUNE`              | логическое значение | Отключить удаление старых данных                                                 |
-| `OPENCODE_DISABLE_TERMINAL_TITLE`     | логическое значение | Отключить автоматическое обновление заголовка терминала                          |
-| `OPENCODE_PERMISSION`                 | строка              | Встроенная конфигурация разрешений json                                          |
-| `OPENCODE_DISABLE_DEFAULT_PLUGINS`    | логическое значение | Отключить плагины по умолчанию                                                   |
-| `OPENCODE_DISABLE_LSP_DOWNLOAD`       | логическое значение | Отключить автоматическую загрузку LSP-сервера                                    |
-| `OPENCODE_ENABLE_EXPERIMENTAL_MODELS` | логическое значение | Включить экспериментальные модели                                                |
-| `OPENCODE_DISABLE_AUTOCOMPACT`        | логическое значение | Отключить автоматическое сжатие контекста                                        |
-| `OPENCODE_DISABLE_CLAUDE_CODE`        | логическое значение | Отключить чтение из `.claude` (подсказка + навыки)                               |
-| `OPENCODE_DISABLE_CLAUDE_CODE_PROMPT` | логическое значение | Отключить чтение `~/.claude/CLAUDE.md`                                           |
-| `OPENCODE_DISABLE_CLAUDE_CODE_SKILLS` | логическое значение | Отключить загрузку `.claude/skills`                                              |
-| `OPENCODE_DISABLE_MODELS_FETCH`       | логическое значение | Отключить получение моделей из удаленных источников                              |
-| `OPENCODE_FAKE_VCS`                   | строка              | Поддельный поставщик VCS для целей тестирования                                  |
-| `OPENCODE_CLIENT`                     | строка              | Идентификатор клиента (по умолчанию `cli`)                                       |
-| `OPENCODE_ENABLE_EXA`                 | логическое значение | Включить инструменты веб-поиска Exa                                              |
-| `OPENCODE_SERVER_PASSWORD`            | строка              | Включить базовую аутентификацию для `serve`/`web`                                |
-| `OPENCODE_SERVER_USERNAME`            | строка              | Переопределить имя пользователя базовой аутентификации (по умолчанию `opencode`) |
-| `OPENCODE_MODELS_URL`                 | строка              | Пользовательский URL-адрес для получения конфигурации модели                     |
+| `UCODE_AUTO_SHARE`                 | логическое значение | Автоматически делиться сеансами                                                  |
+| `UCODE_GIT_BASH_PATH`              | строка              | Путь к исполняемому файлу Git Bash в Windows                                     |
+| `UCODE_CONFIG`                     | строка              | Путь к файлу конфигурации                                                        |
+| `UCODE_TUI_CONFIG`                 | строка              | Путь к файлу конфигурации TUI                                                    |
+| `UCODE_CONFIG_DIR`                 | строка              | Путь к каталогу конфигурации                                                     |
+| `UCODE_CONFIG_CONTENT`             | строка              | Встроенное содержимое конфигурации json                                          |
+| `UCODE_DISABLE_AUTOUPDATE`         | логическое значение | Отключить автоматическую проверку обновлений                                     |
+| `UCODE_DISABLE_PRUNE`              | логическое значение | Отключить удаление старых данных                                                 |
+| `UCODE_DISABLE_TERMINAL_TITLE`     | логическое значение | Отключить автоматическое обновление заголовка терминала                          |
+| `UCODE_PERMISSION`                 | строка              | Встроенная конфигурация разрешений json                                          |
+| `UCODE_DISABLE_DEFAULT_PLUGINS`    | логическое значение | Отключить плагины по умолчанию                                                   |
+| `UCODE_DISABLE_LSP_DOWNLOAD`       | логическое значение | Отключить автоматическую загрузку LSP-сервера                                    |
+| `UCODE_ENABLE_EXPERIMENTAL_MODELS` | логическое значение | Включить экспериментальные модели                                                |
+| `UCODE_DISABLE_AUTOCOMPACT`        | логическое значение | Отключить автоматическое сжатие контекста                                        |
+| `UCODE_DISABLE_CLAUDE_CODE`        | логическое значение | Отключить чтение из `.claude` (подсказка + навыки)                               |
+| `UCODE_DISABLE_CLAUDE_CODE_PROMPT` | логическое значение | Отключить чтение `~/.claude/CLAUDE.md`                                           |
+| `UCODE_DISABLE_CLAUDE_CODE_SKILLS` | логическое значение | Отключить загрузку `.claude/skills`                                              |
+| `UCODE_DISABLE_MODELS_FETCH`       | логическое значение | Отключить получение моделей из удаленных источников                              |
+| `UCODE_FAKE_VCS`                   | строка              | Поддельный поставщик VCS для целей тестирования                                  |
+| `UCODE_CLIENT`                     | строка              | Идентификатор клиента (по умолчанию `cli`)                                       |
+| `UCODE_ENABLE_EXA`                 | логическое значение | Включить инструменты веб-поиска Exa                                              |
+| `UCODE_SERVER_PASSWORD`            | строка              | Включить базовую аутентификацию для `serve`/`web`                                |
+| `UCODE_SERVER_USERNAME`            | строка              | Переопределить имя пользователя базовой аутентификации (по умолчанию `ucode`) |
+| `UCODE_MODELS_URL`                 | строка              | Пользовательский URL-адрес для получения конфигурации модели                     |
 
 ---
 
@@ -597,20 +596,20 @@ opencode можно настроить с помощью переменных с
 
 | Переменная                                      | Тип                 | Описание                                               |
 | ----------------------------------------------- | ------------------- | ------------------------------------------------------ |
-| `OPENCODE_EXPERIMENTAL`                         | логическое значение | Включить экспериментальные функции под общим флагом    |
-| `OPENCODE_EXPERIMENTAL_ICON_DISCOVERY`          | логическое значение | Включить обнаружение значков                           |
-| `OPENCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | логическое значение | Отключить копирование при выборе в TUI                 |
-| `OPENCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | число               | Таймаут по умолчанию для команд bash в мс              |
-| `OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | число               | Максимальное количество токенов вывода для ответов LLM |
-| `OPENCODE_EXPERIMENTAL_FILEWATCHER`             | логическое значение | Включить просмотр файлов для всего каталога            |
-| `OPENCODE_EXPERIMENTAL_OXFMT`                   | логическое значение | Включить форматтер oxfmt                               |
-| `OPENCODE_EXPERIMENTAL_LSP_TOOL`                | логическое значение | Включить экспериментальный инструмент LSP              |
-| `OPENCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | логическое значение | Отключить просмотрщик файлов                           |
-| `OPENCODE_EXPERIMENTAL_EXA`                     | логическое значение | Включить экспериментальные функции Exa                 |
-| `OPENCODE_EXPERIMENTAL_LSP_TY`                  | логическое значение | Включить TY LSP для файлов python                      |
-| `OPENCODE_EXPERIMENTAL_PLAN_MODE`               | логическое значение | Включить режим плана                                   |
-| `OPENCODE_EXPERIMENTAL_EVENT_SYSTEM`            | логическое значение | Включить экспериментальную систему событий             |
-| `OPENCODE_EXPERIMENTAL_NATIVE_LLM`              | логическое значение | Включить нативный путь запросов LLM                    |
-| `OPENCODE_EXPERIMENTAL_PARALLEL`                | логическое значение | Включить параллельное выполнение веб-поиска            |
-| `OPENCODE_EXPERIMENTAL_SCOUT`                   | логическое значение | Включить субагент Scout                                |
-| `OPENCODE_EXPERIMENTAL_WORKSPACES`              | логическое значение | Включить поддержку рабочих областей                    |
+| `UCODE_EXPERIMENTAL`                         | логическое значение | Включить экспериментальные функции под общим флагом    |
+| `UCODE_EXPERIMENTAL_ICON_DISCOVERY`          | логическое значение | Включить обнаружение значков                           |
+| `UCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | логическое значение | Отключить копирование при выборе в TUI                 |
+| `UCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | число               | Таймаут по умолчанию для команд bash в мс              |
+| `UCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | число               | Максимальное количество токенов вывода для ответов LLM |
+| `UCODE_EXPERIMENTAL_FILEWATCHER`             | логическое значение | Включить просмотр файлов для всего каталога            |
+| `UCODE_EXPERIMENTAL_OXFMT`                   | логическое значение | Включить форматтер oxfmt                               |
+| `UCODE_EXPERIMENTAL_LSP_TOOL`                | логическое значение | Включить экспериментальный инструмент LSP              |
+| `UCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | логическое значение | Отключить просмотрщик файлов                           |
+| `UCODE_EXPERIMENTAL_EXA`                     | логическое значение | Включить экспериментальные функции Exa                 |
+| `UCODE_EXPERIMENTAL_LSP_TY`                  | логическое значение | Включить TY LSP для файлов python                      |
+| `UCODE_EXPERIMENTAL_PLAN_MODE`               | логическое значение | Включить режим плана                                   |
+| `UCODE_EXPERIMENTAL_EVENT_SYSTEM`            | логическое значение | Включить экспериментальную систему событий             |
+| `UCODE_EXPERIMENTAL_NATIVE_LLM`              | логическое значение | Включить нативный путь запросов LLM                    |
+| `UCODE_EXPERIMENTAL_PARALLEL`                | логическое значение | Включить параллельное выполнение веб-поиска            |
+| `UCODE_EXPERIMENTAL_SCOUT`                   | логическое значение | Включить субагент Scout                                |
+| `UCODE_EXPERIMENTAL_WORKSPACES`              | логическое значение | Включить поддержку рабочих областей                    |

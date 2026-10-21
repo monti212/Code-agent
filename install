@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
-APP=opencode
-SOURCE_APP=opencode
+APP=ucode
+SOURCE_APP=ucode
+# U Code has no published release channel yet. Until this names one (serving
+# /update/api/latest/cli/npm the way upstream's origin does), only --binary installs.
+RELEASE_ORIGIN=""
+REPOSITORY=https://github.com/monti212/Code-agent
 
 MUTED='\033[0;2m'
 RED='\033[0;31m'
@@ -10,9 +14,9 @@ NC='\033[0m' # No Color
 
 usage() {
     cat <<EOF
-OpenCode Installer
+U Code Installer
 
-Usage: install.sh [options]
+Usage: install [options]
 
 Options:
     -h, --help              Display this help message
@@ -21,9 +25,7 @@ Options:
         --no-modify-path    Don't modify shell config files (.zshrc, .bashrc, etc.)
 
 Examples:
-    curl -fsSL https://opencode.ai/v2/install | bash
-    curl -fsSL https://opencode.ai/v2/install | bash -s -- --version 0.0.0-beta-17236
-    ./install --binary /path/to/opencode
+    ./install --binary packages/cli/dist/cli-linux-x64/bin/ucode
 EOF
 }
 
@@ -66,7 +68,19 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-INSTALL_DIR=$HOME/.opencode/bin
+if [ -z "$binary_path" ] && [ -z "$RELEASE_ORIGIN" ]; then
+    echo -e "${RED}U Code installers are not published yet.${NC}"
+    echo -e "${MUTED}Build from source and install the binary:${NC}"
+    echo -e ""
+    echo -e "  git clone $REPOSITORY ucode && cd ucode"
+    echo -e "  bun install"
+    echo -e "  bun run --cwd packages/cli build --single"
+    echo -e "  ./install --binary packages/cli/dist/cli-<os>-<arch>/bin/ucode"
+    echo -e ""
+    exit 1
+fi
+
+INSTALL_DIR=$HOME/.ucode/bin
 mkdir -p "$INSTALL_DIR"
 
 # If --binary is provided, skip all download/detection logic
@@ -168,7 +182,7 @@ else
 
     package_scope="@opencode"
     if [ -z "$requested_version" ]; then
-        metadata=$(curl -fsSL https://opencode.ai/update/api/latest/cli/npm || true)
+        metadata=$(curl -fsSL "$RELEASE_ORIGIN/update/api/latest/cli/npm" || true)
         specific_version=$(echo "$metadata" | sed -n 's/.*"version":"\([^"]*\)".*/\1/p')
         package=$(echo "$metadata" | sed -n 's/.*"package":"\([^"]*\)".*/\1/p')
 
@@ -185,11 +199,6 @@ else
 
     package_name="$package_scope/cli-$target"
     http_status=$(curl -s -o /dev/null -w "%{http_code}" "https://registry.npmjs.org/$package_scope%2fcli-$target/$specific_version" || true)
-    # Older clients install the minimum release before they can migrate package names.
-    if [ "$http_status" = "404" ] && [ -n "$requested_version" ]; then
-        package_name="@opencode-ai/cli-$target"
-        http_status=$(curl -s -o /dev/null -w "%{http_code}" "https://registry.npmjs.org/@opencode-ai%2fcli-$target/$specific_version" || true)
-    fi
     if [ "$http_status" = "404" ]; then
         echo -e "${RED}Error: Version ${specific_version} is not available for $target${NC}"
         echo -e "${MUTED}Available versions: https://www.npmjs.com/package/$package_name?activeTab=versions${NC}"
@@ -224,7 +233,7 @@ print_message() {
 
 check_version() {
     if command -v "$APP" >/dev/null 2>&1; then
-        opencode_path=$(which "$APP")
+        installed_path=$(which "$APP")
 
         ## Check the installed version
         installed_version=$("$APP" --version 2>/dev/null || echo "")
@@ -276,7 +285,7 @@ download_with_progress() {
     fi
 
     local tmp_dir=${TMPDIR:-/tmp}
-    local basename="${tmp_dir}/opencode_install_$$"
+    local basename="${tmp_dir}/ucode_install_$$"
     local tracefile="${basename}.trace"
 
     rm -f "$tracefile"
@@ -327,7 +336,7 @@ download_with_progress() {
 
 download_and_install() {
     print_message info "\n${MUTED}Installing ${NC}$APP ${MUTED}version: ${NC}$specific_version"
-    local tmp_dir="${TMPDIR:-/tmp}/opencode_install_$$"
+    local tmp_dir="${TMPDIR:-/tmp}/ucode_install_$$"
     mkdir -p "$tmp_dir"
 
     if [[ "$os" == "windows" ]] || ! [ -t 2 ] || ! download_with_progress "$url" "$tmp_dir/$filename"; then
@@ -355,36 +364,12 @@ install_from_binary() {
     chmod 755 "$INSTALL_DIR/$installed_binary"
 }
 
-install_legacy_shim() {
-    local shim_os="${os:-}"
-    if [[ -z "$shim_os" ]]; then
-        case "$(uname -s)" in
-            MINGW*|MSYS*|CYGWIN*) shim_os="windows" ;;
-        esac
-    fi
-    rm -f "$INSTALL_DIR/opencode2" "$INSTALL_DIR/opencode2.exe" "$INSTALL_DIR/opencode2.cmd"
-    if [[ "$shim_os" == "windows" ]]; then
-        cat > "$INSTALL_DIR/opencode2.cmd" <<'EOF'
-@echo off
-"%~dp0opencode.exe" %*
-exit /b %errorlevel%
-EOF
-        return
-    fi
-    cat > "$INSTALL_DIR/opencode2" <<'EOF'
-#!/bin/sh
-exec "$(dirname "$0")/opencode" "$@"
-EOF
-    chmod 755 "$INSTALL_DIR/opencode2"
-}
-
 if [ -n "$binary_path" ]; then
     install_from_binary
 else
     check_version
     download_and_install
 fi
-install_legacy_shim
 
 
 add_to_path() {
@@ -394,9 +379,9 @@ add_to_path() {
     if grep -Fxq "$command" "$config_file"; then
         print_message info "Command already exists in $config_file, skipping write."
     elif [[ -w $config_file ]]; then
-        echo -e "\n# opencode" >> "$config_file"
+        echo -e "\n# ucode" >> "$config_file"
         echo "$command" >> "$config_file"
-        print_message info "${MUTED}Successfully added ${NC}opencode ${MUTED}to \$PATH in ${NC}$config_file"
+        print_message info "${MUTED}Successfully added ${NC}ucode ${MUTED}to \$PATH in ${NC}$config_file"
     else
         print_message warning "Manually add the directory to $config_file (or similar):"
         print_message info "  $command"
@@ -472,17 +457,17 @@ if [ -n "${GITHUB_ACTIONS-}" ] && [ "${GITHUB_ACTIONS}" == "true" ]; then
 fi
 
 echo -e ""
-echo -e "${MUTED}                    ${NC}             ▄     "
-echo -e "${MUTED}█▀▀█ █▀▀█ █▀▀█ █▀▀▄ ${NC}█▀▀▀ █▀▀█ █▀▀█ █▀▀█"
-echo -e "${MUTED}█░░█ █░░█ █▀▀▀ █░░█ ${NC}█░░░ █░░█ █░░█ █▀▀▀"
-echo -e "${MUTED}▀▀▀▀ █▀▀▀ ▀▀▀▀ ▀  ▀ ${NC}▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀"
+echo -e "${MUTED}     ${NC}             ▄     "
+echo -e "${MUTED}█  █ ${NC}█▀▀▀ █▀▀█ █▀▀█ █▀▀█"
+echo -e "${MUTED}█░░█ ${NC}█░░░ █░░█ █░░█ █▀▀▀"
+echo -e "${MUTED}▀▀▀▀ ${NC}▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀"
 echo -e ""
 echo -e ""
-echo -e "${MUTED}OpenCode includes free models, to start:${NC}"
+echo -e "${MUTED}U Code is installed. To start:${NC}"
 echo -e ""
 echo -e "cd <project>  ${MUTED}# Open directory${NC}"
-echo -e "opencode      ${MUTED}# Run command${NC}"
+echo -e "ucode         ${MUTED}# Run command${NC}"
 echo -e ""
-echo -e "${MUTED}For more information visit ${NC}https://opencode.ai/v2/docs"
+echo -e "${MUTED}For more information visit ${NC}https://code.uhuruai.co/docs"
 echo -e ""
 echo -e ""

@@ -2,7 +2,7 @@
 title: "Providers"
 ---
 
-OpenCode includes a provider and model catalog from [models.dev](https://models.dev). For most providers, connect an
+U Code includes a provider and model catalog from [models.dev](https://models.dev). For most providers, connect an
 account first, then select a model.
 
 ## Setup
@@ -14,25 +14,71 @@ Run `/connect`, choose a provider, and enter its credentials. Then run `/models`
 /models
 ```
 
-## Go
+## Uhuru AI
 
-[OpenCode Go](/console/go) is an optional subscription for coding models tested by the OpenCode team. Subscribe in the
-[console](https://console.opencode.ai), copy your API key, then connect it as **OpenCode Go**.
+Uhuru AI is U Code's default provider. Create an API key at [uhuruai.co](https://uhuruai.co) under
+**Settings → API Keys**. Keys start with `uhuru_sk_`.
 
 ```text
 /connect
-# Select OpenCode Go, then paste your API key.
+# Select Uhuru AI, then paste your API key.
 /models
 ```
 
-See the [Go guide](/console/go) for usage limits, endpoints, and privacy details.
+You can also provide the key through the environment:
+
+```bash
+export UHURU_API_KEY=uhuru_sk_...
+ucode
+```
+
+| Setting | Value |
+| --- | --- |
+| Provider ID | `uhuru` |
+| Model | `uhuru-4.5` (deep reasoning) |
+| Base URL | `https://ucloud.orionx.xyz/functions/v1/uhuru-public-api/v1` |
+| Wire format | Standard chat-completions |
+
+Select it with the model reference `uhuru/uhuru-4.5`. To pin the endpoint yourself, define the provider in config:
+
+```jsonc title="ucode.jsonc"
+{
+  "$schema": "https://opencode.ai/config.json",
+  "providers": {
+    "uhuru": {
+      "name": "Uhuru AI",
+      "env": ["UHURU_API_KEY"],
+      "package": "@opencode/ai/providers/openai-compatible",
+      "settings": {
+        "baseURL": "https://ucloud.orionx.xyz/functions/v1/uhuru-public-api/v1",
+      },
+      "models": {
+        "uhuru-4.5": {
+          "name": "Uhuru 4.5",
+        },
+      },
+    },
+  },
+  "model": "uhuru/uhuru-4.5",
+}
+```
+
+<Callout type="warning">
+  The Uhuru Public API does not accept tool definitions yet. With an Uhuru model, U Code can read your prompt and
+  answer, but it cannot call tools such as file edits or shell commands until tool support reaches the API.
+</Callout>
+
+## Other providers
+
+Any provider in the catalog works the same way: run `/connect`, choose it, and enter its credentials. OpenCode Zen and
+OpenCode Go, for example, are third-party model gateways run by the opencode project; U Code does not operate them.
 
 ## Custom
 
 Add a provider when its API is not already in the catalog. This OpenAI-compatible example defines the credential,
 runtime package, endpoint, and first model together.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -64,7 +110,7 @@ The `providers` object is keyed by the provider ID used in model references, suc
 | `settings` | JSON options passed to the runtime package. |
 | `headers` | String-valued HTTP headers added to requests. |
 | `body` | JSON fields merged into request bodies. |
-| `models` | Models to add or override, keyed by the OpenCode model ID. |
+| `models` | Models to add or override, keyed by the U Code model ID. |
 | `transport` | Provider-level session transport, `"http"` or `"websocket"`. |
 | `compaction` | Local or provider [compaction](/compaction) policy. |
 
@@ -73,7 +119,7 @@ The `providers` object is keyed by the provider ID used in model references, suc
 Override `settings.baseURL` to send a catalog provider through a proxy or compatible endpoint. Its existing package,
 models, and connection still apply.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -92,7 +138,7 @@ models, and connection still apply.
 
 Use `headers` for additional HTTP headers and `body` for JSON fields that should be merged into every request body.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -102,7 +148,7 @@ Use `headers` for additional HTTP headers and `body` for JSON fields that should
       },
       "body": {
         "metadata": {
-          "application": "opencode",
+          "application": "ucode",
         },
       },
     },
@@ -112,7 +158,7 @@ Use `headers` for additional HTTP headers and `body` for JSON fields that should
 
 Both fields can also be set on a model or variant when only part of a provider's traffic needs the override.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -138,7 +184,7 @@ Both fields can also be set on a model or variant when only part of a provider's
 The `package` field selects the runtime that communicates with a provider. Use the compatible runtime for APIs that
 implement the OpenAI request format.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -180,14 +226,14 @@ Native package options include:
 - `@opencode/ai/providers/openrouter`
 - `@opencode/ai/providers/xai`
 
-You can also use an npm package such as `@acme/opencode-provider` or an absolute `file://` URL for a local package.
+You can also use an npm package such as `@acme/ucode-provider` or an absolute `file://` URL for a local package.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
     "acme": {
-      "package": "@acme/opencode-provider",
+      "package": "@acme/ucode-provider",
       "models": { "acme-coder": {} },
     },
   },
@@ -196,10 +242,10 @@ You can also use an npm package such as `@acme/opencode-provider` or an absolute
 
 ## Models
 
-Add or override models in a provider's `models` map. The map key is the model ID used by OpenCode; `modelID` changes the
+Add or override models in a provider's `models` map. The map key is the model ID used by U Code; `modelID` changes the
 ID sent to the provider.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "model": "openai/coding",
@@ -242,7 +288,7 @@ Azure's standard catalog endpoint needs a resource name in addition to its crede
 once, then connect an API key or use the Microsoft Entra ID session from the Azure CLI as described in
 [Provider accounts](/cli/providers).
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -279,13 +325,13 @@ az login --tenant TENANT_ID
 az account set --subscription NAME_OR_ID
 ```
 
-Instead of configuration, `AZURE_RESOURCE_NAME` supplies the resource name to the OpenCode server. The legacy
+Instead of configuration, `AZURE_RESOURCE_NAME` supplies the resource name to the U Code server. The legacy
 `AZURE_COGNITIVE_SERVICES_RESOURCE_NAME` variable also works.
 
-OpenCode does not query Azure management APIs or discover deployments. If a deployment does not match its catalog
-model name, map an OpenCode model ID to the deployment with `modelID`.
+U Code does not query Azure management APIs or discover deployments. If a deployment does not match its catalog
+model name, map a U Code model ID to the deployment with `modelID`.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -313,7 +359,7 @@ az login --tenant TENANT_ID
 
 ## Bedrock
 
-Amazon Bedrock uses the AWS default credential chain. A named AWS profile is the simplest durable setup; OpenCode also
+Amazon Bedrock uses the AWS default credential chain. A named AWS profile is the simplest durable setup; U Code also
 recognizes access-key environments, web identity, and container credentials.
 
 ```bash
@@ -324,7 +370,7 @@ aws sso login --profile work
 Select the profile and region in provider settings. A configured `profile`, `AWS_PROFILE`, `AWS_ACCESS_KEY_ID`, web
 identity token file, or container credential URI activates the provider; a region alone does not.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -338,10 +384,10 @@ identity token file, or container credential URI activates the provider; a regio
 }
 ```
 
-Without an explicit region, OpenCode uses `AWS_REGION`, then `AWS_DEFAULT_REGION`, then `us-east-1`. For a private or
+Without an explicit region, U Code uses `AWS_REGION`, then `AWS_DEFAULT_REGION`, then `us-east-1`. For a private or
 VPC endpoint, set `baseURL` while keeping the same profile and region.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -356,7 +402,7 @@ VPC endpoint, set `baseURL` while keeping the same profile and region.
 }
 ```
 
-Bedrock API keys use `AWS_BEARER_TOKEN_BEDROCK`. Other AWS variables feed SigV4 and are not stored as OpenCode API-key
+Bedrock API keys use `AWS_BEARER_TOKEN_BEDROCK`. Other AWS variables feed SigV4 and are not stored as U Code API-key
 accounts.
 
 ## Vertex
@@ -368,7 +414,7 @@ Create local ADC, then set the project and location in provider settings.
 gcloud auth application-default login
 ```
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -382,12 +428,12 @@ gcloud auth application-default login
 }
 ```
 
-OpenCode also resolves the project from `GOOGLE_VERTEX_PROJECT`, `GOOGLE_CLOUD_PROJECT`, `GCP_PROJECT`, or
+U Code also resolves the project from `GOOGLE_VERTEX_PROJECT`, `GOOGLE_CLOUD_PROJECT`, `GCP_PROJECT`, or
 `GCLOUD_PROJECT`, in that order. It resolves the location from `GOOGLE_VERTEX_LOCATION`, `GOOGLE_CLOUD_LOCATION`, or
 `VERTEX_LOCATION`, and defaults to `us-central1`.
 
 ```bash
-GOOGLE_CLOUD_PROJECT=my-project GOOGLE_VERTEX_LOCATION=europe-west4 opencode --standalone
+GOOGLE_CLOUD_PROJECT=my-project GOOGLE_VERTEX_LOCATION=europe-west4 ucode --standalone
 ```
 
 Service accounts work through the same ADC path. Point `GOOGLE_APPLICATION_CREDENTIALS` at the service-account JSON
@@ -396,7 +442,7 @@ file and still provide a project through settings or one of the project variable
 ```bash
 GOOGLE_APPLICATION_CREDENTIALS=/secure/vertex.json \
 GOOGLE_CLOUD_PROJECT=my-project \
-opencode --standalone
+ucode --standalone
 ```
 
 Use the single `google-vertex` provider ID for Gemini, Anthropic, and OpenAI-compatible Vertex catalog models. The old
@@ -413,7 +459,7 @@ GitHub Enterprise, finish the device flow, then open `/models`.
 /models
 ```
 
-For GitHub Enterprise, enter the deployment URL or domain when prompted. OpenCode uses a Copilot API endpoint returned
+For GitHub Enterprise, enter the deployment URL or domain when prompted. U Code uses a Copilot API endpoint returned
 by GitHub when available; otherwise it derives the endpoint from the enterprise domain.
 
 ```text
@@ -421,12 +467,12 @@ company.ghe.com
 ```
 
 The connected account needs Copilot Chat access. If GitHub reports no entitlement, sign up for Copilot Free or ask the
-organization to assign a Copilot seat, then connect again. OpenCode fetches the account's current model list after login
+organization to assign a Copilot seat, then connect again. U Code fetches the account's current model list after login
 and whenever the active Copilot account changes.
 
 ## Ollama
 
-Start Ollama and pull a model. OpenCode probes `http://127.0.0.1:11434`, discovers completion models, and adds them to
+Start Ollama and pull a model. U Code probes `http://127.0.0.1:11434`, discovers completion models, and adds them to
 `/models` without an account connection.
 
 ```bash
@@ -434,11 +480,11 @@ ollama serve
 ollama pull qwen3:8b
 ```
 
-Point OpenCode at a remote or proxied Ollama server with `settings.baseURL`. Include `/v1`; OpenCode derives the native
+Point U Code at a remote or proxied Ollama server with `settings.baseURL`. Include `/v1`; U Code derives the native
 `/api/tags` and `/api/show` discovery paths from it. `apiKey` is optional and is sent as a bearer token to discovery and
 model requests.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -453,14 +499,14 @@ model requests.
 ```
 
 Discovery refreshes periodically and keeps the last successful inventory during a temporary outage. Embedding-only
-models do not appear because OpenCode only adds models whose Ollama metadata includes the `completion` capability.
+models do not appear because U Code only adds models whose Ollama metadata includes the `completion` capability.
 
 ## Runtimes
 
 LM Studio and vLLM also have built-in local discovery. Their default endpoints are
 `http://127.0.0.1:1234/v1` and `http://127.0.0.1:8000/v1`.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -480,10 +526,10 @@ runtime, use the [custom provider](#custom) recipe and list its models explicitl
 
 ## Gateways
 
-OpenRouter uses its native runtime and catalog. Provide `OPENROUTER_API_KEY` to the OpenCode server or connect an
+OpenRouter uses its native runtime and catalog. Provide `OPENROUTER_API_KEY` to the U Code server or connect an
 OpenRouter account, then refer to models with the full OpenRouter model ID after the provider prefix.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "model": "openrouter/anthropic/claude-sonnet-4",
@@ -493,7 +539,7 @@ OpenRouter account, then refer to models with the full OpenRouter model ID after
 Keep the native OpenRouter package when overriding its endpoint or routing through an OpenRouter-compatible gateway.
 This preserves OpenRouter request and reasoning behavior.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -512,7 +558,7 @@ This preserves OpenRouter request and reasoning behavior.
 For a gateway that exposes an OpenAI-compatible API but has its own model inventory, define a custom provider instead.
 The configuration key becomes the provider prefix and each `models` key becomes a selectable model ID.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "model": "company/coder",
@@ -540,7 +586,7 @@ ID before changing packages.
 | --- | --- |
 | `No model is available for session ...` | No enabled model is currently selectable. Finish the provider-specific setup, then choose a model in `/models`. |
 | `Model unavailable: provider/model` | The provider is inactive, the model ID is absent or disabled, or dynamic discovery no longer returns it. For custom aliases, check the `models` map key rather than `modelID`. |
-| `Cannot initialize provider/model: NAME is required to resolve the provider endpoint` | A `${NAME}` placeholder remains in `baseURL`. Set that variable on the OpenCode server or replace the template with a complete endpoint. |
+| `Cannot initialize provider/model: NAME is required to resolve the provider endpoint` | A `${NAME}` placeholder remains in `baseURL`. Set that variable on the U Code server or replace the template with a complete endpoint. |
 | `Azure resource name is missing` | Set `providers.azure.settings.resourceName`, `AZURE_RESOURCE_NAME`, or a complete `settings.baseURL`. |
 | Vertex does not appear | Set a resolvable project in provider settings or a supported project variable. ADC alone does not activate the provider. |
 | Bedrock does not appear | Provide a profile or another supported AWS credential-chain input. `AWS_REGION` by itself only selects a region. |
@@ -556,7 +602,7 @@ OpenAI, xAI, and supported Azure Responses models can keep one WebSocket connect
 reuse the unchanged request prefix and only send content added since the previous response, reducing uploads in long
 sessions.
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {

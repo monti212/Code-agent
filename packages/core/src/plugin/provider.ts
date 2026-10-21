@@ -28,10 +28,12 @@ import { VercelPlugin } from "./provider/vercel.js"
 import { VenicePlugin } from "./provider/venice.js"
 import { VLLMPlugin } from "./provider/vllm.js"
 import { XAIPlugin } from "./provider/xai.js"
+import { UhuruPlugin } from "./provider/uhuru.js"
 import { ZenmuxPlugin } from "./provider/zenmux.js"
 import type { PluginInternal } from "./internal.js"
 
 export const ProviderPlugins: PluginInternal.InternalPlugin[] = [
+  UhuruPlugin,
   AmazonBedrockPlugin,
   AzurePlugin,
   CerebrasPlugin,

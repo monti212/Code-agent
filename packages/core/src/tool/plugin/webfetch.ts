@@ -1,5 +1,6 @@
 export * as WebFetchTool from "./webfetch.js"
 
+import { Brand } from "@opencode/util/brand"
 import type { Context } from "@opencode/plugin/effect/plugin"
 import { ToolFailure } from "@opencode/ai"
 import { Duration, Effect, Schema } from "effect"
@@ -56,7 +57,7 @@ const headers = (format: Format, userAgent: string) => ({
 })
 
 const openCodeUserAgent =
-  "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OpenCode-User/1.0; +https://opencode.ai"
+  `Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; UCode-User/1.0; +${Brand.home}`
 
 const isCloudflareChallenge = (error: HttpClientError.HttpClientError) => {
   if (error.reason._tag !== "StatusCodeError") return false

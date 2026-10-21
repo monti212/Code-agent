@@ -2,7 +2,7 @@
 import * as mod from "./logo"
 
 const docs = `### Overview
-OpenCode logo assets: mark, splash, and wordmark.
+U Code logo assets: mark, splash, and wordmark.
 
 Use Mark for compact spaces, Logo for headers, Splash for hero sections.
 
@@ -19,7 +19,7 @@ Use Mark for compact spaces, Logo for headers, Splash for hero sections.
 - Provide title/aria-label when logos convey meaning.
 
 ### Theming/tokens
-- Uses theme color tokens via CSS variables.
+- The wordmark uses theme color tokens via CSS variables; the mark uses fixed brand colours.
 
 `
 

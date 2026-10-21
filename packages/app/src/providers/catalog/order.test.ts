@@ -1,6 +1,8 @@
 import { expect, test } from "bun:test"
 import { popularProviders } from "./order"
 
-test("lists OpenCode Go before Zen and other popular providers", () => {
-  expect(popularProviders.slice(0, 2)).toEqual(["opencode-go", "opencode"])
+test("lists Uhuru first and keeps upstream's hosted gateways out of the featured list", () => {
+  expect(popularProviders[0]).toBe("uhuru")
+  expect(popularProviders).not.toContain("opencode")
+  expect(popularProviders).not.toContain("opencode-go")
 })

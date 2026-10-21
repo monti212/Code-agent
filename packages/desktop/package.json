@@ -4,10 +4,10 @@
   "version": "2.0.4",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://opencode.ai",
+  "homepage": "https://code.uhuruai.co",
   "author": {
-    "name": "OpenCode",
-    "email": "hello@opencode.ai"
+    "name": "OrionX",
+    "email": "hello@orionx.xyz"
   },
   "scripts": {
     "typecheck": "tsgo -b",
@@ -41,6 +41,7 @@
     "@opencode/schema": "workspace:*",
     "@opencode/plugin-browser": "workspace:*",
     "@opencode/ui": "workspace:*",
+    "@opencode/util": "workspace:*",
     "@sentry/solid": "catalog:",
     "@sentry/vite-plugin": "catalog:",
     "@solid-primitives/storage": "catalog:",

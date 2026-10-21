@@ -7,14 +7,13 @@ import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import type { Configuration } from "electron-builder"
 
-const legacyDesktopEntry = "resources/linux/opencode-desktop.desktop"
 // Use electron-builder's matcher so the tests also cover its glob and directory traversal semantics.
 const { FileMatcher } = createRequire(import.meta.resolve("electron-builder"))("app-builder-lib/out/fileMatcher")
 
 const channels = [
-  { channel: "dev", appId: "ai.opencode.desktop.dev" },
-  { channel: "beta", appId: "ai.opencode.desktop.beta" },
-  { channel: "prod", appId: "ai.opencode.desktop" },
+  { channel: "dev", appId: "xyz.orionx.ucode.desktop.dev" },
+  { channel: "beta", appId: "xyz.orionx.ucode.desktop.beta" },
+  { channel: "prod", appId: "xyz.orionx.ucode.desktop" },
 ] as const
 
 for (const channel of channels) {
@@ -148,33 +147,20 @@ test("the trimmed Zip.js package can still export compressed logs", async () => 
   }
 })
 
-test("keeps a hidden prod launcher for old Linux pins", async () => {
-  const previous = process.env.OPENCODE_CHANNEL
-  process.env.OPENCODE_CHANNEL = "prod"
+for (const channel of ["dev", "beta", "prod"] as const) {
+  test(`bakes no update feed into the ${channel} app`, async () => {
+    const previous = process.env.OPENCODE_CHANNEL
+    process.env.OPENCODE_CHANNEL = channel
+    const module = await import(`./electron-builder.config.ts?publish=${channel}`)
+    const config = module.default as Configuration
+    if (previous === undefined) delete process.env.OPENCODE_CHANNEL
+    else process.env.OPENCODE_CHANNEL = previous
 
-  const module = await import("./electron-builder.config.ts?compat=prod")
-  const config = module.default as Configuration
-
-  if (previous === undefined) delete process.env.OPENCODE_CHANNEL
-  else process.env.OPENCODE_CHANNEL = previous
-
-  expect(
-    config.deb?.fpm?.some((entry) =>
-      entry.endsWith("opencode-desktop.desktop=/usr/share/applications/opencode-desktop.desktop"),
-    ),
-  ).toBe(true)
-  expect(
-    config.rpm?.fpm?.some((entry) =>
-      entry.endsWith("opencode-desktop.desktop=/usr/share/applications/opencode-desktop.desktop"),
-    ),
-  ).toBe(true)
-
-  const desktop = await Bun.file(legacyDesktopEntry).text()
-  expect(desktop).toContain("Exec=/opt/OpenCode/ai.opencode.desktop %U")
-  expect(desktop).toContain("Icon=ai.opencode.desktop")
-  expect(desktop).toContain("StartupWMClass=ai.opencode.desktop")
-  expect(desktop).toContain("NoDisplay=true")
-})
+    expect(config.publish).toBeNull()
+    expect(config.productName).toStartWith("U Code")
+    expect(config.protocols).toMatchObject({ schemes: ["ucode"] })
+  })
+}
 
 for (const channel of ["dev", "beta"] as const) {
   test(`bundles the CLI outside the ${channel} app archive`, async () => {
@@ -185,12 +171,12 @@ for (const channel of ["dev", "beta"] as const) {
     if (previous === undefined) delete process.env.OPENCODE_CHANNEL
     else process.env.OPENCODE_CHANNEL = previous
 
-    expect(config.files).toContain("!resources/opencode-cli*")
+    expect(config.files).toContain("!resources/ucode-cli*")
     expect(config.extraResources).toEqual([
       {
         from: "resources/",
         to: "",
-        filter: ["opencode-cli", "opencode-cli.exe"],
+        filter: ["ucode-cli", "ucode-cli.exe"],
       },
     ])
   })

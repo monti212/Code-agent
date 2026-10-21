@@ -13,12 +13,15 @@ const it = testEffect(NodeServices.layer)
 
 declare const OPENCODE_CLI_NAME: string | undefined
 
+const origin = "https://updates.example"
+
 function fixture(
   respond: (command: ChildProcess.StandardCommand) => Partial<AppProcess.RunResult> & {
     error?: AppProcess.AppProcessError
   } = () => ({}),
   name = "@opencode/cli",
   failCleanup = false,
+  layer = Updater.layerWithOrigin(origin),
 ) {
   return Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem
@@ -54,7 +57,7 @@ function fixture(
     })
     const commands: string[][] = []
     const updater = yield* Updater.Service.pipe(
-      Effect.provide(Updater.layer),
+      Effect.provide(layer),
       Effect.provideService(Global.Service, global),
       Effect.provideService(FileSystem.FileSystem, {
         ...fs,
@@ -160,7 +163,7 @@ it.live("bun ignores install cache cleanup failures", () =>
       const installer = test.commands[0]?.[3]
       expect(installer).toStartWith(path.join(test.global.cache, "update-"))
       expect(test.commands).toEqual([
-        ["curl", "-fsSL", "-o", installer, "https://opencode.ai/v2/install"],
+        ["curl", "-fsSL", "-o", installer, `${origin}/v2/install`],
         ...(failure === "download" ? [] : [["bash", installer, "--version", "2.3.4-beta.1", "--no-modify-path"]]),
       ])
       expect(yield* test.fs.readDirectory(test.global.cache)).toEqual([])
@@ -169,6 +172,17 @@ it.live("bun ignores install cache cleanup failures", () =>
     }),
   )
 })
+
+it.live("updates stay off without a U Code release origin", () =>
+  Effect.gen(function* () {
+    const test = yield* fixture(undefined, undefined, undefined, Updater.layer)
+    expect((yield* test.updater.check())?.type).toBe("unavailable")
+    expect((yield* test.updater.latest().pipe(Effect.flip)).message).toBe(Updater.unpublishedMessage)
+    expect((yield* test.updater.upgrade("npm", "2.3.4").pipe(Effect.flip)).message).toBe(Updater.unpublishedMessage)
+    expect(yield* test.updater.run()).toBeUndefined()
+    expect(test.commands).toEqual([])
+  }),
+)
 
 it.live("invalid version targets never execute a command or create a cache", () =>
   Effect.gen(function* () {
@@ -236,7 +250,7 @@ test("Node distribution honors the compile-time CLI name", async () => {
       "test",
       import.meta.path,
       "--define",
-      'OPENCODE_CLI_NAME="opencode2-node"',
+      'OPENCODE_CLI_NAME="ucode-node"',
       "--test-name-pattern",
       "^Node distribution resolves the published npm package$",
     ],
@@ -253,7 +267,7 @@ test("Node distribution honors the compile-time CLI name", async () => {
   expect(stderr).toContain("1 pass")
 })
 
-if (typeof OPENCODE_CLI_NAME === "string" && OPENCODE_CLI_NAME === "opencode2-node") {
+if (typeof OPENCODE_CLI_NAME === "string" && OPENCODE_CLI_NAME === "ucode-node") {
   it.live("Node distribution resolves the published npm package", () =>
     Effect.gen(function* () {
       const test = yield* fixture(

@@ -4,6 +4,7 @@ import { Effect, Latch } from "effect"
 import { Service, type Endpoint } from "@opencode/client/effect/service"
 import { OpenCode, type SessionInfo } from "@opencode/client"
 import { Global } from "@opencode/util/global"
+import { Brand } from "@opencode/util/brand"
 import { ClipboardProvider, useClipboard } from "./context/clipboard"
 import { LogProvider, useLog, type LogSink } from "./context/log"
 import { ExitProvider, useExit } from "./context/exit"
@@ -615,23 +616,23 @@ function App(props: { pair?: DialogPairCredentials }) {
     if (!terminalTitleEnabled()) return
 
     if (route.data.type === "home") {
-      renderer.setTerminalTitle("OpenCode")
+      renderer.setTerminalTitle(Brand.name)
       return
     }
 
     if (route.data.type === "session") {
       const title = session?.title
       if (!title || isFallbackTitle(title)) {
-        renderer.setTerminalTitle("OpenCode")
+        renderer.setTerminalTitle(Brand.name)
         return
       }
 
-      renderer.setTerminalTitle(`OC | ${title.length > 40 ? title.slice(0, 37) + "…" : title}`)
+      renderer.setTerminalTitle(`UC | ${title.length > 40 ? title.slice(0, 37) + "…" : title}`)
       return
     }
 
     if (route.data.type === "plugin") {
-      renderer.setTerminalTitle(`OC | ${route.data.name}`)
+      renderer.setTerminalTitle(`UC | ${route.data.name}`)
     }
   })
 
@@ -966,7 +967,7 @@ function App(props: { pair?: DialogPairCredentials }) {
         ? [
             {
               name: "opencode.update",
-              title: "Update OpenCode",
+              title: `Update ${Brand.name}`,
               slash: { name: "update", aliases: ["upgrade"] },
               run: () => updater.open?.("manual"),
               category: "System",
@@ -1056,7 +1057,7 @@ function App(props: { pair?: DialogPairCredentials }) {
         name: "docs.open",
         title: "Open docs",
         run: () => {
-          open("https://opencode.ai/docs").catch(() => {})
+          open(Brand.docs).catch(() => {})
           dialog.clear()
         },
         category: "System",

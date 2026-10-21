@@ -16,6 +16,7 @@ import {
   type TextareaRenderable,
 } from "@opentui/core"
 import { useRenderer, useTerminalDimensions } from "@opentui/solid"
+import { Brand } from "@opencode/util/brand"
 import { normalizePromptContent } from "../prompt/content"
 import { deduplicatePromptImages, promptAttachmentLabel } from "../prompt/attachment"
 import { resolvePastedAttachments } from "../component/prompt/local-attachment"
@@ -531,7 +532,7 @@ export function createPromptState(input: PromptInput): PromptState {
         display: "/compact",
         description: "compact older session context to free space",
       } satisfies SlashOption,
-      { kind: "slash", name: "exit", display: "/exit", description: "close OpenCode" } satisfies SlashOption,
+      { kind: "slash", name: "exit", display: "/exit", description: `close ${Brand.name}` } satisfies SlashOption,
     ]
     const hidden = new Set(builtins.map((item) => item.name))
     return [

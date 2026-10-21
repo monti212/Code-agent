@@ -1,10 +1,1 @@
-export const popularProviders = [
-  "opencode-go",
-  "opencode",
-  "anthropic",
-  "github-copilot",
-  "openai",
-  "google",
-  "openrouter",
-  "vercel",
-]
+export const popularProviders = ["uhuru", "anthropic", "github-copilot", "openai", "google", "openrouter", "vercel"]

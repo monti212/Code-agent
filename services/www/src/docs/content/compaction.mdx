@@ -11,7 +11,7 @@ but future model requests start from the latest completed checkpoint.
 Automatic compaction is enabled by default. This minimal configuration keeps
 about 15,000 tokens of recent conversation beside the generated summary:
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "compaction": {
@@ -23,7 +23,7 @@ about 15,000 tokens of recent conversation beside the generated summary:
 ```
 
 Continue using the session normally. When its active context approaches the
-model limit, OpenCode creates a checkpoint and retries the pending work with
+model limit, U Code creates a checkpoint and retries the pending work with
 more room. Compaction is lossy, so increase `keep.tokens` when exact recent
 details matter.
 
@@ -38,7 +38,7 @@ curl -X POST http://localhost:4096/api/session/ses_example/compact \
   -d '{}'
 ```
 
-OpenCode stores the request before waking the session. The response confirms
+U Code stores the request before waking the session. The response confirms
 admission; it does not wait for the summary. Wait for the session or follow
 `session.compaction.*` events to learn when it finishes. See the generated
 [API reference](/api) for the full operation.
@@ -77,7 +77,7 @@ Reusing that ID for another record returns a conflict.
 
 ## Automatic
 
-Before each model call, OpenCode estimates the final size of the system prompt,
+Before each model call, U Code estimates the final size of the system prompt,
 messages, and advertised tools. It starts compaction at this ceiling:
 
 ```text
@@ -95,14 +95,14 @@ The estimate follows these rules:
 
 - The latest model response's input usage is the starting point; output and
   newer content are then added.
-- Without provider usage, OpenCode estimates text, media, instructions, and
+- Without provider usage, U Code estimates text, media, instructions, and
   tools locally.
 - The reserved model output is capped at 32,000 tokens.
 - A model without an input limit is constrained by its context limit instead.
 - A successful checkpoint rebuilds the same pending model step. It does not
   promote the input again or spend another agent step.
 
-OpenCode also recognizes provider errors classified as context overflow. If no
+U Code also recognizes provider errors classified as context overflow. If no
 assistant output or other retry evidence was produced, it can compact and retry
 that model step once:
 
@@ -115,9 +115,9 @@ as an error.
 
 ## Settings
 
-Add `compaction` to any [OpenCode configuration file](/config):
+Add `compaction` to any [U Code configuration file](/config):
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "compaction": {
@@ -143,7 +143,7 @@ larger `buffer` starts automatic compaction earlier.
 Local text summaries are the default. Use a provider policy to request the
 selected provider's native compaction for both automatic and manual requests:
 
-```jsonc title="opencode.jsonc"
+```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
   "providers": {
@@ -164,7 +164,7 @@ the provider's `120000` threshold.
 
 | Topic | Provider behavior |
 | --- | --- |
-| Threshold | `threshold` is an optional positive integer in provider mode. When omitted, OpenCode uses the model's usable input ceiling; when larger than that ceiling, it is clamped. |
+| Threshold | `threshold` is an optional positive integer in provider mode. When omitted, U Code uses the model's usable input ceiling; when larger than that ceiling, it is clamped. |
 | Scheduling | Checkpoints run at normal safe step boundaries. `compaction.auto: false` disables all new automatic work. |
 | Usage | After a native checkpoint is installed, automatic checks wait for fresh model usage because encrypted checkpoint bytes cannot provide a meaningful token count. |
 | OpenAI | Responses routes use a streamed compaction trigger when supported; endpoint-only routes use the standalone compaction endpoint. Deployment and model support vary. |
@@ -186,10 +186,10 @@ Disabling automatic compaction does not remove a checkpoint already installed.
 Streamed trigger checkpoints preserve whole, real user messages and attachments
 up to the `keep.tokens` budget, including user messages retained across earlier
 native checkpoints. Synthetic guidance is excluded. Standalone endpoint results
-are stored as returned; OpenCode does not fabricate a text summary for either
+are stored as returned; U Code does not fabricate a text summary for either
 native route.
 
-On a recognized automatic context overflow, OpenCode attempts local recovery
+On a recognized automatic context overflow, U Code attempts local recovery
 from the original stored history, expanding native checkpoints first:
 
 ```text
@@ -203,7 +203,7 @@ fallback. Manual native compaction also returns errors without fallback.
 
 ## Checkpoints
 
-For local compaction, OpenCode uses the session's selected agent, model, and
+For local compaction, U Code uses the session's selected agent, model, and
 variant. It sends the normal instructions, tools, and older history followed by
 a request for a structured checkpoint:
 
@@ -240,7 +240,7 @@ tool output (limited to 2,000 characters)
 attachment descriptor (embedded data omitted)
 ```
 
-On later local compactions, OpenCode updates the previous summary, carries its
+On later local compactions, U Code updates the previous summary, carries its
 retained recent context forward, and then selects a new tail. Completed
 checkpoints appear to the model as historical conversation, not new
 instructions. Running and failed checkpoints are excluded from model context.
@@ -248,7 +248,7 @@ instructions. Running and failed checkpoints are excluded from model context.
 ## Instructions
 
 Instruction updates and conversation compaction are tracked separately. Before
-each actual provider attempt, OpenCode checks live instruction sources before it
+each actual provider attempt, U Code checks live instruction sources before it
 delivers pending input. Later changes appear to the model as chronological
 system messages, while request construction renders the stored baseline.
 

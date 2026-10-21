@@ -1,5 +1,7 @@
 #!/usr/bin/env bun
 
+// Must stay first: maps UCODE_* onto OPENCODE_* before any module reads the environment.
+import "@opencode/util/brand-env"
 import { NodeRuntime, NodeServices } from "@effect/platform-node"
 import { Effect } from "effect"
 import { Commands } from "./commands/commands"

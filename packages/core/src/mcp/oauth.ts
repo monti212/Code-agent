@@ -1,5 +1,6 @@
 export * as McpOAuth from "./oauth.js"
 
+import { Brand } from "@opencode/util/brand"
 import {
   auth,
   LATEST_PROTOCOL_VERSION,
@@ -179,8 +180,8 @@ export const provider = (options: Options): OAuthClientProvider => {
     ...(redirect ? { state: () => redirect.state } : {}),
     clientMetadata: {
       redirect_uris: [redirectUrl],
-      client_name: "opencode",
-      client_uri: "https://opencode.ai",
+      client_name: Brand.name,
+      client_uri: Brand.home,
       grant_types: ["authorization_code", "refresh_token"],
       response_types: ["code"],
       token_endpoint_auth_method: client?.client_secret ? "client_secret_post" : "none",
@@ -404,7 +405,7 @@ export const authorize = (input: {
           jsonrpc: "2.0",
           id: 0,
           method: "initialize",
-          params: { protocolVersion: LATEST_PROTOCOL_VERSION, capabilities: {}, clientInfo: { name: "opencode" } },
+          params: { protocolVersion: LATEST_PROTOCOL_VERSION, capabilities: {}, clientInfo: { name: Brand.command } },
         }),
         signal,
       }),

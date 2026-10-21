@@ -131,7 +131,7 @@ export const OpencodePlugin = define<HttpClient.HttpClient | Bus.Service | Scope
 
     yield* ctx.integration.transform((editor) => {
       editor.update("opencode", (integration) => {
-        integration.name = "OpenCode"
+        integration.name = "OpenCode Zen"
       })
       editor.method.update(oauth(http))
       editor.method.update({ integrationID: "opencode", method: { type: "key", label: "API key (service account)" } })
@@ -214,15 +214,8 @@ export const OpencodePlugin = define<HttpClient.HttpClient | Bus.Service | Scope
           })
       }
 
-      const item = providers.get(Provider.ID.opencode)
-      if (!item) return
-      const hasKey = Boolean(process.env.OPENCODE_API_KEY || snapshot.connection || item.provider.settings?.apiKey)
-      providers.update(item.provider.id, (provider) => {
-        if (!hasKey) {
-          provider.activation = "enabled"
-          provider.settings = { ...provider.settings, apiKey: "public" }
-        }
-      })
+      // U Code: upstream switches this gateway on with a shared "public" key, which would send a
+      // fresh install's code to a third party nobody chose. It now activates only when connected.
     })
     yield* ctx.model.transform((models) => {
       const item = models.provider.get(Provider.ID.opencode)

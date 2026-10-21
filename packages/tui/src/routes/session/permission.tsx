@@ -4,6 +4,7 @@ import { Portal, useRenderer, useTerminalDimensions, type JSX } from "@opentui/s
 import type { TextareaRenderable } from "@opentui/core"
 import { useTheme, useThemes } from "../../context/theme"
 import type { PermissionReply, PermissionRequest } from "@opencode/client"
+import { Brand } from "@opencode/util/brand"
 import { SplitBorder } from "../../ui/border"
 import { useData } from "../../context/data"
 import { filetype } from "../../util/filetype"
@@ -325,7 +326,7 @@ function RejectPrompt(props: {
           <text fg={theme.text.default}>Reject permission</text>
         </box>
         <box paddingLeft={1}>
-          <text fg={theme.text.subdued}>Tell OpenCode what to do differently</text>
+          <text fg={theme.text.subdued}>Tell {Brand.name} what to do differently</text>
         </box>
       </box>
       <box

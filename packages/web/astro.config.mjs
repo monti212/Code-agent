@@ -31,7 +31,7 @@ export default defineConfig({
     configSchema(),
     solidJs(),
     starlight({
-      title: "OpenCode",
+      title: "U Code",
       defaultLocale: "root",
       locales: {
         root: {
@@ -157,10 +157,9 @@ export default defineConfig({
       expressiveCode: { themes: ["github-light", "github-dark"] },
       social: [
         { icon: "github", label: "GitHub", href: config.github },
-        { icon: "discord", label: "Discord", href: config.discord },
       ],
       editLink: {
-        baseUrl: `${config.github}/edit/dev/packages/web/`,
+        baseUrl: `${config.github}/edit/v2/packages/web/`,
       },
       markdown: {
         headingLinks: false,
@@ -176,7 +175,6 @@ export default defineConfig({
         "config",
         "providers",
         "network",
-        "enterprise",
         "troubleshooting",
         {
           label: "Windows",
@@ -224,7 +222,7 @@ export default defineConfig({
             "zh-CN": "使用",
             "zh-TW": "使用",
           },
-          items: ["go", "tui", "cli", "web", "ide", "zen", "share", "github", "gitlab"],
+          items: ["tui", "cli", "web", "ide"],
         },
 
         {

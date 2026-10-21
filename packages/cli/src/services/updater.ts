@@ -1,3 +1,4 @@
+import { Brand } from "@opencode/util/brand"
 import { Global } from "@opencode/util/global"
 import { AppProcess } from "@opencode/util/process"
 import { OPENCODE_ARTIFACT, OPENCODE_CHANNEL, OPENCODE_LOCAL, OPENCODE_VERSION } from "../version"
@@ -12,6 +13,12 @@ export type Method = (typeof methods)[number]
 export type RunResult = { readonly type: "available" | "installed"; readonly version: string }
 export type CheckResult = RunResult | { readonly type: "unavailable"; readonly message: string }
 
+// U Code has no release channel yet. Upstream's update API and installer would replace U Code with
+// opencode, so every update path stays off until this names a U Code release origin (serving
+// `/update/api/...` and `/v2/install` the way upstream's origin does).
+export const releaseOrigin: string | undefined = undefined
+export const unpublishedMessage = `${Brand.name} updates are not published yet; reinstall from ${Brand.repository}`
+
 export interface Interface {
   readonly run: () => Effect.Effect<RunResult | undefined>
   readonly check: () => Effect.Effect<CheckResult | undefined, Error>
@@ -19,9 +26,9 @@ export interface Interface {
   readonly method: () => Effect.Effect<Method | undefined>
   readonly latest: () => Effect.Effect<string, Error>
   readonly upgrade: (method: Method, version: string) => Effect.Effect<void, Error>
-  readonly removal: (method: Method) =>
-    | { readonly command: ReadonlyArray<string>; readonly run: Effect.Effect<void, Error> }
-    | undefined
+  readonly removal: (
+    method: Method,
+  ) => { readonly command: ReadonlyArray<string>; readonly run: Effect.Effect<void, Error> } | undefined
 }
 
 export const pollUpdates = Effect.fnUntraced(function* (input: {
@@ -55,7 +62,7 @@ export function decodePolicy(text: string): Policy | undefined {
   if (input.autoupdate === true) return "auto"
 }
 
-const make = Effect.gen(function* () {
+const make = Effect.fnUntraced(function* (origin: string | undefined) {
   const fs = yield* FileSystem.FileSystem
   const global = yield* Global.Service
   const appProcess = yield* AppProcess.Service
@@ -74,11 +81,13 @@ const make = Effect.gen(function* () {
   }).pipe(Effect.orElseSucceed(() => undefined))
 
   const readPolicy = Effect.fnUntraced(function* () {
-    const values = yield* Effect.forEach(["config.json", "opencode.json", "opencode.jsonc"], (name) =>
-      fs.readFileString(path.join(global.config, name)).pipe(
-        Effect.map(decodePolicy),
-        Effect.orElseSucceed(() => undefined),
-      ),
+    const values = yield* Effect.forEach(
+      ["config.json", "opencode.json", "opencode.jsonc", "ucode.json", "ucode.jsonc"],
+      (name) =>
+        fs.readFileString(path.join(global.config, name)).pipe(
+          Effect.map(decodePolicy),
+          Effect.orElseSucceed(() => undefined),
+        ),
     )
     return values.findLast((value) => value !== undefined) ?? "notify"
   })
@@ -103,9 +112,9 @@ const make = Effect.gen(function* () {
   const method = Effect.fnUntraced(function* () {
     const binary = path.join(
       global.home,
-      ".opencode",
+      `.${Brand.app}`,
       "bin",
-      process.platform === "win32" ? "opencode.exe" : "opencode",
+      process.platform === "win32" ? `${Brand.command}.exe` : Brand.command,
     )
     if (path.resolve(process.execPath) === path.resolve(binary)) return "curl"
     if (!installedPackage) return
@@ -146,10 +155,11 @@ const make = Effect.gen(function* () {
   }
 
   const release = Effect.fnUntraced(function* () {
+    if (!origin) return yield* Effect.fail(new Error(unpublishedMessage))
     const response = yield* Effect.tryPromise({
       try: (signal) =>
         fetch(
-          `https://opencode.ai/update/api/${encodeURIComponent(channel)}/${encodeURIComponent(OPENCODE_ARTIFACT)}/npm?current=${encodeURIComponent(OPENCODE_VERSION)}`,
+          `${origin}/update/api/${encodeURIComponent(channel)}/${encodeURIComponent(OPENCODE_ARTIFACT)}/npm?current=${encodeURIComponent(OPENCODE_VERSION)}`,
           {
             signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)]),
           },
@@ -207,10 +217,7 @@ const make = Effect.gen(function* () {
           yield* fs.makeDirectory(global.cache, { recursive: true })
           const directory = yield* temporaryDirectory("update-")
           const installer = path.join(directory, "install")
-          const download = yield* exec(
-            ["curl", "-fsSL", "-o", installer, "https://opencode.ai/v2/install"],
-            "5 minutes",
-          )
+          const download = yield* exec(["curl", "-fsSL", "-o", installer, `${origin}/v2/install`], "5 minutes")
           if (download.code !== 0) return download
           return yield* exec(["bash", installer, "--version", version, "--no-modify-path"], "5 minutes")
         }
@@ -230,6 +237,10 @@ const make = Effect.gen(function* () {
       })
       return undefined
     }
+    if (!origin) {
+      yield* Effect.logInfo("update check skipped", { reason: "no-release-channel", version: OPENCODE_VERSION })
+      return undefined
+    }
     const policy = yield* readPolicy()
     if (policy === "disable") {
       yield* Effect.logInfo("update check skipped", { reason: "policy-disabled" })
@@ -247,7 +258,7 @@ const make = Effect.gen(function* () {
       yield* Effect.logInfo("update check done", { action: "up-to-date" })
       return undefined
     }
-    yield* Effect.logInfo("OpenCode update available", { current, latest: version, action: next })
+    yield* Effect.logInfo(`${Brand.name} update available`, { current, latest: version, action: next })
     return { policy, version }
   })
 
@@ -260,7 +271,7 @@ const make = Effect.gen(function* () {
     const current = yield* Ref.get(installedVersion)
     yield* upgrade(detected, version)
     yield* Ref.set(installedVersion, version)
-    yield* Effect.logInfo("updated OpenCode", { from: current, to: version, method: detected })
+    yield* Effect.logInfo(`updated ${Brand.name}`, { from: current, to: version, method: detected })
     return true
   })
 
@@ -272,8 +283,9 @@ const make = Effect.gen(function* () {
     if (OPENCODE_LOCAL)
       return {
         type: "unavailable" as const,
-        message: "This build runs from a source checkout. Use an installed OpenCode release to check for updates.",
+        message: `This build runs from a source checkout. Use an installed ${Brand.name} release to check for updates.`,
       }
+    if (!origin) return { type: "unavailable" as const, message: unpublishedMessage }
     const version = yield* latest()
     if (!parseReleaseVersion(version)) return yield* Effect.fail(new Error(`Invalid version: ${version}`))
     const current = yield* Ref.get(installedVersion)
@@ -300,7 +312,10 @@ const make = Effect.gen(function* () {
   return Service.of({ run, check, apply, method, latest, upgrade, removal })
 })
 
-export const layer = Layer.effect(Service, make)
+export const layer = Layer.effect(Service, make(releaseOrigin))
+
+/** Runs the upstream update paths against an explicit release origin. */
+export const layerWithOrigin = (origin: string) => Layer.effect(Service, make(origin))
 
 export * as Updater from "./updater"
 export { action, type Action, type Policy } from "./updater-action"

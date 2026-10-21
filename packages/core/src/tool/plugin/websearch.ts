@@ -1,5 +1,6 @@
 export * as WebSearchTool from "./websearch.js"
 
+import { Brand } from "@opencode/util/brand"
 import type { Context } from "@opencode/plugin/effect/plugin"
 import type { SessionHooks } from "@opencode/plugin/effect/session"
 import { ToolFailure } from "@opencode/ai"
@@ -79,7 +80,7 @@ export const Plugin = {
                           fields: [
                             {
                               key: "choice",
-                              description: "Allow OpenCode to search the web for up-to-date information?",
+                              description: `Allow ${Brand.name} to search the web for up-to-date information?`,
                               type: "string",
                               required: true,
                               custom: false,

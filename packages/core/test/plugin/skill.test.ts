@@ -37,19 +37,19 @@ describe("SkillPlugin.Plugin", () => {
 
       expect(skills).toContainEqual(
         expect.objectContaining({
-          id: "opencode",
-          name: "OpenCode",
-          description: expect.stringContaining("any question about OpenCode itself"),
+          id: "ucode",
+          name: "U Code",
+          description: expect.stringContaining("any question about U Code itself"),
         }),
       )
       expect(skills).toContainEqual(
         expect.objectContaining({
           id: "report",
           name: "Report",
-          description: expect.stringContaining("opencode issue"),
+          description: expect.stringContaining("U Code issue"),
         }),
       )
-      expect(report?.content).toContain("- opencode version: 1.2.3")
+      expect(report?.content).toContain("- U Code version: 1.2.3")
       expect(report?.content).toContain("- install/channel: beta")
     }),
   )
@@ -70,12 +70,7 @@ describe("SkillPlugin.Plugin", () => {
       expect(report?.content).toContain("- Active plugins: -disabled, local.ts, package-plugin, package-plugin")
     }).pipe(
       Effect.provide(
-        config([
-          "package-plugin",
-          "-disabled",
-          "local.ts",
-          { package: "package-plugin", options: { enabled: true } },
-        ]),
+        config(["package-plugin", "-disabled", "local.ts", { package: "package-plugin", options: { enabled: true } }]),
       ),
     ),
   )

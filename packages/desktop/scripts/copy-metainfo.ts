@@ -1,11 +1,13 @@
+import { Brand } from "@opencode/util/brand"
 import { resolveChannel } from "./utils"
 
 const arg = process.argv[2]
 const channel = arg === "dev" || arg === "beta" || arg === "prod" ? arg : resolveChannel()
 
-const appId = channel === "prod" ? "ai.opencode.desktop" : `ai.opencode.desktop.${channel}`
-const productName = channel === "prod" ? "OpenCode" : `OpenCode ${channel.charAt(0).toUpperCase() + channel.slice(1)}`
-const summary = `Open source AI coding agent${channel !== "prod" ? ` (${channel})` : ""}`
+const appId = channel === "prod" ? "xyz.orionx.ucode.desktop" : `xyz.orionx.ucode.desktop.${channel}`
+const productName =
+  channel === "prod" ? Brand.name : `${Brand.name} ${channel.charAt(0).toUpperCase() + channel.slice(1)}`
+const summary = `${Brand.tagline.replace(/\.$/, "")}${channel !== "prod" ? ` (${channel})` : ""}`
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
@@ -17,13 +19,13 @@ const xml = `<?xml version="1.0" encoding="UTF-8"?>
   <name>${productName}</name>
   <summary>${summary}</summary>
 
-  <developer id="ly.anoma">
-    <name>Anomaly Innovations Inc.</name>
+  <developer id="xyz.orionx">
+    <name>${Brand.maker}</name>
   </developer>
 
   <description>
     <p>
-      OpenCode is an open source agent that helps you write and run code with any AI model.
+      ${Brand.name} is the ${Brand.company} coding agent. It helps you write and run code, built by ${Brand.maker}.
     </p>
   </description>
 
@@ -31,15 +33,9 @@ const xml = `<?xml version="1.0" encoding="UTF-8"?>
 
   <content_rating type="oars-1.1" />
 
-  <url type="bugtracker">https://github.com/anomalyco/opencode/issues</url>
-  <url type="homepage">https://opencode.ai</url>
-  <url type="vcs-browser">https://github.com/anomalyco/opencode</url>
-
-  <screenshots>
-    <screenshot type="default">
-      <image>https://raw.githubusercontent.com/anomalyco/opencode/b75d4d1c5ec449585d515c756fc81f080a157a9a/packages/web/src/assets/lander/screenshot.png</image>
-    </screenshot>
-  </screenshots>
+  <url type="bugtracker">${Brand.repository}/issues</url>
+  <url type="homepage">${Brand.home}</url>
+  <url type="vcs-browser">${Brand.repository}</url>
 </component>
 `
 

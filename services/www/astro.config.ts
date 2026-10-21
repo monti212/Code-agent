@@ -4,10 +4,10 @@ import { unified } from "@astrojs/markdown-remark"
 import { defineConfig } from "astro/config"
 import remarkDocsLinks from "./src/docs/remark-links"
 
-const base = "/v2/"
+const base = "/"
 
 export default defineConfig({
-  site: process.env.CLOUDFLARE_ENV === "production" ? "https://opencode.ai" : "https://dev.opencode.ai",
+  site: process.env.CLOUDFLARE_ENV === "production" ? "https://code.uhuruai.co" : "https://dev.code.uhuruai.co",
   base,
   output: "server",
   adapter: cloudflare({ imageService: "passthrough" }),

@@ -51,11 +51,11 @@ export function Logo() {
 
   return (
     <box>
-      {dimensions().height < 12 ? null : dimensions().width < 22 ? (
+      {dimensions().height < 12 ? null : dimensions().width < 20 ? (
         <For each={go.right.slice(1)}>
           {(line) => <box flexDirection="row">{renderLine(line, theme.text.default, true)}</box>}
         </For>
-      ) : dimensions().width < 44 ? (
+      ) : dimensions().width < 29 ? (
         <>
           <For each={logo.left.slice(1)}>
             {(line) => <box flexDirection="row">{renderLine(line, theme.text.subdued, false)}</box>}

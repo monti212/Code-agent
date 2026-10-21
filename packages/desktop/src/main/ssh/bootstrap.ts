@@ -2,13 +2,14 @@ import { Effect, Schema } from "effect"
 import { HttpClient } from "effect/unstable/http"
 import { parseTarget, quote, runSsh, sshArgs, SshFailure } from "./command"
 import { RemoteCli } from "../remote/cli"
+import { Brand } from "@opencode/util/brand"
 
 // Use commands supported by released V2 CLIs. The registration is the service's
 // complete private discovery contract; no remote Python/Node runtime is needed.
 const registrationScript = `status=$("$cli" service status) || exit 0
 if [ "$status" = stopped ]; then exit 0; fi
 printf 'OPENCODE_SSH_STATUS=%s\\n' "$status"
-for file in "\${XDG_STATE_HOME:-$HOME/.local/state}"/opencode/service*.json; do
+for file in "\${XDG_STATE_HOME:-$HOME/.local/state}"/${Brand.app}/service*.json; do
   if [ ! -f "$file" ]; then continue; fi
   printf 'OPENCODE_SSH_REGISTRATION_BEGIN\\n'
   cat "$file"
@@ -17,7 +18,7 @@ done
 `
 
 export const discoverScript = `set -eu
-${RemoteCli.discoverScript({ fromPath: true, cache: { directory: ".opencode/desktop-ssh", prefix: "0.0.0-beta-" } })}
+${RemoteCli.discoverScript({ fromPath: true, cache: { directory: `.${Brand.app}/desktop-ssh`, prefix: "0.0.0-beta-" } })}
 if [ -z "$cli" ]; then exit 0; fi
 ${registrationScript}`
 
@@ -53,7 +54,7 @@ export function parseRegistration(output: string) {
 }
 
 export function binaryPath(version: string) {
-  return `$HOME/.opencode/desktop-ssh/${RemoteCli.requireVersion(version)}/opencode`
+  return `$HOME/.${Brand.app}/desktop-ssh/${RemoteCli.requireVersion(version)}/${Brand.command}`
 }
 
 function connectionAddress(address: string, password: string) {
@@ -98,7 +99,7 @@ export const bootstrap = Effect.fn("Ssh.bootstrap")(function* (input: {
   // while retaining support for explicitly staged, matching development builds.
   const version =
     input.development && !staged ? yield* RemoteCli.latestBeta().pipe(Effect.mapError(SshFailure.from)) : input.version
-  const setup = { version, directory: `.opencode/desktop-ssh/${version}` }
+  const setup = { version, directory: `.${Brand.app}/desktop-ssh/${version}` }
   if (!staged) {
     const output = yield* run(RemoteCli.probeScript).pipe(Effect.mapError(() => new SshFailure("platform")))
     const target = output

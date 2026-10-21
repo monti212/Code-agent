@@ -4,6 +4,10 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 
 const CLI_VERSION = "dev"
+// U Code publishes no CLI packages yet; upstream's `@opencode/cli-*` packages on npm are opencode.
+// Builds bundle a locally built CLI (OPENCODE_CLI_DIST) until this names a U Code package registry.
+const CLI_REGISTRY: string | undefined = undefined
+const CLI_BINARY = "ucode"
 
 export type Channel = "dev" | "beta" | "prod"
 
@@ -70,13 +74,17 @@ export function getCurrentCli(target = CLI_TARGET ?? nativeTarget()) {
   return binaryConfig
 }
 
-export async function downloadCliToResources(version = CLI_VERSION, dest = windowsify("resources/opencode-cli")) {
+export async function downloadCliToResources(version = CLI_VERSION, dest = windowsify("resources/ucode-cli")) {
+  if (!CLI_REGISTRY)
+    throw new Error(
+      "U Code CLI packages are not published yet. Build the CLI with `bun run --cwd packages/cli build --single` and set OPENCODE_CLI_DIST to its dist directory.",
+    )
   const cli = getCurrentCli()
-  const directory = await mkdtemp(join(tmpdir(), "opencode-cli-"))
+  const directory = await mkdtemp(join(tmpdir(), "ucode-cli-"))
   try {
-    await $`bun install --no-save --cwd ${directory} ${`${cli.package}@${version}`} ${`--os=${cli.os}`} ${`--cpu=${cli.cpu}`}`
+    await $`bun install --no-save --registry ${CLI_REGISTRY} --cwd ${directory} ${`${cli.package}@${version}`} ${`--os=${cli.os}`} ${`--cpu=${cli.cpu}`}`
     await copyCliToResources(
-      join(directory, "node_modules", cli.package, "bin", cli.os === "win32" ? "opencode.exe" : "opencode"),
+      join(directory, "node_modules", cli.package, "bin", cli.os === "win32" ? `${CLI_BINARY}.exe` : CLI_BINARY),
       dest,
     )
   } finally {
@@ -86,10 +94,10 @@ export async function downloadCliToResources(version = CLI_VERSION, dest = windo
   console.log(`Copied ${cli.package}@${version} to ${dest}`)
 }
 
-export async function copyBuiltCliToResources(root: string, dest = windowsify("resources/opencode-cli")) {
+export async function copyBuiltCliToResources(root: string, dest = windowsify("resources/ucode-cli")) {
   const cli = getCurrentCli()
   const directory = cli.package.replace("@opencode/", "")
-  await copyCliToResources(join(root, directory, "bin", cli.os === "win32" ? "opencode.exe" : "opencode"), dest)
+  await copyCliToResources(join(root, directory, "bin", cli.os === "win32" ? `${CLI_BINARY}.exe` : CLI_BINARY), dest)
 }
 
 async function copyCliToResources(source: string, dest: string) {

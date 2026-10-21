@@ -5,6 +5,7 @@ import { defineConfig, type Plugin, type UserConfig } from "vite"
 import solid from "vite-plugin-solid"
 import { nodeExecArgv, nodeTarget, type NodeTarget, photonWasmAsset, shellParserWasmAssets } from "./src/node/target"
 import { verifySimulationGraph } from "./script/verify-artifact"
+import { Brand } from "@opencode/util/brand"
 
 const dir = import.meta.dirname
 
@@ -266,7 +267,7 @@ export function mainConfig(input: NodeBuildInput): UserConfig {
     esbuild: { jsx: "automatic" },
     define: {
       OPENCODE_VERSION: JSON.stringify(input.version),
-      OPENCODE_CLI_NAME: JSON.stringify("opencode2-node"),
+      OPENCODE_CLI_NAME: JSON.stringify(`${Brand.command}-node`),
       OPENCODE_CHANNEL: JSON.stringify(input.channel),
       OPENCODE_ARTIFACT: JSON.stringify("cli-node"),
       OPENCODE_LIBC: input.target.platform === "linux" ? JSON.stringify("glibc") : "undefined",

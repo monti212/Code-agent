@@ -8,6 +8,7 @@ import { Commands } from "../commands"
 import { Runtime } from "../../framework/runtime"
 import { ServerConnection } from "../../services/server-connection"
 import { errorMessage } from "../../util/error"
+import { Brand } from "@opencode/util/brand"
 
 const handler = Effect.fn("cli.stats")(function* (input: Runtime.Input<typeof Commands.commands.stats>) {
   const days = Option.getOrUndefined(input.days)
@@ -111,7 +112,7 @@ export function renderStats(stats: SessionStatsInfo, options: RenderOptions) {
       : `${style(formatPercent(toolRate), primary, options.color)} tool success`
   const details = options.models || options.tools || options.cost
   const empty = stats.sessions === 0 && stats.prompts === 0 && stats.steps === 0
-  const heading = `${style("opencode stats", primary, options.color)} ${style(`· ${options.label} · ${options.scope}`, "2", options.color)}`
+  const heading = `${style(`${Brand.command} stats`, primary, options.color)} ${style(`· ${options.label} · ${options.scope}`, "2", options.color)}`
   const lines = details
     ? [style(`${options.label} · ${options.scope}`, "2", options.color)]
     : empty
@@ -120,7 +121,7 @@ export function renderStats(stats: SessionStatsInfo, options: RenderOptions) {
           "",
           style("no activity in this range", "2", options.color),
           "",
-          style("opencode.ai", "2", options.color),
+          style(new URL(Brand.home).host, "2", options.color),
         ]
       : [
           heading,
@@ -131,7 +132,7 @@ export function renderStats(stats: SessionStatsInfo, options: RenderOptions) {
           `${metricCount(stats.prompts, "prompt", options.color)} · ${metricCount(stats.steps, "step", options.color)} · ${metricCount(totalTokens, "token", options.color)}`,
           `${toolSummary} · ${metricCount(stats.activeDays, "active day", options.color)} · best streak ${style(stats.streak.toString(), primary, options.color)} day${stats.streak === 1 ? "" : "s"}`,
           "",
-          style("opencode.ai", "2", options.color),
+          style(new URL(Brand.home).host, "2", options.color),
         ]
 
   if (options.cost) lines.push(...(lines.length > 0 ? [""] : []), ...renderCost(stats))

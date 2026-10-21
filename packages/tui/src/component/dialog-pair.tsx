@@ -2,6 +2,7 @@ import { TextAttributes } from "@opentui/core"
 import { useTerminalDimensions } from "@opentui/solid"
 import { createMemo, createResource, createSignal, For, Show } from "solid-js"
 import { renderUnicodeCompact } from "uqr"
+import { Brand } from "@opencode/util/brand"
 import { useClient } from "../context/client"
 import { useTheme } from "../context/theme"
 import { useDialog } from "../ui/dialog"
@@ -98,7 +99,7 @@ export function DialogPair(props: { credentials?: DialogPairCredentials }) {
           </box>
           <Show when={value.urls.some((url) => ["localhost", "127.0.0.1", "[::1]"].includes(new URL(url).hostname))}>
             <text fg={theme.text.subdued} wrapMode="word">
-              Run `opencode service set hostname 0.0.0.0` to access the service remotely.
+              Run `{Brand.command} service set hostname 0.0.0.0` to access the service remotely.
             </text>
           </Show>
         </box>

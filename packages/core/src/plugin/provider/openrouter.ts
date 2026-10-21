@@ -1,3 +1,4 @@
+import { Brand } from "@opencode/util/brand"
 import { Effect } from "effect"
 import { Model } from "../../model.js"
 import { define } from "@opencode/plugin/effect/plugin"
@@ -9,7 +10,7 @@ export const OpenRouterPlugin = define({
       for (const item of evt.list()) {
         if (item.provider.package !== "@opencode/ai/providers/openrouter") continue
         evt.update(item.provider.id, (provider) => {
-          provider.headers = { ...provider.headers, "HTTP-Referer": "https://opencode.ai/", "X-Title": "opencode" }
+          provider.headers = { ...provider.headers, "HTTP-Referer": `${Brand.home}/`, "X-Title": Brand.name }
         })
       }
     })

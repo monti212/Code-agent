@@ -5,12 +5,9 @@ import config from "virtual:starlight/user-config";
 
 import CopyIcon from "../assets/lander/copy.svg";
 import CheckIcon from "../assets/lander/check.svg";
-import TuiScreenshot from "../assets/lander/screenshot-splash.png";
-import VscodeScreenshot from "../assets/lander/screenshot-vscode.png";
-import GithubScreenshot from "../assets/lander/screenshot-github.png";
 
 const { data } = Astro.locals.starlightRoute.entry;
-const { title = data.title, tagline, image, actions = [] } = data.hero || {};
+const { image } = data.hero || {};
 
 const imageAttrs = {
     loading: 'eager' as const,
@@ -20,31 +17,24 @@ const imageAttrs = {
 };
 
 const github = (config.social || []).filter(s => s.icon === 'github')[0];
-const discord = (config.social || []).filter(s => s.icon === 'discord')[0];
 const locale = Astro.currentLocale || 'root';
 const t = Astro.locals.t as (key: string) => string;
 const docsHref = getRelativeLocaleUrl(locale, "")
-const docsCliHref = getRelativeLocaleUrl(locale, "cli")
-const docsIdeHref = getRelativeLocaleUrl(locale, "ide")
-const docsGithubHref = getRelativeLocaleUrl(locale, "github")
 
-const command = "curl -fsSL"
+// U Code has no published installer yet: it installs from source.
+const command = "git clone"
 const protocol = "https://"
-const url = "opencode.ai/install"
-const bash = "| bash"
+const url = "github.com/monti212/Code-agent"
 
 let darkImage: ImageMetadata | undefined;
 let lightImage: ImageMetadata | undefined;
-let rawHtml: string | undefined;
 if (image) {
     if ('file' in image) {
         darkImage = image.file;
     } else if ('dark' in image) {
         darkImage = image.dark;
         lightImage = image.light;
-    } else {
-        rawHtml = image.html;
-  }
+    }
 }
 ---
 <div class="hero">
@@ -67,9 +57,9 @@ if (image) {
         <a href={docsHref}>{t('app.lander.cta.getStarted')}</a>
       </div>
       <div class="col2">
-      <button class="command" data-command={`${command} ${protocol}${url} ${bash}`}>
+      <button class="command" data-command={`${command} ${protocol}${url}`}>
           <code>
-            <span>{command}&nbsp;</span><span class="protocol">{protocol}</span><span class="highlight">{url}</span>&nbsp;{bash}
+            <span>{command}&nbsp;</span><span class="protocol">{protocol}</span><span class="highlight">{url}</span>
           </code>
           <span class="copy">
             <CopyIcon />
@@ -81,22 +71,20 @@ if (image) {
 
     <section class="content">
       <ul>
+        <li><b>{t('app.lander.features.uhuru.title')}</b>: {t('app.lander.features.uhuru.description')}</li>
         <li><b>{t('app.lander.features.native_tui.title')}</b>: {t('app.lander.features.native_tui.description')}</li>
         <li><b>{t('app.lander.features.lsp_enabled.title')}</b>: {t('app.lander.features.lsp_enabled.description')}</li>
         <li><b>{t('app.lander.features.multi_session.title')}</b>: {t('app.lander.features.multi_session.description')}</li>
-        <li><b>{t('app.lander.features.shareable_links.title')}</b>: {t('app.lander.features.shareable_links.description')}</li>
-        <li><b>GitHub Copilot</b>: {t('app.lander.features.github_copilot.description')}</li>
-        <li><b>ChatGPT Plus/Pro</b>: {t('app.lander.features.chatgpt_plus_pro.description')}</li>
         <li><b>{t('app.lander.features.use_any_model.title')}</b>: {t('app.lander.features.use_any_model.prefix')} <a href="https://models.dev">Models.dev</a>, {t('app.lander.features.use_any_model.suffix')}</li>
       </ul>
     </section>
 
     <section class="alternatives">
       <div class="col1">
-        <h3>npm</h3>
-        <button class="command" data-command="npm install -g opencode-ai">
+        <h3>1</h3>
+        <button class="command" data-command="cd Code-agent">
           <code>
-            <span>npm install -g</span> <span class="highlight">opencode-ai</span>
+            <span>cd</span> <span class="highlight">Code-agent</span>
           </code>
           <span class="copy">
             <CopyIcon />
@@ -105,10 +93,10 @@ if (image) {
         </button>
       </div>
       <div class="col2">
-        <h3>Bun</h3>
-        <button class="command" data-command="bun install -g opencode-ai">
+        <h3>2</h3>
+        <button class="command" data-command="bun install">
           <code>
-            <span>bun install -g</span> <span class="highlight">opencode-ai</span>
+            <span>bun</span> <span class="highlight">install</span>
           </code>
           <span class="copy">
             <CopyIcon />
@@ -117,69 +105,16 @@ if (image) {
         </button>
       </div>
       <div class="col3">
-        <h3>Homebrew</h3>
-        <button class="command" data-command="brew install opencode">
+        <h3>3</h3>
+        <button class="command" data-command="bun run dev">
           <code>
-            <span>brew install</span> <span class="highlight">opencode</span>
+            <span>bun run</span> <span class="highlight">dev</span>
           </code>
           <span class="copy">
             <CopyIcon />
             <CheckIcon />
           </span>
         </button>
-      </div>
-      <div class="col4">
-        <h3>Paru</h3>
-        <button class="command" data-command="paru -S opencode-bin">
-          <code>
-            <span>paru -S</span> <span class="highlight">opencode-bin</span>
-          </code>
-          <span class="copy">
-            <CopyIcon />
-            <CheckIcon />
-          </span>
-        </button>
-      </div>
-      <div class="col4">
-        <h3>Mise</h3>
-        <button class="command" data-command="mise use -g github:anomalyco/opencode">
-          <code>
-            <span>mise use -g</span> <span class="highlight">github:anomalyco/opencode</span>
-          </code>
-          <span class="copy">
-            <CopyIcon />
-            <CheckIcon />
-          </span>
-        </button>
-      </div>
-    </section>
-
-    <section class="images">
-      <div class="left">
-        <figure>
-          <figcaption>{t('app.lander.images.tui.caption')}</figcaption>
-          <a href={docsCliHref}>
-            <Image src={TuiScreenshot} alt={t('app.lander.images.tui.alt')} />
-          </a>
-        </figure>
-      </div>
-      <div class="right">
-        <div class="row1">
-          <figure>
-            <figcaption>{t('app.lander.images.vscode.caption')}</figcaption>
-            <a href={docsIdeHref}>
-              <Image src={VscodeScreenshot} alt={t('app.lander.images.vscode.alt')} />
-            </a>
-          </figure>
-        </div>
-        <div class="row2">
-          <figure>
-            <figcaption>{t('app.lander.images.github.caption')}</figcaption>
-            <a href={docsGithubHref}>
-              <Image src={GithubScreenshot} alt={t('app.lander.images.github.alt')} />
-            </a>
-          </figure>
-        </div>
       </div>
     </section>
 
@@ -188,10 +123,10 @@ if (image) {
         <a href={github.href} target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
       <div class="col2">
-        <a href={discord.href} target="_blank" rel="noopener noreferrer">Discord</a>
+        <a href="https://uhuruai.co" target="_blank" rel="noopener noreferrer">Uhuru AI</a>
       </div>
       <div class="col3">
-      <span>&copy;2025 <a href="https://anoma.ly" target="_blank" rel="noopener noreferrer">Anomaly Innovations</a></span>
+      <span>&copy;2026 <a href="https://uhuruai.co" target="_blank" rel="noopener noreferrer">Uhuru AI</a> by OrionX</span>
       </div>
     </section>
 </div>
@@ -351,149 +286,6 @@ section.content {
 
     li b {
       text-transform: uppercase;
-    }
-  }
-}
-
-section.images {
-  --images-height: 600px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: var(--images-height);
-  border-top: 2px solid var(--sl-color-border);
-
-  & > div.left {
-    display: flex;
-    grid-row: 1;
-    grid-column: 1;
-  }
-
-  & > div.right {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-row: 1;
-    grid-column: 2;
-    border-left: 2px solid var(--sl-color-border);
-
-    & > div.row1 {
-      display: flex;
-      grid-row: 1;
-      border-bottom: 2px solid var(--sl-color-border);
-      height: calc(var(--images-height) / 2);
-    }
-
-    & > div.row2 {
-      display: flex;
-      grid-row: 2;
-      height: calc(var(--images-height) / 2);
-    }
-  }
-
-  figure {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: calc(var(--padding) / 4);
-    padding: calc(var(--padding) / 2);
-    border-width: 0;
-    border-style: solid;
-    border-color: var(--sl-color-border);
-    min-height: 0;
-    overflow: hidden;
-
-    & > div, figcaption {
-      display: flex;
-      align-items: center;
-    }
-
-    & > div {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    a {
-      display: flex;
-      flex: 1;
-      min-height: 0;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-    }
-
-    figcaption {
-      letter-spacing: -0.03125rem;
-      text-transform: uppercase;
-      color: var(--sl-color-text-dimmed);
-      flex-shrink: 0;
-
-      @media (max-width: 30rem) {
-        font-size: 0.75rem;
-      }
-    }
-  }
-
-  & > div.left figure {
-    height: var(--images-height);
-    box-sizing: border-box;
-  }
-
-  & > div.right figure {
-    height: calc(var(--images-height) / 2);
-    box-sizing: border-box;
-  }
-
-  & > div.left img {
-    width: 100%;
-    height: 100%;
-    min-width: 0;
-    object-fit: contain;
-  }
-
-  & > div.right img {
-    width: 100%;
-    height: calc(100% - 2rem);
-    object-fit: contain;
-    display: block;
-  }
-
-  @media (max-width: 30rem) {
-    & {
-      --images-height: auto;
-      grid-template-columns: 1fr;
-      grid-template-rows: auto auto;
-    }
-
-    & > div.left {
-      grid-row: 1;
-      grid-column: 1;
-    }
-
-    & > div.right {
-      grid-row: 2;
-      grid-column: 1;
-      border-left: none;
-      border-top: 2px solid var(--sl-color-border);
-
-      & > div.row1,
-      & > div.row2 {
-        height: auto;
-      }
-    }
-
-    & > div.left figure,
-    & > div.right figure {
-      height: auto;
-    }
-
-    & > div.left img,
-    & > div.right img {
-      width: 100%;
-      height: auto;
-      max-height: none;
     }
   }
 }
