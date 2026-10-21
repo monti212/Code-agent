@@ -24,7 +24,7 @@ function listThemes(): Record<string, ThemeDocumentSource> {
   }
   return {
     ...themes,
-    system: systemTheme ?? themes.system ?? themes.opencode,
+    system: systemTheme ?? themes.system ?? themes.ucode,
   }
 }
 

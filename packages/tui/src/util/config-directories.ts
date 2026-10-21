@@ -1,15 +1,18 @@
 import path from "node:path"
 import { stat } from "node:fs/promises"
 
+// Lowest priority first: a U Code `.ucode/` overrides an upstream-named `.opencode/` in the same directory.
+const projectDirectoryNames = [".opencode", ".ucode"]
+
 export function configDirectories(config: string, cwd: string) {
-  return [...new Set([config, ...ancestors(cwd).map((directory) => path.join(directory, ".opencode"))])]
+  return [...new Set([config, ...ancestors(cwd).flatMap(projectDirectories)])]
 }
 
 export function projectConfigDirectories(project: string, cwd: string) {
   const directories = ancestors(cwd)
   return directories
     .slice(directories.indexOf(path.resolve(project)))
-    .map((directory) => path.join(directory, ".opencode"))
+    .flatMap(projectDirectories)
 }
 
 export async function localProjectDirectory(cwd: string) {
@@ -33,6 +36,10 @@ export function isMissingPath(error: unknown) {
   if (!error || typeof error !== "object") return false
   const code = "code" in error ? error.code : undefined
   return code === "ENOENT" || code === "ENOTDIR"
+}
+
+function projectDirectories(directory: string) {
+  return projectDirectoryNames.map((name) => path.join(directory, name))
 }
 
 function ancestors(cwd: string) {

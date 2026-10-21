@@ -192,10 +192,7 @@ export function sortModelOptions<
   },
 >(options: T[], grouped = true) {
   return options.toSorted((a, b) => {
-    const provider = grouped
-      ? Number(b.providerID === "opencode-go") - Number(a.providerID === "opencode-go") ||
-        Number(b.providerID === "opencode") - Number(a.providerID === "opencode")
-      : 0
+    const provider = grouped ? Number(b.providerID === "uhuru") - Number(a.providerID === "uhuru") : 0
     if (provider !== 0) return provider
 
     const name = grouped ? (a.providerName ?? "").localeCompare(b.providerName ?? "") : 0
@@ -211,6 +208,7 @@ export function sortModelOptions<
   })
 }
 
-function free(model: { cost: Array<{ input: number }> }) {
-  return model.cost.length > 0 && model.cost.every((cost) => cost.input === 0)
+// Uhuru models report zero per-token cost because usage is billed by plan, not per token.
+function free(model: { providerID: string; cost: Array<{ input: number }> }) {
+  return model.providerID !== "uhuru" && model.cost.length > 0 && model.cost.every((cost) => cost.input === 0)
 }

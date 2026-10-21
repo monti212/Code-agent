@@ -38,28 +38,28 @@ describe("sortModelOptions", () => {
     ])
   })
 
-  test("orders OpenCode Go before Zen and other providers", () => {
+  test("orders Uhuru before other providers and the rest by provider name", () => {
     const sorted = sortModelOptions([
       { providerID: "openai", providerName: "OpenAI", releaseDate: 3, title: "GPT 5" },
       { providerID: "opencode", providerName: "OpenCode Zen", releaseDate: 1, title: "Claude Sonnet 4" },
       { providerID: "anthropic", providerName: "Anthropic", releaseDate: 2, title: "Claude Opus 4" },
-      { providerID: "opencode-go", providerName: "OpenCode Go", releaseDate: 0, title: "Kimi K3" },
+      { providerID: "uhuru", providerName: "Uhuru", releaseDate: 0, title: "Uhuru 4.5" },
     ])
 
-    expect(sorted.map((model) => model.title)).toEqual(["Kimi K3", "Claude Sonnet 4", "Claude Opus 4", "GPT 5"])
+    expect(sorted.map((model) => model.title)).toEqual(["Uhuru 4.5", "Claude Opus 4", "GPT 5", "Claude Sonnet 4"])
   })
 
-  test("keeps ungrouped results free-first regardless of OpenCode provider", () => {
+  test("keeps ungrouped results free-first regardless of the Uhuru provider", () => {
     const sorted = sortModelOptions(
       [
-        { providerID: "opencode-go", releaseDate: 3, title: "Go model" },
+        { providerID: "uhuru", releaseDate: 3, title: "Uhuru model" },
         { providerID: "opencode", releaseDate: 1, title: "Free Zen model", footer: "Free" },
         { providerID: "anthropic", releaseDate: 4, title: "Anthropic model" },
       ],
       false,
     )
 
-    expect(sorted.map((model) => model.title)).toEqual(["Free Zen model", "Anthropic model", "Go model"])
+    expect(sorted.map((model) => model.title)).toEqual(["Free Zen model", "Anthropic model", "Uhuru model"])
   })
 
   test("orders provider groups by provider name and models by newest release", () => {

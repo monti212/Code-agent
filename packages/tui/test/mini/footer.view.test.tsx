@@ -2240,7 +2240,8 @@ test("direct model panel keeps native V2 light search and options readable on a 
         .every((box) => box.backgroundColor.a === 0),
     ).toBe(true)
     expect(list.backgroundColor.a).toBe(0)
-    expect((list.getChildren()[2] as BoxRenderable).backgroundColor.toInts()).toEqual(
+    // Uhuru sorts first, then providers by name, so the current opencode row follows the OpenAI group.
+    expect((list.getChildren()[5] as BoxRenderable).backgroundColor.toInts()).toEqual(
       (theme.footer.actionFocusedBg as RGBA).toInts(),
     )
 

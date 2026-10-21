@@ -1,4 +1,5 @@
 import { TextAttributes } from "@opentui/core"
+import { Brand } from "@opencode/util/brand"
 import { createEffect, createMemo, createResource, createSignal, For, Match, onCleanup, Show, Switch } from "solid-js"
 import { Keymap } from "../context/keymap"
 import { useTheme } from "../context/theme"
@@ -104,12 +105,12 @@ export function DialogUpdate(props: {
               </Match>
               <Match when={current.type === "available"}>
                 <text fg={theme.text.subdued}>
-                  An update is available. After installing, you'll be prompted to restart OpenCode.
+                  An update is available. After installing, you'll be prompted to restart {Brand.name}.
                 </text>
               </Match>
               <Match when={current.type === "installing"}>
                 <Spinner shimmer={theme.text.default}>
-                  {current.type === "installing" ? `Installing OpenCode ${current.version}…` : ""}
+                  {current.type === "installing" ? `Installing ${Brand.name} ${current.version}…` : ""}
                 </Spinner>
               </Match>
               <Match when={current.type === "installed"}>
@@ -118,7 +119,7 @@ export function DialogUpdate(props: {
                 </text>
               </Match>
               <Match when={current.type === "current"}>
-                <text fg={theme.text.subdued}>OpenCode is already up to date.</text>
+                <text fg={theme.text.subdued}>{Brand.name} is already up to date.</text>
               </Match>
               <Match when={current.type === "unavailable"}>
                 <text fg={theme.text.subdued} wrapMode="word">

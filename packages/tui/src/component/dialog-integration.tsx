@@ -27,12 +27,11 @@ import { useToast } from "../ui/toast"
 import { formLabel, formToggleMultiselect, formValidateValue, type FormAnswerField } from "../util/form"
 
 const INTEGRATION_PRIORITY: Record<string, number> = {
-  "opencode-go": 0,
-  opencode: 1,
-  openai: 2,
-  "github-copilot": 3,
-  anthropic: 4,
-  google: 5,
+  uhuru: 0,
+  openai: 1,
+  "github-copilot": 2,
+  anthropic: 3,
+  google: 4,
 }
 
 type ConnectMethod = Exclude<IntegrationInfo["methods"][number], { type: "env" }>
