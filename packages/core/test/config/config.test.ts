@@ -945,7 +945,16 @@ describe("Config", () => {
               {
                 type: "entries",
                 path: tmp.path,
-                names: [".agents", ".claude", ".opencode", "opencode.json", "opencode.jsonc"],
+                names: [
+                  ".agents",
+                  ".claude",
+                  ".opencode",
+                  ".ucode",
+                  "opencode.json",
+                  "opencode.jsonc",
+                  "ucode.json",
+                  "ucode.jsonc",
+                ],
               },
             ])
           }).pipe(Effect.provide(testLayer(tmp.path, undefined, undefined, undefined, Watcher.testLayer)))
@@ -993,6 +1002,27 @@ describe("Config", () => {
                 .filter((entry) => entry.type === "document")
                 .map((document) => document.info.$schema),
             ).toEqual(["base", "last"])
+          }).pipe(Effect.provide(testLayer(tmp.path)))
+        }),
+      ),
+    ),
+  )
+
+  it.live("loads U Code files after upstream-named files in the same directory", () =>
+    Effect.acquireDisposable(Effect.promise(() => tmpdir())).pipe(
+      Effect.flatMap((tmp) =>
+        Effect.gen(function* () {
+          yield* Effect.promise(() =>
+            Promise.all([
+              fs.writeFile(path.join(tmp.path, "opencode.json"), JSON.stringify({ $schema: "upstream" })),
+              fs.writeFile(path.join(tmp.path, "ucode.jsonc"), JSON.stringify({ $schema: "ucode" })),
+              fs.mkdir(path.join(tmp.path, ".ucode")),
+            ]),
+          )
+          return yield* Effect.gen(function* () {
+            const config = yield* Config.Service
+            const documents = (yield* config.entries()).filter((entry) => entry.type === "document")
+            expect(documents.map((document) => document.info.$schema)).toEqual(["upstream", "ucode"])
           }).pipe(Effect.provide(testLayer(tmp.path)))
         }),
       ),
@@ -1511,7 +1541,16 @@ describe("Config", () => {
             expect(yield* watcher.subscriptions()).toContainEqual({
               path: tmp.path,
               type: "entries",
-              names: [".agents", ".claude", ".opencode", "opencode.json", "opencode.jsonc"],
+              names: [
+                ".agents",
+                ".claude",
+                ".opencode",
+                ".ucode",
+                "opencode.json",
+                "opencode.jsonc",
+                "ucode.json",
+                "ucode.jsonc",
+              ],
             })
           }).pipe(Effect.provide(testLayer(tmp.path)))
         }),

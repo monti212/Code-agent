@@ -8,7 +8,10 @@ import { Location } from "../location.js"
 import { AbsolutePath } from "../schema.js"
 import type { Options } from "../config.js"
 
-export const names = ["opencode.json", "opencode.jsonc"]
+// Later names win, so a U Code file overrides an upstream-named one in the same directory.
+export const names = ["opencode.json", "opencode.jsonc", "ucode.json", "ucode.jsonc"]
+// Project directories, lowest priority first.
+export const projectDirectories = [".opencode", ".ucode"]
 
 /** Eligible sources in priority order, including paths that may appear later. */
 export interface Sources {
@@ -38,10 +41,12 @@ export const discover = Effect.fn("ConfigDiscovery.discover")(function* (options
     Effect.gen(function* () {
       // Resolve the parent too: missing children must honor symlinked global roots.
       const parent = yield* fs.resolve(directory)
-      return yield* Effect.forEach([".claude", ".agents", ".opencode", ...names.toReversed()], (name) =>
-        fs
-          .resolve(path.join(parent, name))
-          .pipe(Effect.map((resolved) => ({ item: AbsolutePath.make(path.join(directory, name)), resolved }))),
+      return yield* Effect.forEach(
+        [".claude", ".agents", ...projectDirectories.toReversed(), ...names.toReversed()],
+        (name) =>
+          fs
+            .resolve(path.join(parent, name))
+            .pipe(Effect.map((resolved) => ({ item: AbsolutePath.make(path.join(directory, name)), resolved }))),
       )
     }),
   ).pipe(
@@ -63,9 +68,11 @@ export const discover = Effect.fn("ConfigDiscovery.discover")(function* (options
   return {
     global: globalEnabled ? globalDirectory : undefined,
     explicit: options?.file ? AbsolutePath.make(path.resolve(options.file)) : undefined,
-    direct: visible.filter((item) => ![".agents", ".claude", ".opencode"].includes(path.basename(item))).toReversed(),
+    direct: visible
+      .filter((item) => ![".agents", ".claude", ...projectDirectories].includes(path.basename(item)))
+      .toReversed(),
     project: yield* Effect.forEach(
-      visible.filter((item) => path.basename(item) === ".opencode").toReversed(),
+      visible.filter((item) => projectDirectories.includes(path.basename(item))).toReversed(),
       (directory) => fs.isDir(directory).pipe(Effect.map((present) => ({ path: directory, present }))),
     ),
     claude: [

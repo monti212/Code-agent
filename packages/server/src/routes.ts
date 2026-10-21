@@ -1,3 +1,4 @@
+import { Brand } from "@opencode/util/brand"
 import { Database } from "@opencode/core/database/database"
 import { V1Migration } from "@opencode/core/database/v1-migration"
 import { App } from "@opencode/core/app"
@@ -131,7 +132,7 @@ function makeRoutes<AuthError, AuthServices>(
     Mcp.node.replace(
       Mcp.configured({
         clientInfo: {
-          name: options.app?.name ?? "opencode",
+          name: options.app?.name ?? Brand.command,
           version: options.app?.version ?? "unknown",
         },
       }),

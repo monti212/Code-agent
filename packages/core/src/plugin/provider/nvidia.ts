@@ -1,3 +1,4 @@
+import { Brand } from "@opencode/util/brand"
 import { Effect } from "effect"
 import { define } from "@opencode/plugin/effect/plugin"
 
@@ -11,8 +12,8 @@ export const NvidiaPlugin = define({
         evt.update(item.provider.id, (provider) => {
           provider.headers = {
             ...provider.headers,
-            "HTTP-Referer": "https://opencode.ai/",
-            "X-Title": "opencode",
+            "HTTP-Referer": `${Brand.home}/`,
+            "X-Title": Brand.name,
             "X-BILLING-INVOKE-ORIGIN": provider.headers?.["X-BILLING-INVOKE-ORIGIN"] ?? "OpenCode",
           }
         })
