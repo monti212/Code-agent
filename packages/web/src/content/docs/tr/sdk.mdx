@@ -1,13 +1,13 @@
 ---
 title: SDK
-description: opencode sunucusu için type-safe JS istemcisi.
+description: U Code sunucusu için type-safe JS istemcisi.
 ---
 
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-opencode JS/TS SDK, sunucu ile etkileşmek için type-safe bir istemci sağlar.
-opencode'u programatik olarak kontrol etmek ve entegrasyonlar oluşturmak için kullanabilirsiniz.
+U Code JS/TS SDK, sunucu ile etkileşmek için type-safe bir istemci sağlar.
+U Code'u programatik olarak kontrol etmek ve entegrasyonlar oluşturmak için kullanabilirsiniz.
 
 [Sunucu](/docs/server) sayfasında nasıl çalıştığını görebilir, örnekler için topluluğun oluşturduğu [projeler](/docs/ecosystem#projects) bölümüne bakabilirsiniz.
 
@@ -25,7 +25,7 @@ npm install @opencode-ai/sdk
 
 ## İstemci Oluşturma
 
-Bir opencode örneği oluşturun:
+Bir U Code örneği oluşturun:
 
 ```javascript
 import { createOpencode } from "@opencode-ai/sdk"
@@ -49,7 +49,7 @@ Bu, hem bir sunucu hem de bir istemci başlatır
 
 ## Yapılandırma
 
-Davranışı özelleştirmek için bir yapılandırma nesnesi iletebilirsiniz. Örnek yine de `opencode.json` dosyanızı alır, ancak yapılandırmayı satır içi olarak geçersiz kılabilir veya ekleyebilirsiniz:
+Davranışı özelleştirmek için bir yapılandırma nesnesi iletebilirsiniz. Örnek yine de `ucode.json` dosyanızı alır, ancak yapılandırmayı satır içi olarak geçersiz kılabilir veya ekleyebilirsiniz:
 
 ```javascript
 import { createOpencode } from "@opencode-ai/sdk"
@@ -69,7 +69,7 @@ opencode.server.close()
 
 ## Yalnızca istemci
 
-Halihazırda çalışan bir opencode örneğiniz varsa, ona bağlanmak için bir istemci örneği oluşturabilirsiniz:
+Halihazırda çalışan bir U Code örneğiniz varsa, ona bağlanmak için bir istemci örneği oluşturabilirsiniz:
 
 ```javascript
 import { createOpencodeClient } from "@opencode-ai/sdk"
@@ -373,7 +373,7 @@ await client.session.prompt({
 ```javascript
 // Search and read files
 const textResults = await client.find.text({
-  query: { pattern: "function.*opencode" },
+  query: { pattern: "function.*ucode" },
 })
 
 const files = await client.find.files({

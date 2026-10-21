@@ -37,7 +37,7 @@ Prefer guidance that is:
 
 ## Do Not Translate (Locale Additions)
 
-- `OpenCode` (preserve casing)
+- `U Code` (preserve casing and the space; never translate it)
 
 ## Preferred Terms
 

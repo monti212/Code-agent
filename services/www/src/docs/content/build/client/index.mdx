@@ -2,8 +2,8 @@
 title: "JavaScript"
 ---
 
-`@opencode/client` is the TypeScript client for the OpenCode HTTP
-API. Use it when your application connects to an OpenCode server over the
+`@opencode/client` is the TypeScript client for the U Code HTTP
+API. Use it when your application connects to a U Code server over the
 network. Its native types and methods are generated from the same contract as the
 [API reference](/api). Plugin RPC types come from imported RPC definitions.
 
@@ -46,7 +46,7 @@ subscriber-local cancellation and use the base client's headers.
 const client = OpenCode.make({
   baseUrl: "https://opencode.example.com",
   headers: {
-    authorization: `Bearer ${process.env.OPENCODE_TOKEN}`,
+    authorization: `Bearer ${process.env.UCODE_TOKEN}`,
   },
 })
 
@@ -81,7 +81,7 @@ Import a plugin's shared contract and pass it to `client.rpc`:
 
 ```ts
 import { OpenCode } from "@opencode/client"
-import { Acme } from "opencode-acme-plugin/rpc"
+import { Acme } from "ucode-acme-plugin/rpc"
 
 const acme = client.rpc(Acme)
 const result = await acme.search(
@@ -165,9 +165,9 @@ compatibility predicate:
 
 ```ts
 const endpoint = await Service.ensure({
-  file: "/var/run/opencode/service.json",
+  file: "/var/run/ucode/service.json",
   version: (version) => version.startsWith("2."),
-  command: ["opencode", "serve", "--service"],
+  command: ["ucode", "serve", "--service"],
   onStart(reason, previousVersion) {
     console.log(reason, previousVersion)
   },
@@ -175,4 +175,4 @@ const endpoint = await Service.ensure({
 ```
 
 Omit these options to use the standard registration path and
-`opencode serve --service` command.
+`ucode serve --service` command.

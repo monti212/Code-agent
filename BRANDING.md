@@ -95,8 +95,10 @@ infrastructure) and are not deployed by U Code. They are left untouched so merge
 `services/update`, `services/files`, `infra/`, `sst.config.ts`, `artifacts/`, `perf/`, `specs/`, and
 the upstream release workflows under `.github/`.
 
-`services/www` is the exception: it holds the current docs and is branded, served at
-`code.uhuruai.co/docs`. `packages/web` holds upstream's older V1 docs and landing page, also branded.
+`services/www` is the exception: it holds the current docs and is branded, built for
+`code.uhuruai.co/docs`. Its `wrangler.jsonc` deliberately still carries upstream's worker names and
+routes, which cannot deploy from this repository. Pointing it at `code.uhuruai.co/docs*` is a
+routing decision for the live U Code app on that host, so it is made on purpose, not by a merge. `packages/web` holds upstream's older V1 docs and landing page, also branded.
 
 ## Network endpoints that would leak the user to upstream
 

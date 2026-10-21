@@ -16,9 +16,9 @@ export function renderLlmsTxt(site: URL) {
   ])
 
   return [
-    "# OpenCode V2 Documentation",
+    "# U Code Documentation",
     "",
-    "> Official documentation for using, configuring, and building with OpenCode V2.",
+    "> Official documentation for using, configuring, and building with U Code, the Uhuru coding agent.",
     "",
     ...sections,
   ].join("\n")

@@ -1,129 +1,86 @@
 <p align="center">
-  <a href="https://opencode.ai">
-    <picture>
-      <source srcset="packages/console/app/src/asset/logo-ornate-dark.svg" media="(prefers-color-scheme: dark)">
-      <source srcset="packages/console/app/src/asset/logo-ornate-light.svg" media="(prefers-color-scheme: light)">
-      <img src="packages/console/app/src/asset/logo-ornate-light.svg" alt="OpenCode logo">
-    </picture>
+  <a href="https://code.uhuruai.co">
+    <img src="packages/web/src/assets/ucode-mark.svg" alt="U Code" width="96" height="96">
   </a>
 </p>
-<p align="center">The open source AI coding agent.</p>
-<p align="center">
-  <a href="https://opencode.ai/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
-  <a href="https://www.npmjs.com/package/opencode-ai"><img alt="npm" src="https://img.shields.io/npm/v/opencode-ai?style=flat-square" /></a>
-  <a href="https://github.com/anomalyco/opencode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/anomalyco/opencode/publish.yml?style=flat-square&branch=dev" /></a>
-</p>
-
-<p align="center">
-  <a href="README.md">English</a> |
-  <a href="README.zh.md">简体中文</a> |
-  <a href="README.zht.md">繁體中文</a> |
-  <a href="README.ko.md">한국어</a> |
-  <a href="README.de.md">Deutsch</a> |
-  <a href="README.es.md">Español</a> |
-  <a href="README.fr.md">Français</a> |
-  <a href="README.it.md">Italiano</a> |
-  <a href="README.da.md">Dansk</a> |
-  <a href="README.ja.md">日本語</a> |
-  <a href="README.pl.md">Polski</a> |
-  <a href="README.ru.md">Русский</a> |
-  <a href="README.bs.md">Bosanski</a> |
-  <a href="README.ar.md">العربية</a> |
-  <a href="README.no.md">Norsk</a> |
-  <a href="README.br.md">Português (Brasil)</a> |
-  <a href="README.th.md">ไทย</a> |
-  <a href="README.tr.md">Türkçe</a> |
-  <a href="README.uk.md">Українська</a> |
-  <a href="README.bn.md">বাংলা</a> |
-  <a href="README.gr.md">Ελληνικά</a> |
-  <a href="README.vi.md">Tiếng Việt</a>
-</p>
-
-[![OpenCode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://opencode.ai)
+<h1 align="center">U Code</h1>
+<p align="center">The Uhuru coding agent.</p>
 
 ---
 
-### Installation
+U Code is an AI coding agent from [Uhuru AI](https://uhuruai.co), built by OrionX in Gaborone, Botswana. It works in
+your terminal, in a desktop app, and in the browser: it reads your project, plans changes, edits files, runs commands
+with your permission, and explains what it did.
+
+U Code is built for Uhuru models and also works with any other LLM provider you connect.
+
+## Install from source
+
+U Code does not publish packages or installers yet. Install it from source with [Bun](https://bun.sh) 1.4.2 or newer:
 
 ```bash
-# YOLO
-curl -fsSL https://opencode.ai/install | bash
-
-# Package managers
-npm i -g opencode-ai@latest        # or bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS and Linux (recommended, always up to date)
-brew install opencode              # macOS and Linux (official brew formula, updated less)
-sudo pacman -S opencode            # Arch Linux (Stable)
-paru -S opencode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # Any OS
-nix run nixpkgs#opencode           # or github:anomalyco/opencode for latest dev branch
+git clone https://github.com/monti212/Code-agent
+cd Code-agent
+bun install
+bun run dev
 ```
 
-> [!TIP]
-> Remove versions older than 0.1.x before installing.
+`bun run dev` starts U Code from the checkout. Pass a directory to open another project, for example
+`bun run dev ~/code/my-project`.
 
-### Desktop App (BETA)
-
-OpenCode is also available as a desktop application. Download directly from the [releases page](https://github.com/anomalyco/opencode/releases) or [opencode.ai/download](https://opencode.ai/download).
-
-| Platform              | Download                           |
-| --------------------- | ---------------------------------- |
-| macOS (Apple Silicon) | `opencode-desktop-mac-arm64.dmg`   |
-| macOS (Intel)         | `opencode-desktop-mac-x64.dmg`     |
-| Windows               | `opencode-desktop-windows-x64.exe` |
-| Linux                 | `.deb`, `.rpm`, or `.AppImage`     |
+To build a standalone `ucode` binary for your platform:
 
 ```bash
-# macOS (Homebrew)
-brew install --cask opencode-desktop
-# Windows (Scoop)
-scoop bucket add extras; scoop install extras/opencode-desktop
+bun run --cwd packages/cli build --single
 ```
 
-#### Installation Directory
+The binary is written under `packages/cli/dist/`. Put it on your `PATH` to run `ucode` anywhere.
 
-The install script respects the following priority order for the installation path:
+Other interfaces have their own scripts: `bun run dev:desktop` for the desktop app and `bun run dev:web` for the web
+app.
 
-1. `$OPENCODE_INSTALL_DIR` - Custom installation directory
-2. `$XDG_BIN_DIR` - XDG Base Directory Specification compliant path
-3. `$HOME/bin` - Standard user binary directory (if it exists or can be created)
-4. `$HOME/.opencode/bin` - Default fallback
+## Connect Uhuru AI
 
-```bash
-# Examples
-OPENCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://opencode.ai/install | bash
-XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://opencode.ai/install | bash
+1. Create an API key at [uhuruai.co](https://uhuruai.co) under **Settings → API Keys**. Keys start with `uhuru_sk_`.
+2. Run `ucode auth login`, choose **Uhuru AI**, and paste the key. Or set it in your environment:
+
+   ```bash
+   export UHURU_API_KEY=uhuru_sk_...
+   ```
+
+3. Start U Code and pick **Uhuru 4.5** with `/models`.
+
+> [!NOTE]
+> The Uhuru Public API does not accept tool definitions yet. With an Uhuru model, U Code can answer and write code in
+> its replies, but it cannot run tools such as file edits or shell commands until tool support reaches the API.
+
+### Other providers
+
+Other providers from the [models.dev](https://models.dev) catalog work too. Connect one with `ucode auth login` or
+`/connect` in the TUI.
+
+## Configure
+
+Project configuration lives in `ucode.json` (or `ucode.jsonc`) and the `.ucode/` directory. Global configuration lives
+in `~/.config/ucode/`. U Code also reads files with the upstream names `opencode.json` and `.opencode/`; when both exist,
+the `ucode` ones win.
+
+```jsonc title="ucode.jsonc"
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "uhuru/uhuru-4.5",
+}
 ```
 
-### Agents
+Environment variables use the `UCODE_` prefix, for example `UCODE_SERVER_PASSWORD` or `UCODE_LOG_LEVEL`.
 
-OpenCode includes two built-in agents you can switch between with the `Tab` key.
+Full documentation: [code.uhuruai.co/docs](https://code.uhuruai.co/docs).
 
-- **build** - Default, full-access agent for development work
-- **plan** - Read-only agent for analysis and code exploration
-  - Denies file edits by default
-  - Asks permission before running bash commands
-  - Ideal for exploring unfamiliar codebases or planning changes
+## Contributing
 
-Also included is a **general** subagent for complex searches and multistep tasks.
-This is used internally and can be invoked using `@general` in messages.
+Read [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup and [BRANDING.md](./BRANDING.md) for what carries the U
+Code name and what keeps its upstream spelling. Report security issues as described in [SECURITY.md](./SECURITY.md).
 
-Learn more about [agents](https://opencode.ai/docs/agents).
+## Licence
 
-### Documentation
-
-For more info on how to configure OpenCode, [**head over to our docs**](https://opencode.ai/docs).
-
-### Contributing
-
-If you're interested in contributing to OpenCode, please read our [contributing docs](./CONTRIBUTING.md) before submitting a pull request.
-
-### Building on OpenCode
-
-If you are working on a project that's related to OpenCode and is using "opencode" as part of its name, for example "opencode-dashboard" or "opencode-mobile", please add a note to your README to clarify that it is not built by the OpenCode team and is not affiliated with us in any way.
-
----
-
-**Join our community** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+U Code is built on opencode (MIT). See [LICENSE](./LICENSE).

@@ -1,4 +1,8 @@
-# Contributing to OpenCode
+# Contributing to U Code
+
+U Code is the Uhuru coding agent, built by OrionX on top of the open-source opencode harness. Read
+[BRANDING.md](./BRANDING.md) before changing anything a user can see: it says what carries the U Code name and what
+keeps its upstream spelling on purpose.
 
 The changes most likely to be accepted are:
 
@@ -9,7 +13,7 @@ The changes most likely to be accepted are:
 - Missing standard behavior
 - Documentation improvements
 
-UI and core product features require design review before implementation. If you are unsure whether a change fits, ask a maintainer or choose an issue labeled [`help wanted`](https://github.com/anomalyco/opencode/issues?q=is%3Aissue%20state%3Aopen%20label%3Ahelp-wanted), [`good first issue`](https://github.com/anomalyco/opencode/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22), [`bug`](https://github.com/anomalyco/opencode/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug), or [`perf`](https://github.com/anomalyco/opencode/issues?q=is%3Aopen%20is%3Aissue%20label%3A%22perf%22).
+UI and core product features require design review before implementation. If you are unsure whether a change fits, ask a maintainer or pick an open issue in [github.com/monti212/Code-agent](https://github.com/monti212/Code-agent/issues).
 
 Want to take on an issue? Leave a comment and a maintainer may assign it unless it is already being worked on.
 
@@ -18,11 +22,11 @@ Want to take on an issue? Leave a comment and a maintainer may assign it unless 
 
 ## Adding Providers
 
-New providers should rarely require OpenCode changes. Add the provider to [models.dev](https://github.com/anomalyco/models.dev) first.
+New providers should rarely require U Code changes. The provider catalog comes from [models.dev](https://models.dev); add a provider there first. Uhuru AI, the default provider, is built in.
 
 ## Development
 
-OpenCode requires Bun 1.3 or newer. From the repository root:
+U Code requires Bun 1.3 or newer. From the repository root:
 
 ```bash
 bun install
@@ -31,7 +35,7 @@ bun dev [directory]
 
 `bun dev` runs the V2 CLI and TUI. Pass a directory to open another project, or `.` to open this repository.
 
-To test a development TUI against your installed OpenCode V2 background service and live sessions:
+To test a development TUI against your installed U Code background service and live sessions:
 
 ```bash
 bun run dev:live [directory]
@@ -73,13 +77,18 @@ Follow package-specific instructions in nearby `AGENTS.md` files. After changing
 
 Follow the repository [style guide](./AGENTS.md).
 
+### Merging upstream
+
+U Code tracks upstream opencode. See [BRANDING.md](./BRANDING.md#merging-upstream) for the merge procedure and the sweep
+that keeps new user-visible strings on brand.
+
 ## Pull Requests
 
 ### Link Issues When Required
 
 Bug fixes, chores, and tests must reference an existing issue. Documentation, refactor, and feature PRs are exempt from the automated linked-issue check. When required, use `Fixes #123` or `Closes #123` in the PR description.
 
-Before implementing new functionality, open a feature request describing the problem, why it belongs in OpenCode, and your proposed approach if you have one. Wait for design approval before opening the implementation PR.
+Before implementing new functionality, open a feature request describing the problem, why it belongs in U Code, and your proposed approach if you have one. Wait for design approval before opening the implementation PR.
 
 Base branches on `v2`, not `dev`, and complete the provided pull request template.
 
@@ -107,6 +116,6 @@ Examples:
 
 ## Issues
 
-Bug reports and feature requests must use their issue templates. Blank issues are not allowed; ask support and how-to questions in the [Discord community](https://discord.gg/opencode).
+Bug reports and feature requests must use their issue templates. Blank issues are not allowed. For support, email [hello@orionx.xyz](mailto:hello@orionx.xyz).
 
 Automated checks flag missing templates, placeholder text, AI-generated walls of text, and missing meaningful content. You have two hours to correct a flagged issue before it closes automatically. Ask a maintainer if an issue was flagged incorrectly.

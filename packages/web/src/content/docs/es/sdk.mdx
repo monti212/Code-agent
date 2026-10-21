@@ -1,13 +1,13 @@
 ---
 title: SDK
-description: Cliente JS con seguridad de tipos para el servidor opencode.
+description: Cliente JS con seguridad de tipos para el servidor U Code.
 ---
 
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-El SDK opencode JS/TS proporciona un cliente con seguridad de tipos para interactuar con el servidor.
-Úselo para crear integraciones y controlar opencode mediante programación.
+El SDK U Code JS/TS proporciona un cliente con seguridad de tipos para interactuar con el servidor.
+Úselo para crear integraciones y controlar U Code mediante programación.
 
 [Más información](/docs/server) sobre cómo funciona el servidor. Para ver ejemplos, consulte los [proyectos](/docs/ecosystem#projects) creados por la comunidad.
 
@@ -25,7 +25,7 @@ npm install @opencode-ai/sdk
 
 ## Crear cliente
 
-Cree una instancia de opencode:
+Cree una instancia de U Code:
 
 ```javascript
 import { createOpencode } from "@opencode-ai/sdk"
@@ -49,7 +49,7 @@ Esto inicia tanto un servidor como un cliente.
 
 ## Configuración
 
-Puede pasar un objeto de configuración para personalizar el comportamiento. La instancia aún recoge su `opencode.json`, pero puede anular o agregar configuración en línea:
+Puede pasar un objeto de configuración para personalizar el comportamiento. La instancia aún recoge su `ucode.json`, pero puede anular o agregar configuración en línea:
 
 ```javascript
 import { createOpencode } from "@opencode-ai/sdk"
@@ -69,7 +69,7 @@ opencode.server.close()
 
 ## Solo cliente
 
-Si ya tiene una instancia en ejecución de opencode, puede crear una instancia de cliente para conectarse a ella:
+Si ya tiene una instancia en ejecución de U Code, puede crear una instancia de cliente para conectarse a ella:
 
 ```javascript
 import { createOpencodeClient } from "@opencode-ai/sdk"
@@ -373,7 +373,7 @@ await client.session.prompt({
 ```javascript
 // Search and read files
 const textResults = await client.find.text({
-  query: { pattern: "function.*opencode" },
+  query: { pattern: "function.*ucode" },
 })
 
 const files = await client.find.files({

@@ -18,8 +18,8 @@ interface Props {
 
 const section = getDocsSection(Astro.props.currentSlug)
 const fullWidth = Astro.props.fullWidth ?? false
-const description = Astro.props.description ?? `${Astro.props.title} documentation for OpenCode.`
-const canonical = new URL(Astro.url.pathname, "https://opencode.ai").href
+const description = Astro.props.description ?? `${Astro.props.title} documentation for U Code.`
+const canonical = new URL(Astro.url.pathname, "https://code.uhuruai.co").href
 ---
 
 <!doctype html>
@@ -28,11 +28,11 @@ const canonical = new URL(Astro.url.pathname, "https://opencode.ai").href
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#0A0A0B" />
     <ClientRouter fallback="swap" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
-    <title>{Astro.props.title} | OpenCode</title>
+    <title>{Astro.props.title} | U Code</title>
   </head>
   <body>
     <a class="skip-link" href="#docs-content">Skip to content</a>

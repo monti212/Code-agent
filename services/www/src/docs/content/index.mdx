@@ -2,48 +2,47 @@
 title: "Intro"
 ---
 
-These docs describe OpenCode and its APIs, configuration, and plugin system.
+These docs describe U Code and its APIs, configuration, and plugin system.
 
-OpenCode installs and runs as `opencode`.
+U Code installs and runs as `ucode`.
 
 ## Install
 
+U Code does not publish packages or installers yet. Install it from source with [Bun](https://bun.sh):
+
 <div data-install-code>
   <CodeBlock
-    code={`$ npm install -g @opencode/cli
-$ bun install -g --trust @opencode/cli
-$ pnpm add -g --allow-build=@opencode/cli @opencode/cli
-$ yarn global add @opencode/cli
-$ curl -fsSL https://opencode.ai/v2/install | bash`}
+    code={`$ git clone https://github.com/monti212/Code-agent
+$ cd Code-agent
+$ bun install
+$ bun run dev`}
   />
 </div>
 
-The npm package uses a trusted postinstall script to select the native `opencode` binary for your platform. The Bun and pnpm
-commands above explicitly allow that script to run.
-
-Docker images use versioned tags, for example `ghcr.io/anomalyco/opencode:2.0.0`.
-
-Homebrew, AUR, Windows package managers, and standalone binaries are not supported.
+`bun run dev` starts U Code from the checkout. To build a standalone `ucode` binary for your platform, run
+`bun run --cwd packages/cli build --single`; the binary is written under `packages/cli/dist/`.
 
 ---
 
 ## Connect
 
-OpenCode has built in support for many LLM providers - you can connect to them
-directly [in the TUI](/cli/providers) with `/connect`.
+U Code is built for Uhuru models. Create an API key at [uhuruai.co](https://uhuruai.co) under **Settings → API Keys**
+(keys start with `uhuru_sk_`), then connect it:
 
-See [Providers](/providers) to configure custom providers.
+```bash
+ucode auth login
+```
 
-If you'd like easy access to all the best coding models you can try out
-[OpenCode Console](/console).
+Choose **Uhuru AI** and paste your key, or set `UHURU_API_KEY` in your environment. See [Providers](/providers#uhuru-ai)
+for the details.
 
-You can also try [OpenCode Go](/console/go) a $10/month subscription
-plan that grants you access to the best open source models.
+U Code also supports many other LLM providers. Connect them [in the TUI](/cli/providers) with `/connect`, or see
+[Providers](/providers) to configure custom providers.
 
 ---
 
 ## Customize
 
-Make OpenCode your own by editing the [OpenCode config](/config), [loading plugins](/plugins), [connecting MCP
+Make U Code your own by editing the [U Code config](/config), [loading plugins](/plugins), [connecting MCP
 servers](/mcp-servers), or [creating commands](/commands). For terminal interface themes and keybindings, see [CLI
 configuration](/cli/config).

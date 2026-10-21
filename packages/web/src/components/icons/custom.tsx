@@ -36,16 +36,16 @@ export function IconGemini(props: JSX.SvgSVGAttributes<SVGSVGElement>) {
   )
 }
 
+// The U Code mark.
 export function IconOpencode(props: JSX.SvgSVGAttributes<SVGSVGElement>) {
   return (
-    <svg {...props} viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg {...props} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="14" fill="#0096B3" />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M0 13H35V58H0V13ZM26.25 22.1957H8.75V48.701H26.25V22.1957Z"
-        fill="currentColor"
+        d="M19 16v22.5c0 7.1 4.7 11.5 13 11.5s13-4.4 13-11.5V16h-7v22c0 3.5-2.1 5.7-6 5.7s-6-2.2-6-5.7V16h-7z"
+        fill="#FFFFFF"
       />
-      <path d="M43.75 13H70V22.1957H52.5V48.701H70V57.8967H43.75V13Z" fill="currentColor" />
+      <circle cx="49" cy="46" r="3.5" fill="#FF6A00" />
     </svg>
   )
 }

@@ -1,15 +1,13 @@
 ---
 title: Введение
-description: Начните работу с opencode.
+description: Начните работу с U Code.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 import config from "../../../../config.mjs"
 export const console = config.console
 
-[**opencode**](/) — это агент кодирования искусственного интеллекта с открытым исходным кодом. Он доступен в виде интерфейса на базе терминала, настольного приложения или расширения IDE.
-
-![opencode TUI с темой opencode](../../../assets/lander/screenshot.png)
+[**U Code**](/) — это агент кодирования искусственного интеллекта с открытым исходным кодом. Он доступен в виде интерфейса на базе терминала, настольного приложения или расширения IDE.
 
 Давайте начнем.
 
@@ -17,7 +15,7 @@ export const console = config.console
 
 #### Системные требования
 
-Чтобы использовать opencode в вашем терминале, вам понадобится:
+Чтобы использовать U Code в вашем терминале, вам понадобится:
 
 1. Современный эмулятор терминала, например:
    - [WezTerm](https://wezterm.org), кроссплатформенный
@@ -31,121 +29,40 @@ export const console = config.console
 
 ## Установка
 
-Самый простой способ установить opencode — через сценарий установки.
+U Code does not publish packages or installers yet. Install it from source with [Bun](https://bun.sh):
 
 ```bash
-curl -fsSL https://opencode.ai/install | bash
+git clone https://github.com/monti212/Code-agent
+cd Code-agent
+bun install
+bun run dev
 ```
 
-Вы также можете установить его с помощью следующих команд:
-
-- **Использование Node.js**
-
-        <Tabs>
-
-      <TabItem label="npm">
-      ```bash
-      npm install -g opencode-ai
-      ```
-
-          </TabItem>
-
-        <TabItem label="Bun">
-        ```bash
-        bun install -g opencode-ai
-        ```
-
-          </TabItem>
-
-        <TabItem label="pnpm">
-        ```bash
-        pnpm install -g opencode-ai
-        ```
-
-          </TabItem>
-
-        <TabItem label="Yarn">
-        ```bash
-        yarn global add opencode-ai
-        ```
-
-      </TabItem>
-
-  </Tabs>
-
-- **Использование Homebrew в macOS и Linux**
-
-  ```bash
-  brew install anomalyco/tap/opencode
-  ```
-
-  > Мы рекомендуем использовать tap opencode для получения самых последних версий. Официальная формула `brew install opencode` поддерживается командой Homebrew и обновляется реже.
-
-- **Использование Paru в Arch Linux**
-
-  ```bash
-  sudo pacman -S opencode           # Arch Linux (Stable)
-  paru -S opencode-bin              # Arch Linux (Latest from AUR)
-  ```
+`bun run dev` starts U Code from the checkout. To build a standalone `ucode` binary for your platform, run
+`bun run --cwd packages/cli build --single`; the binary is written under `packages/cli/dist/`.
 
 #### Windows
 
-:::tip[Рекомендуется: используйте WSL]
-Для наилучшей работы в Windows мы рекомендуем использовать [Подсистема Windows для Linux (WSL)](/docs/windows-wsl). Он обеспечивает лучшую производительность и полную совместимость с функциями opencode.
+:::tip[Recommended: Use WSL]
+For the best experience on Windows, we recommend using [Windows Subsystem for Linux (WSL)](/docs/windows-wsl) and
+installing U Code inside it.
 :::
-
-- **Используя Chocolatey**
-
-  ```bash
-  choco install opencode
-  ```
-
-- **Использование Scoop**
-
-  ```bash
-  scoop install opencode
-  ```
-
-- **Использование NPM**
-
-  ```bash
-  npm install -g opencode-ai
-  ```
-
-- **Использование Mise**
-
-  ```bash
-  mise use -g github:anomalyco/opencode
-  ```
-
-- **Использование Docker**
-
-  ```bash
-  docker run -it --rm ghcr.io/anomalyco/opencode
-  ```
-
-В настоящее время добавляется поддержка установки opencode в Windows с помощью Bun.
-
-Вы также можете получить бинарный файл в разделе [Releases](https://github.com/anomalyco/opencode/releases).
 
 ---
 
 ## Настроить
 
-С opencode вы можете использовать любого поставщика LLM, настроив его ключи API.
+U Code is built for Uhuru models, and it also works with any other LLM provider you configure.
 
-Если вы новичок в использовании поставщиков LLM, мы рекомендуем использовать [OpenCode Zen](/docs/zen).
-Это тщательно подобранный список моделей, протестированных и проверенных opencode.
+1. Create an API key at [uhuruai.co](https://uhuruai.co) under **Settings → API Keys**. Keys start with `uhuru_sk_`.
 
-1. Запустите команду `/connect` в TUI, выберите opencode и перейдите по адресу [opencode.ai/auth](https://opencode.ai/auth).
+2. Run the `/connect` command in the TUI and select **Uhuru AI**.
 
    ```txt
    /connect
    ```
 
-2. Войдите в систему, добавьте свои платежные данные и скопируйте ключ API.
-
-3. Вставьте свой ключ API.
+3. Paste your API key.
 
    ```txt
    ┌ API key
@@ -154,7 +71,8 @@ curl -fsSL https://opencode.ai/install | bash
    └ enter
    ```
 
-Альтернативно вы можете выбрать одного из других поставщиков. [Подробнее](/docs/providers#directory).
+You can also set `UHURU_API_KEY` in your environment instead. To use another provider, select it in `/connect`.
+[Learn more](/docs/providers#directory).
 
 ---
 
@@ -167,33 +85,33 @@ curl -fsSL https://opencode.ai/install | bash
 cd /path/to/project
 ```
 
-И запустите opencode.
+И запустите U Code.
 
 ```bash
-opencode
+ucode
 ```
 
-Затем инициализируйте opencode для проекта, выполнив следующую команду.
+Затем инициализируйте U Code для проекта, выполнив следующую команду.
 
 ```bash frame="none"
 /init
 ```
 
-Это позволит opencode проанализировать ваш проект и создать файл `AGENTS.md` в
+Это позволит U Code проанализировать ваш проект и создать файл `AGENTS.md` в
 корень проекта.
 
 :::tip
 Вам следует зафиксировать файл `AGENTS.md` вашего проекта в Git.
 :::
 
-Это помогает opencode понять структуру проекта и шаблоны кодирования.
+Это помогает U Code понять структуру проекта и шаблоны кодирования.
 использовал.
 
 ---
 
 ## Использование
 
-Теперь вы готовы использовать opencode для работы над своим проектом. Не стесняйтесь спрашивать о чем угодно!
+Теперь вы готовы использовать U Code для работы над своим проектом. Не стесняйтесь спрашивать о чем угодно!
 
 Если вы новичок в использовании агента кодирования ИИ, вот несколько примеров, которые могут вам помочь.
 
@@ -201,7 +119,7 @@ opencode
 
 ### Задавайте вопросы
 
-Вы можете попросить opencode объяснить вам кодовую базу.
+Вы можете попросить U Code объяснить вам кодовую базу.
 
 :::tip
 Используйте ключ `@` для нечеткого поиска файлов в проекте.
@@ -217,11 +135,11 @@ How is authentication handled in @packages/functions/src/api/index.ts
 
 ### Добавление функций
 
-Вы можете попросить opencode добавить новые функции в ваш проект. Хотя мы сначала рекомендуем попросить его создать план.
+Вы можете попросить U Code добавить новые функции в ваш проект. Хотя мы сначала рекомендуем попросить его создать план.
 
 1. **Составьте план**
 
-   opencode имеет _режим планирования_, который отключает возможность вносить изменения и
+   U Code имеет _режим планирования_, который отключает возможность вносить изменения и
    вместо этого предложите _как_ реализовать эту функцию.
 
    Переключитесь на него с помощью клавиши **Tab**. Вы увидите индикатор этого в правом нижнем углу.
@@ -238,11 +156,11 @@ How is authentication handled in @packages/functions/src/api/index.ts
    From this screen, the user can undelete a note or permanently delete it.
    ```
 
-   Нужно предоставить opencode достаточно подробностей, чтобы ему понять, чего вы хотите. Это помогает
+   Нужно предоставить U Code достаточно подробностей, чтобы ему понять, чего вы хотите. Это помогает
    поговорить с ним так, как будто вы разговариваете с младшим разработчиком в своей команде.
 
    :::tip
-   Дайте opencode много контекста и примеров, чтобы помочь ему понять, что вы
+   Дайте U Code много контекста и примеров, чтобы помочь ему понять, что вы
    хотеть.
    :::
 
@@ -259,7 +177,7 @@ How is authentication handled in @packages/functions/src/api/index.ts
    Перетащите изображения в терминал, чтобы добавить их в подсказку.
    :::
 
-   opencode может сканировать любые изображения, которые вы ему предоставляете, и добавлять их в командную строку. Вы можете
+   U Code может сканировать любые изображения, которые вы ему предоставляете, и добавлять их в командную строку. Вы можете
    сделать это, перетащив изображение в терминал.
 
 3. **Создайте функцию**
@@ -281,7 +199,7 @@ How is authentication handled in @packages/functions/src/api/index.ts
 
 ### Внесение изменений
 
-Для более простых изменений вы можете попросить opencode создать их напрямую.
+Для более простых изменений вы можете попросить U Code создать их напрямую.
 без необходимости предварительного рассмотрения плана.
 
 ```txt frame="none" "@packages/functions/src/settings.ts" "@packages/functions/src/notes.ts"
@@ -290,13 +208,13 @@ handled in the /notes route in @packages/functions/src/notes.ts and implement
 the same logic in @packages/functions/src/settings.ts
 ```
 
-Убедитесь, что предоставили достаточно деталей, чтобы opencode внес корректные изменения.
+Убедитесь, что предоставили достаточно деталей, чтобы U Code внес корректные изменения.
 
 ---
 
 ### Отмена изменений
 
-Допустим, вы просите opencode внести некоторые изменения.
+Допустим, вы просите U Code внести некоторые изменения.
 
 ```txt frame="none" "@packages/functions/src/api/index.ts"
 Can you refactor the function in @packages/functions/src/api/index.ts?
@@ -309,14 +227,14 @@ Can you refactor the function in @packages/functions/src/api/index.ts?
 /undo
 ```
 
-opencode отменит внесенные вами изменения и покажет исходное сообщение.
+U Code отменит внесенные вами изменения и покажет исходное сообщение.
 снова.
 
 ```txt frame="none" "@packages/functions/src/api/index.ts"
 Can you refactor the function in @packages/functions/src/api/index.ts?
 ```
 
-Отсюда вы можете настроить подсказку и попросить opencode повторить попытку.
+Отсюда вы можете настроить подсказку и попросить U Code повторить попытку.
 
 :::tip
 Вы можете запустить `/undo` несколько раз, чтобы отменить несколько изменений.
@@ -330,27 +248,8 @@ Can you refactor the function in @packages/functions/src/api/index.ts?
 
 ---
 
-## Общий доступ
-
-Разговорами, которые вы ведете с opencode, можно [поделиться с вашей
-командой](/docs/share).
-
-```bash frame="none"
-/share
-```
-
-Это создаст ссылку на текущий разговор и скопирует ее в буфер обмена.
-
-:::note
-По умолчанию общий доступ к беседам не предоставляется.
-:::
-
-Вот [пример диалога](https://opencode.ai/s/4XP1fce5) с opencode.
-
----
-
 ## Настроить
 
-И все! Теперь вы профессионал в использовании opencode.
+И все! Теперь вы профессионал в использовании U Code.
 
-Чтобы создать свою собственную, мы рекомендуем [выбрать тему](/docs/themes), [настроить привязки клавиш](/docs/keybinds), [настроить средства форматирования кода](/docs/formatters), [создать собственные команды](/docs/commands) или поиграться с файлом [opencode config](/docs/config).
+Чтобы создать свою собственную, мы рекомендуем [выбрать тему](/docs/themes), [настроить привязки клавиш](/docs/keybinds), [настроить средства форматирования кода](/docs/formatters), [создать собственные команды](/docs/commands) или поиграться с файлом [U Code config](/docs/config).

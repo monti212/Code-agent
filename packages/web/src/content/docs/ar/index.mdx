@@ -1,15 +1,13 @@
 ---
 title: مقدمة
-description: ابدأ باستخدام OpenCode.
+description: ابدأ باستخدام U Code.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 import config from "../../../../config.mjs"
 export const console = config.console
 
-[**OpenCode**](/) هو وكيل ترميز بالذكاء الاصطناعي مفتوح المصدر. يتوفر كواجهة terminal، وتطبيق لسطح المكتب، أو إضافة لبيئة تطوير متكاملة (IDE).
-
-![واجهة OpenCode في terminal مع سمة opencode](../../../assets/lander/screenshot.png)
+[**U Code**](/) هو وكيل ترميز بالذكاء الاصطناعي مفتوح المصدر. يتوفر كواجهة terminal، وتطبيق لسطح المكتب، أو إضافة لبيئة تطوير متكاملة (IDE).
 
 لنبدأ.
 
@@ -17,7 +15,7 @@ export const console = config.console
 
 #### المتطلبات
 
-لاستخدام OpenCode في terminal، ستحتاج إلى:
+لاستخدام U Code في terminal، ستحتاج إلى:
 
 1. محاكي terminal حديث مثل:
    - [WezTerm](https://wezterm.org) متعدد المنصات
@@ -31,121 +29,40 @@ export const console = config.console
 
 ## التثبيت
 
-أسهل طريقة لتثبيت OpenCode هي عبر سكربت التثبيت.
+U Code does not publish packages or installers yet. Install it from source with [Bun](https://bun.sh):
 
 ```bash
-curl -fsSL https://opencode.ai/install | bash
+git clone https://github.com/monti212/Code-agent
+cd Code-agent
+bun install
+bun run dev
 ```
 
-يمكنك أيضا تثبيته عبر الأوامر التالية:
-
-- **باستخدام Node.js**
-
-        <Tabs>
-
-      <TabItem label="npm">
-      ```bash
-      npm install -g opencode-ai
-      ```
-
-          </TabItem>
-
-        <TabItem label="Bun">
-        ```bash
-        bun install -g opencode-ai
-        ```
-
-          </TabItem>
-
-        <TabItem label="pnpm">
-        ```bash
-        pnpm install -g opencode-ai
-        ```
-
-          </TabItem>
-
-        <TabItem label="Yarn">
-        ```bash
-        yarn global add opencode-ai
-        ```
-
-      </TabItem>
-
-  </Tabs>
-
-- **باستخدام Homebrew على macOS وLinux**
-
-  ```bash
-  brew install anomalyco/tap/opencode
-  ```
-
-  > نوصي باستخدام tap الخاص بـ OpenCode للحصول على أحدث الإصدارات. صيغة `brew install opencode` الرسمية تُدار بواسطة فريق Homebrew ويتم تحديثها بوتيرة أقل.
-
-- **باستخدام Paru على Arch Linux**
-
-  ```bash
-  sudo pacman -S opencode           # Arch Linux (Stable)
-  paru -S opencode-bin              # Arch Linux (Latest from AUR)
-  ```
+`bun run dev` starts U Code from the checkout. To build a standalone `ucode` binary for your platform, run
+`bun run --cwd packages/cli build --single`; the binary is written under `packages/cli/dist/`.
 
 #### Windows
 
-:::tip[موصى به: استخدم WSL]
-لأفضل تجربة على Windows، نوصي باستخدام [Windows Subsystem for Linux (WSL)](/docs/windows-wsl). يوفر أداء أفضل وتوافقا كاملا مع ميزات OpenCode.
+:::tip[Recommended: Use WSL]
+For the best experience on Windows, we recommend using [Windows Subsystem for Linux (WSL)](/docs/windows-wsl) and
+installing U Code inside it.
 :::
-
-- **باستخدام Chocolatey**
-
-  ```bash
-  choco install opencode
-  ```
-
-- **باستخدام Scoop**
-
-  ```bash
-  scoop install opencode
-  ```
-
-- **باستخدام NPM**
-
-  ```bash
-  npm install -g opencode-ai
-  ```
-
-- **باستخدام Mise**
-
-  ```bash
-  mise use -g github:anomalyco/opencode
-  ```
-
-- **باستخدام Docker**
-
-  ```bash
-  docker run -it --rm ghcr.io/anomalyco/opencode
-  ```
-
-دعم تثبيت OpenCode على Windows باستخدام Bun قيد العمل حاليا.
-
-يمكنك أيضا تنزيل الملف التنفيذي من صفحة [Releases](https://github.com/anomalyco/opencode/releases).
 
 ---
 
 ## الإعداد
 
-مع OpenCode يمكنك استخدام أي مزود LLM عبر إعداد مفاتيح API الخاصة به.
+U Code is built for Uhuru models, and it also works with any other LLM provider you configure.
 
-إذا كنت جديدا على استخدام مزوّدي LLM، فنوصي باستخدام [OpenCode Zen](/docs/zen).
-إنها قائمة منتقاة من النماذج تم اختبارها والتحقق منها بواسطة فريق OpenCode.
+1. Create an API key at [uhuruai.co](https://uhuruai.co) under **Settings → API Keys**. Keys start with `uhuru_sk_`.
 
-1. شغّل الأمر `/connect` في واجهة TUI، واختر opencode، ثم انتقل إلى [opencode.ai/auth](https://opencode.ai/auth).
+2. Run the `/connect` command in the TUI and select **Uhuru AI**.
 
    ```txt
    /connect
    ```
 
-2. سجّل الدخول، وأضف تفاصيل الدفع، ثم انسخ مفتاح API.
-
-3. الصق مفتاح API.
+3. Paste your API key.
 
    ```txt
    ┌ API key
@@ -154,7 +71,8 @@ curl -fsSL https://opencode.ai/install | bash
    └ enter
    ```
 
-بدلا من ذلك يمكنك اختيار أحد المزوّدين الآخرين. [اعرف المزيد](/docs/providers#directory).
+You can also set `UHURU_API_KEY` in your environment instead. To use another provider, select it in `/connect`.
+[Learn more](/docs/providers#directory).
 
 ---
 
@@ -166,31 +84,31 @@ curl -fsSL https://opencode.ai/install | bash
 cd /path/to/project
 ```
 
-ثم شغّل OpenCode.
+ثم شغّل U Code.
 
 ```bash
-opencode
+ucode
 ```
 
-بعد ذلك، هيّئ OpenCode للمشروع عبر تشغيل الأمر التالي.
+بعد ذلك، هيّئ U Code للمشروع عبر تشغيل الأمر التالي.
 
 ```bash frame="none"
 /init
 ```
 
-سيجعل هذا OpenCode يحلل مشروعك ويُنشئ ملف `AGENTS.md` في جذر المشروع.
+سيجعل هذا U Code يحلل مشروعك ويُنشئ ملف `AGENTS.md` في جذر المشروع.
 
 :::tip
 يستحسن أن تقوم بعمل commit لملف `AGENTS.md` الخاص بمشروعك إلى Git.
 :::
 
-يساعد هذا OpenCode على فهم بنية المشروع وأنماط الترميز المستخدمة.
+يساعد هذا U Code على فهم بنية المشروع وأنماط الترميز المستخدمة.
 
 ---
 
 ## الاستخدام
 
-أصبحت الآن جاهزا لاستخدام OpenCode للعمل على مشروعك. لا تتردد في سؤاله أي شيء!
+أصبحت الآن جاهزا لاستخدام U Code للعمل على مشروعك. لا تتردد في سؤاله أي شيء!
 
 إذا كنت جديدا على استخدام وكيل ترميز بالذكاء الاصطناعي، فإليك بعض الأمثلة التي قد تساعد.
 
@@ -198,7 +116,7 @@ opencode
 
 ### اطرح أسئلة
 
-يمكنك أن تطلب من OpenCode شرح قاعدة الشيفرة لك.
+يمكنك أن تطلب من U Code شرح قاعدة الشيفرة لك.
 
 :::tip
 استخدم المفتاح `@` للبحث التقريبي عن الملفات داخل المشروع.
@@ -214,11 +132,11 @@ How is authentication handled in @packages/functions/src/api/index.ts
 
 ### أضف ميزات
 
-يمكنك أن تطلب من OpenCode إضافة ميزات جديدة إلى مشروعك، لكننا نوصي أولا بطلب إنشاء خطة.
+يمكنك أن تطلب من U Code إضافة ميزات جديدة إلى مشروعك، لكننا نوصي أولا بطلب إنشاء خطة.
 
 1. **أنشئ خطة**
 
-   لدى OpenCode _وضع Plan_ يعطل قدرته على إجراء التغييرات، ويقترح بدلا من ذلك _كيف_ سينفّذ الميزة.
+   لدى U Code _وضع Plan_ يعطل قدرته على إجراء التغييرات، ويقترح بدلا من ذلك _كيف_ سينفّذ الميزة.
 
    انتقل إليه باستخدام مفتاح **Tab**. سترى مؤشرا لذلك في الزاوية السفلية اليمنى.
 
@@ -234,10 +152,10 @@ How is authentication handled in @packages/functions/src/api/index.ts
    From this screen, the user can undelete a note or permanently delete it.
    ```
 
-   احرص على تزويد OpenCode بتفاصيل كافية ليفهم ما تريد. يساعد أن تتحدث إليه كما لو كنت تتحدث إلى مطور مبتدئ ضمن فريقك.
+   احرص على تزويد U Code بتفاصيل كافية ليفهم ما تريد. يساعد أن تتحدث إليه كما لو كنت تتحدث إلى مطور مبتدئ ضمن فريقك.
 
    :::tip
-   أعطِ OpenCode سياقا وأمثلة كافية لمساعدته على فهم ما تريد.
+   أعطِ U Code سياقا وأمثلة كافية لمساعدته على فهم ما تريد.
    :::
 
 2. **حسّن الخطة**
@@ -253,7 +171,7 @@ How is authentication handled in @packages/functions/src/api/index.ts
    اسحب الصور وأفلِتها داخل terminal لإضافتها إلى الطلب.
    :::
 
-   يستطيع OpenCode فحص أي صور تزوده بها وإضافتها إلى الطلب. يمكنك فعل ذلك عبر سحب الصورة وإفلاتها داخل terminal.
+   يستطيع U Code فحص أي صور تزوده بها وإضافتها إلى الطلب. يمكنك فعل ذلك عبر سحب الصورة وإفلاتها داخل terminal.
 
 3. **ابنِ الميزة**
 
@@ -273,7 +191,7 @@ How is authentication handled in @packages/functions/src/api/index.ts
 
 ### نفّذ تغييرات
 
-للتغييرات الأبسط، يمكنك أن تطلب من OpenCode تنفيذها مباشرة دون الحاجة لمراجعة خطة أولا.
+للتغييرات الأبسط، يمكنك أن تطلب من U Code تنفيذها مباشرة دون الحاجة لمراجعة خطة أولا.
 
 ```txt frame="none" "@packages/functions/src/settings.ts" "@packages/functions/src/notes.ts"
 We need to add authentication to the /settings route. Take a look at how this is
@@ -281,13 +199,13 @@ handled in the /notes route in @packages/functions/src/notes.ts and implement
 the same logic in @packages/functions/src/settings.ts
 ```
 
-تأكد من تقديم قدر مناسب من التفاصيل لكي يجري OpenCode التغييرات الصحيحة.
+تأكد من تقديم قدر مناسب من التفاصيل لكي يجري U Code التغييرات الصحيحة.
 
 ---
 
 ### تراجع عن التغييرات
 
-لنفترض أنك طلبت من OpenCode إجراء بعض التغييرات.
+لنفترض أنك طلبت من U Code إجراء بعض التغييرات.
 
 ```txt frame="none" "@packages/functions/src/api/index.ts"
 Can you refactor the function in @packages/functions/src/api/index.ts?
@@ -299,7 +217,7 @@ Can you refactor the function in @packages/functions/src/api/index.ts?
 /undo
 ```
 
-سيقوم OpenCode الآن بعكس التغييرات التي أُجريت ويعرض رسالتك الأصلية مجددا.
+سيقوم U Code الآن بعكس التغييرات التي أُجريت ويعرض رسالتك الأصلية مجددا.
 
 ```txt frame="none" "@packages/functions/src/api/index.ts"
 Can you refactor the function in @packages/functions/src/api/index.ts?
@@ -319,26 +237,8 @@ Can you refactor the function in @packages/functions/src/api/index.ts?
 
 ---
 
-## المشاركة
-
-يمكن [مشاركة المحادثات](/docs/share) التي تجريها مع OpenCode مع فريقك.
-
-```bash frame="none"
-/share
-```
-
-سيقوم هذا بإنشاء رابط للمحادثة الحالية ونسخه إلى الحافظة.
-
-:::note
-لا تتم مشاركة المحادثات افتراضيا.
-:::
-
-إليك [مثالا لمحادثة](https://opencode.ai/s/4XP1fce5) مع OpenCode.
-
----
-
 ## التخصيص
 
-وهذا كل شيء! أصبحت الآن محترفا في استخدام OpenCode.
+وهذا كل شيء! أصبحت الآن محترفا في استخدام U Code.
 
-لتجعله مناسبا لك، نوصي بـ [اختيار سمة](/docs/themes)، و[تخصيص اختصارات لوحة المفاتيح](/docs/keybinds)، و[إعداد منسقات الشيفرة](/docs/formatters)، و[إنشاء أوامر مخصصة](/docs/commands)، أو التجربة مع [إعدادات OpenCode](/docs/config).
+لتجعله مناسبا لك، نوصي بـ [اختيار سمة](/docs/themes)، و[تخصيص اختصارات لوحة المفاتيح](/docs/keybinds)، و[إعداد منسقات الشيفرة](/docs/formatters)، و[إنشاء أوامر مخصصة](/docs/commands)، أو التجربة مع [إعدادات U Code](/docs/config).

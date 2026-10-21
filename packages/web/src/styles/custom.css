@@ -11,8 +11,12 @@
   --color-background-weak-hover: hsl(0, 8%, 94%);
   --color-background-strong: hsl(0, 5%, 12%);
   --color-background-strong-hover: hsl(0, 5%, 18%);
-  --color-background-interactive: hsl(62, 84%, 88%);
-  --color-background-interactive-weaker: hsl(64, 74%, 95%);
+  /* Uhuru teal (brand book teal-100 / teal-50). */
+  --color-background-interactive: #b3e6ef;
+  --color-background-interactive-weaker: #e6f7fa;
+  --sl-color-accent-low: #e6f7fa;
+  --sl-color-accent: #0096b3;
+  --sl-color-accent-high: #006f8a;
 
   --color-text: hsl(0, 1%, 39%);
   --color-text-weak: hsl(0, 1%, 60%);
@@ -45,8 +49,11 @@ body {
     --color-background-weak: hsl(0, 6%, 10%);
     --color-background-strong: hsl(0, 15%, 94%);
     --color-background-strong-hover: hsl(0, 15%, 97%);
-    --color-background-interactive: hsl(62, 100%, 90%);
-    --color-background-interactive-weaker: hsl(60, 20%, 8%);
+    --color-background-interactive: #80d4e3;
+    --color-background-interactive-weaker: #003a59;
+    --sl-color-accent-low: #003a59;
+    --sl-color-accent: #4dc1d8;
+    --sl-color-accent-high: #e6f7fa;
 
     --color-text: hsl(0, 4%, 71%);
     --color-text-weak: hsl(0, 2%, 49%);
