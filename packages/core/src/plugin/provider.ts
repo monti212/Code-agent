@@ -1,3 +1,4 @@
+import { ProviderAllowlistPlugin } from "./provider/allowlist.js"
 import { AmazonBedrockPlugin } from "./provider/amazon-bedrock.js"
 import { AzurePlugin } from "./provider/azure.js"
 import { CerebrasPlugin } from "./provider/cerebras.js"
@@ -65,4 +66,6 @@ export const ProviderPlugins: PluginInternal.InternalPlugin[] = [
   XAIPlugin,
   ZenmuxPlugin,
   DynamicProviderPlugin,
+  // Last, so it prunes whatever the plugins above registered.
+  ProviderAllowlistPlugin,
 ]

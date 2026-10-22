@@ -76,16 +76,37 @@ Raster app icons (desktop installers, tray, dock) are the Uhuru U Code icon set,
   docs): a sample has to run, so the real package name stays, as in Uhuru's SDK-interoperability rule.
 - `LICENSE`: the upstream MIT notice must stay; it is a licence condition.
 
-## Third-party providers are not us
+## Models and providers
 
-Users may still connect other model providers. Their names are ordinary provider names in a picker,
-never part of U Code's identity. In particular **OpenCode Zen** and **OpenCode Go** (the provider
-with id `opencode`) are upstream's hosted gateway: keep their names exactly as a third-party
-provider, never rename them to "U Code Zen", never describe them as provided by U Code, and never
-present them as the recommended or default provider. Uhuru is the recommended and default provider.
+U Code serves **Uhuru models**, plus **OpenAI** and **Anthropic** for users who bring their own API key.
+Nothing else is offered. `packages/core/src/plugin/provider/allowlist.ts` runs after every other provider
+plugin and removes every other catalog, gateway and local-server provider, along with their sign-ins (MCP
+server sign-ins are kept). The app has no custom-provider entry. A provider a user writes by hand into
+their own `ucode.json` still loads, because config is applied after the allowlist; U Code neither offers
+nor documents that path.
 
-The agent itself never claims to be, run on, or be trained by another provider's model, whichever
-model the user picks. Other AI companies are ordinary subject matter.
+Uhuru models appear under Uhuru names only (for example "Uhuru 4.5"). OpenAI and Anthropic models keep
+their real names, because the user chose them and pays for them through their own account.
+
+Upstream's hosted gateway (OpenCode Zen / Go, provider id `opencode`) is not offered. Its code stays for
+clean merges, and it no longer self-activates.
+
+## Prompt layering
+
+Every request is built in three layers, the same structure the Uhuru platform uses for U4.7:
+
+1. **Brand core**: `packages/core/src/session/runner/prompt/brand.txt`, ported from the Uhuru platform's
+   identity protocol (`supabase/functions/_shared/identity_guard.ts` in uhuruorionx). Every model gets it
+   first. It is added in `packages/core/src/session/model-request.ts` after all plugin hooks, so no plugin
+   or custom agent prompt can drop it. Title generation skips it.
+2. **Agent and model prompt**: the default `session/runner/prompt/system.txt`, or the model-family
+   prompt in `plugin/system-prompt/` chosen by `plugin/optimize.ts`, or a custom agent prompt. These carry
+   no identity of their own.
+3. **Your model**: `plugin/identity.ts`. An Uhuru model holds the Uhuru identity strictly: it is that
+   Uhuru model and nothing underneath it, without scripted answers and without refusing to name other AI
+   systems. An OpenAI or Anthropic own-key model is named plainly, because the user chose it.
+
+Change identity wording in `brand.txt` or `identity.ts` only; never repeat it in model prompts.
 
 ## Upstream-owned surfaces U Code does not ship
 

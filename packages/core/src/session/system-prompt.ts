@@ -1,6 +1,10 @@
 export * as SessionSystemPrompt from "./system-prompt.js"
 
 import PROMPT from "./runner/prompt/system.txt"
+import BRAND from "./runner/prompt/brand.txt"
+
+// The U Code brand core. Every model receives it first; model-specific prompts layer on top.
+export const brand = BRAND
 
 export function make(tools: string[]) {
   return render(PROMPT, tools)

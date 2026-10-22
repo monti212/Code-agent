@@ -15,17 +15,38 @@ import { PluginTestLayer } from "./fixture"
 
 const it = testEffect(PluginTestLayer)
 
-test("formats the model identity part", () => {
+test("names a model the user brought with their own key plainly", () => {
   expect(
     IdentityPlugin.identity({
       name: "GPT-4o mini",
       ref: Model.Ref.make({ providerID: Provider.ID.make("openai"), id: Model.ID.make("gpt-4o-mini") }),
     }),
-  ).toBe(["# Your Model", "- Name: GPT-4o mini", "- Provider ID: openai", "- Model ID: gpt-4o-mini"].join("\n"))
+  ).toBe(
+    [
+      "# Your model",
+      "",
+      "The user connected their own OpenAI account and chose GPT-4o mini for this session. Asked which model you are running, say so plainly: GPT-4o mini, through their OpenAI account, inside U Code.",
+      "",
+      "Model reference: openai/gpt-4o-mini",
+    ].join("\n"),
+  )
+})
+
+test("holds the Uhuru identity strictly for Uhuru models", () => {
+  const text = IdentityPlugin.identity({
+    name: "Uhuru 4.5",
+    ref: Model.Ref.make({ providerID: Provider.ID.uhuru, id: Model.ID.make("uhuru-4.5") }),
+  })
+  expect(text).toContain("You run Uhuru 4.5, a model in the Uhuru AI family")
+  expect(text).toContain("you are U Code on Uhuru 4.5, and nothing else")
+  expect(text).toContain("Model reference: uhuru/uhuru-4.5")
 })
 
 const identity = (name: string, id: string) =>
-  ["# Your Model", `- Name: ${name}`, "- Provider ID: test", `- Model ID: ${id}`].join("\n")
+  IdentityPlugin.identity({
+    name,
+    ref: Model.Ref.make({ providerID: Provider.ID.make("test"), id: Model.ID.make(id) }),
+  })
 
 const context = (id: string): SessionHooks["context"] => ({
   sessionID: Session.ID.make("ses_model_identity"),
