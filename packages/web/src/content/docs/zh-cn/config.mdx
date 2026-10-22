@@ -257,42 +257,6 @@ ucode run "Hello world"
 - `timeout` - 请求超时时间，单位为毫秒（默认值：300000）。设置为 `false` 可禁用超时。
 - `setCacheKey` - 确保始终为指定提供商设置缓存键。
 
-您还可以配置[本地模型](/docs/models#local)。[了解更多](/docs/models)。
-
----
-
-#### 提供商特定选项
-
-一些提供商支持除通用 `timeout` 和 `apiKey` 设置之外的额外配置选项。
-
-##### Amazon Bedrock
-
-Amazon Bedrock 支持 AWS 特定配置：
-
-```json title="ucode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-east-1",
-        "profile": "my-aws-profile",
-        "endpoint": "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com"
-      }
-    }
-  }
-}
-```
-
-- `region` - Bedrock 的 AWS 区域（默认为 `AWS_REGION` 环境变量或 `us-east-1`）
-- `profile` - 来自 `~/.aws/credentials` 的 AWS 命名配置文件（默认为 `AWS_PROFILE` 环境变量）
-- `endpoint` - VPC 端点的自定义端点 URL。这是通用 `baseURL` 选项使用 AWS 特定术语的别名。如果两者都指定，`endpoint` 优先。
-
-:::note
-Bearer Token（`AWS_BEARER_TOKEN_BEDROCK` 或 `/connect`）优先于基于配置文件的身份验证。详情请参见[身份验证优先级](/docs/providers#authentication-precedence)。
-:::
-
-[了解更多关于 Amazon Bedrock 配置的信息](/docs/providers#amazon-bedrock)。
 
 ---
 
@@ -570,7 +534,7 @@ U Code 启动时会自动下载新版本。您可以使用 `autoupdate` 选项�
 ```json title="ucode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "disabled_providers": ["openai", "gemini"]
+  "disabled_providers": ["anthropic"]
 }
 ```
 

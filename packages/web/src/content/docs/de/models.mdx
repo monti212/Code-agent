@@ -3,7 +3,7 @@ title: Modelle
 description: Konfigurieren eines LLM-Anbieters und -Modells.
 ---
 
-U Code verwendet [AI SDK](https://ai-sdk.dev/) und [Models.dev](https://models.dev) zur Unterstützung von **75+ LLM-Anbietern** und unterstützt die Ausführung lokaler Modelle.
+U Code offers Uhuru models, plus OpenAI and Anthropic models when you bring your own API key for them.
 
 ---
 
@@ -37,12 +37,11 @@ Allerdings gibt es nur wenige von ihnen, die sowohl gut darin sind, Code zu gene
 
 Hier sind mehrere Modelle, die gut mit U Code funktionieren, in keiner bestimmten Reihenfolge. (Dies ist weder eine vollständige noch eine unbedingt aktuelle Liste):
 
+- Uhuru 4.5
 - GPT 5.2
 - GPT 5.1 Kodex
 - Claude Opus 4.5
 - Claude Sonett 4.5
-- Minimax M2.1
-- Gemini 3 Pro
 
 ---
 
@@ -54,13 +53,12 @@ U Code config.
 ```json title="ucode.json" {3}
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "lmstudio/google/gemma-3n-e4b"
+  "model": "uhuru/uhuru-4.5"
 }
 ```
 
-Hier ist der vollständige ID `provider_id/model_id`. Wenn Sie beispielsweise [OpenCode Zen](/docs/providers#opencode-zen) verwenden, würden Sie `opencode/gpt-5.1-codex` für GPT 5.1 Codex verwenden.
+Hier ist der vollständige ID `provider_id/model_id`. Wenn Sie beispielsweise [Uhuru AI](/docs/providers#uhuru-ai) verwenden, würden Sie `uhuru/uhuru-4.5` für Uhuru 4.5 verwenden.
 
-Wenn Sie einen [custom provider](/docs/providers#custom) konfiguriert haben, ist `provider_id` der Schlüssel aus dem `provider`-Teil Ihrer Konfiguration und `model_id` der Schlüssel aus `provider.models`.
 
 ---
 

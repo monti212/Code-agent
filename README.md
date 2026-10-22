@@ -12,7 +12,8 @@ U Code is an AI coding agent from [Uhuru AI](https://uhuruai.co), built by Orion
 your terminal, in a desktop app, and in the browser: it reads your project, plans changes, edits files, runs commands
 with your permission, and explains what it did.
 
-U Code is built for Uhuru models and also works with any other LLM provider you connect.
+U Code is built for Uhuru models. If you already pay for OpenAI or Anthropic, you can also bring your own API key for
+them.
 
 ## Install from source
 
@@ -54,10 +55,11 @@ app.
 > The Uhuru Public API does not accept tool definitions yet. With an Uhuru model, U Code can answer and write code in
 > its replies, but it cannot run tools such as file edits or shell commands until tool support reaches the API.
 
-### Other providers
+### Bring your own OpenAI or Anthropic key
 
-Other providers from the [models.dev](https://models.dev) catalog work too. Connect one with `ucode auth login` or
-`/connect` in the TUI.
+If you already pay for OpenAI or Anthropic, connect your own API key with `ucode auth login` or `/connect` in the TUI,
+or set `OPENAI_API_KEY` / `ANTHROPIC_API_KEY`. Those models keep their own names and are billed by that provider.
+U Code offers no other providers.
 
 ## Configure
 

@@ -37,12 +37,12 @@ U Code использует [AI SDK](https://ai-sdk.dev/) и [Models.dev](https:
 
 Вот несколько моделей, которые хорошо работают с U Code (в произвольном порядке). (Это не исчерпывающий список и не обязательно актуальный):
 
+- Uhuru 4.5
 - GPT 5.2
 - Кодекс GPT 5.1
 - Claude Opus 4.5
 - Claude Sonnet 4.5
 - MiniMax M2.1
-- Gemini 3 Pro
 
 ---
 
@@ -54,13 +54,12 @@ U Code использует [AI SDK](https://ai-sdk.dev/) и [Models.dev](https:
 ```json title="ucode.json" {3}
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "lmstudio/google/gemma-3n-e4b"
+  "model": "uhuru/uhuru-4.5"
 }
 ```
 
-Здесь полный идентификатор `provider_id/model_id`. Например, если вы используете [OpenCode Zen](/docs/providers#opencode-zen), вы должны использовать `opencode/gpt-5.1-codex` для кодекса GPT 5.1.
+Здесь полный идентификатор `provider_id/model_id`. Например, если вы используете [Uhuru AI](/docs/providers#uhuru-ai), вы должны использовать `uhuru/uhuru-4.5` для кодекса GPT 5.1.
 
-Если вы настроили [пользовательский поставщик](/docs/providers#custom), `provider_id` — это ключ из части `provider` вашей конфигурации, а `model_id` — это ключ из `provider.models`.
 
 ---
 

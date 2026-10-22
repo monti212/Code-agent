@@ -259,42 +259,6 @@ ucode run "Hello world"
 - `timeout` — таймаут запроса в миллисекундах (по умолчанию: 300000). Установите `false` для отключения.
 - `setCacheKey` — убедитесь, что ключ кэша всегда установлен для назначенного поставщика.
 
-Вы также можете настроить [локальные модели](/docs/models#local). [Подробнее ](/docs/models).
-
----
-
-#### Параметры, зависящие от поставщика
-
-Некоторые поставщики поддерживают дополнительные параметры конфигурации помимо общих настроек `timeout` и `apiKey`.
-
-##### Amazon
-
-Amazon Bedrock поддерживает конфигурацию, специфичную для AWS:
-
-```json title="ucode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-east-1",
-        "profile": "my-aws-profile",
-        "endpoint": "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com"
-      }
-    }
-  }
-}
-```
-
-- `region` — регион AWS для Bedrock (по умолчанию переменная среды `AWS_REGION` или `us-east-1`)
-- `profile` — именованный профиль AWS из `~/.aws/credentials` (по умолчанию переменная окружения `AWS_PROFILE`)
-- `endpoint` — URL-адрес пользовательской конечной точки для конечных точек VPC. Это псевдоним общего параметра `baseURL`, использующий терминологию, специфичную для AWS. Если указаны оба параметра, `endpoint` имеет приоритет.
-
-:::note
-Токены носителя (`AWS_BEARER_TOKEN_BEDROCK` или `/connect`) имеют приоритет над аутентификацией на основе профиля. Подробности см. в [приоритет аутентификации](/docs/providers#authentication-precedence).
-:::
-
-[Подробнее о конфигурации Amazon Bedrock](/docs/providers#amazon-bedrock).
 
 ---
 
@@ -572,7 +536,7 @@ U Code автоматически загрузит все новые обнов�
 ```json title="ucode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "disabled_providers": ["openai", "gemini"]
+  "disabled_providers": ["anthropic"]
 }
 ```
 

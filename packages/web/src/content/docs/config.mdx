@@ -395,7 +395,6 @@ Provider options can include `timeout`, `chunkTimeout`, and `setCacheKey`:
 - `chunkTimeout` - Timeout in milliseconds between streamed response chunks. If no chunk arrives in time, the request is aborted.
 - `setCacheKey` - Ensure a cache key is always set for designated provider.
 
-You can also configure [local models](/docs/models#local). [Learn more](/docs/models).
 
 ---
 
@@ -448,41 +447,6 @@ Configure image attachment limits with the `attachment.image` option:
 - `max_base64_bytes` - Maximum encoded image payload size. This is the base64 payload size, not the original file size.
 
 If an image still cannot fit after resizing, U Code omits oversized tool-result images or fails oversized user-provided images with an image size error.
-
----
-
-#### Provider-Specific Options
-
-Some providers support additional configuration options beyond the generic `timeout` and `apiKey` settings.
-
-##### Amazon Bedrock
-
-Amazon Bedrock supports AWS-specific configuration:
-
-```json title="ucode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-east-1",
-        "profile": "my-aws-profile",
-        "endpoint": "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com"
-      }
-    }
-  }
-}
-```
-
-- `region` - AWS region for Bedrock (defaults to `AWS_REGION` env var or `us-east-1`)
-- `profile` - AWS named profile from `~/.aws/credentials` (defaults to `AWS_PROFILE` env var)
-- `endpoint` - Custom endpoint URL for VPC endpoints. This is an alias for the generic `baseURL` option using AWS-specific terminology. If both are specified, `endpoint` takes precedence.
-
-:::note
-Bearer tokens (`AWS_BEARER_TOKEN_BEDROCK` or `/connect`) take precedence over profile-based authentication. See [authentication precedence](/docs/providers#authentication-precedence) for details.
-:::
-
-[Learn more about Amazon Bedrock configuration](/docs/providers#amazon-bedrock).
 
 ---
 
@@ -839,7 +803,7 @@ You can disable providers that are loaded automatically through the `disabled_pr
 ```json title="ucode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "disabled_providers": ["openai", "gemini"]
+  "disabled_providers": ["anthropic"]
 }
 ```
 

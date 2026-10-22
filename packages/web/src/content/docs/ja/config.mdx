@@ -262,42 +262,6 @@ LLM が使用できるツールは、`tools` オプションを通じて管理�
 - `timeout` - リクエストのタイムアウト (ミリ秒単位) (デフォルト: 300000)。無効にするには、`false` に設定します。
 - `setCacheKey` - 指定されたプロバイダーに対してキャッシュキーが常に設定されていることを確認します。
 
-[ローカルモデル](/docs/models#local) も設定できます。[詳細はこちら](/docs/models)。
-
----
-
-#### プロバイダー固有のオプション
-
-一部のプロバイダーは、一般的な `timeout` および `apiKey` 設定を超える追加の構成オプションをサポートしています。
-
-##### Amazon Bedrock
-
-Amazon Bedrock は、AWS 固有の設定をサポートしています。
-
-```json title="ucode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-east-1",
-        "profile": "my-aws-profile",
-        "endpoint": "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com"
-      }
-    }
-  }
-}
-```
-
-- `region` - Bedrock の AWS リージョン (デフォルトは `AWS_REGION` 環境変数または `us-east-1`)
-- `profile` - `~/.aws/credentials` からの AWS 名前付きプロファイル (デフォルトは `AWS_PROFILE` 環境変数)
-- `endpoint` - VPC エンドポイントのカスタムエンドポイント URL。これは、AWS 固有の用語を使用した汎用 `baseURL` オプションのエイリアスです。両方を指定した場合は、`endpoint` が優先されます。
-
-:::note
-ベアラー トークン (`AWS_BEARER_TOKEN_BEDROCK` または `/connect`) は、プロファイルベースの認証より優先されます。詳細については、「[認証優先順位](/docs/providers#authentication-precedence)」を参照してください。
-:::
-
-[Amazon Bedrock 設定](/docs/providers#amazon-bedrock) の詳細をご覧ください。
 
 ---
 
@@ -573,7 +537,7 @@ U Code は起動時に新しいアップデートを自動的にダウンロー�
 ```json title="ucode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "disabled_providers": ["openai", "gemini"]
+  "disabled_providers": ["anthropic"]
 }
 ```
 

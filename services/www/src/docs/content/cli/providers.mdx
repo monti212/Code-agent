@@ -10,8 +10,8 @@ Connect a provider in the TUI, then choose one of its models:
 /models
 ```
 
-`/connect` lists the integrations available from the current server and project. Select a provider, choose an
-authentication method when it offers more than one, and follow the prompts.
+`/connect` lists the providers U Code offers: Uhuru AI, plus OpenAI and Anthropic for your own API key. Select a
+provider, choose an authentication method when it offers more than one, and follow the prompts.
 
 ## TUI
 
@@ -38,6 +38,7 @@ ucode auth login
 Pass an integration ID or name to skip the first picker. Use `--method key` to select API-key entry explicitly.
 
 ```bash
+ucode auth login uhuru --method key
 ucode auth login anthropic --method key
 ```
 
@@ -62,8 +63,8 @@ U Code receives provider credentials through four integration methods:
 | Command | Runs a provider-supplied authentication command and saves its standard output as a key. |
 | Environment | Reads a supported variable from the server process without saving it. |
 
-Providers can add forms to API-key and OAuth methods for required details such as an Azure resource name or a GitHub
-Enterprise domain. The CLI and TUI render those forms before starting authentication.
+Providers can add forms to API-key and OAuth methods for required details. The CLI and TUI render those forms before
+starting authentication.
 
 ## Environment
 
@@ -89,20 +90,6 @@ the same integration.
 ```bash
 ucode auth list
 ucode service unset env ANTHROPIC_API_KEY
-```
-
-Some cloud providers also use their native ambient credential chain instead of an API-key variable:
-
-- Amazon Bedrock supports the AWS default credential chain, including profiles, access-key environments, web identity,
-  and container credentials. It also supports `AWS_BEARER_TOKEN_BEDROCK`.
-- Google Vertex uses Application Default Credentials and a resolvable project. For example, authenticate with
-  `gcloud auth application-default login` and set `GOOGLE_CLOUD_PROJECT`.
-- Azure exposes **Microsoft Entra ID (Azure CLI)** as a connect method when `az` is installed. Run `az login` first, then
-  select that method in `/connect` or `auth login azure`.
-
-```bash
-gcloud auth application-default login
-GOOGLE_CLOUD_PROJECT=my-project ucode
 ```
 
 See [Providers](/providers) for provider-specific and server-side setup.

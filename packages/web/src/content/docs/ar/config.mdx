@@ -259,42 +259,6 @@ ucode run "Hello world"
 - `timeout` - مهلة الطلب بالميلي ثانية (الافتراضي: 300000). اضبطه إلى `false` لتعطيله.
 - `setCacheKey` - يضمن تعيين مفتاح التخزين المؤقت دائمًا للمزوّد المحدد.
 
-يمكنك أيضًا ضبط [النماذج المحلية](/docs/models#local). [تعرف على المزيد](/docs/models).
-
----
-
-#### خيارات خاصة بالمزوّد
-
-يدعم بعض المزوّدين خيارات إعداد إضافية تتجاوز الإعدادات العامة مثل `timeout` و`apiKey`.
-
-##### Amazon Bedrock
-
-يدعم Amazon Bedrock إعدادات خاصة بـ AWS:
-
-```json title="ucode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-east-1",
-        "profile": "my-aws-profile",
-        "endpoint": "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com"
-      }
-    }
-  }
-}
-```
-
-- `region` - منطقة AWS لـ Bedrock (الافتراضي: متغير البيئة `AWS_REGION` أو `us-east-1`)
-- `profile` - ملف تعريف AWS المُسمّى من `~/.aws/credentials` (الافتراضي: متغير البيئة `AWS_PROFILE`)
-- `endpoint` - عنوان URL لنقطة نهاية مخصصة لنقاط نهاية VPC. هذا اسم بديل للخيار العام `baseURL` باستخدام مصطلحات AWS. إذا تم تحديدهما معًا، تكون أولوية `endpoint` أعلى.
-
-:::note
-لرموز Bearer (`AWS_BEARER_TOKEN_BEDROCK` أو `/connect`) أولوية أعلى من المصادقة القائمة على ملف التعريف. راجع [أولوية المصادقة](/docs/providers#authentication-precedence) للتفاصيل.
-:::
-
-[تعرف على المزيد حول إعداد Amazon Bedrock](/docs/providers#amazon-bedrock).
 
 ---
 
@@ -572,7 +536,7 @@ ucode run "Hello world"
 ```json title="ucode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "disabled_providers": ["openai", "gemini"]
+  "disabled_providers": ["anthropic"]
 }
 ```
 
