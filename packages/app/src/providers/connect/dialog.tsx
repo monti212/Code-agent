@@ -110,12 +110,12 @@ function ProviderPicker(props: { directory?: string; onSelect: (provider: string
     active: undefined as string | undefined,
     connecting: undefined as string | undefined,
   })
-  const featured = ["uhuru", "anthropic", "openai", "google", "openrouter", "vercel"]
-  const custom = () => ({ id: CUSTOM_ID, name: language.t("dialog.provider.custom.label") })
+  const featured = ["uhuru", "openai", "anthropic"]
   const all = createMemo(() => {
     language.locale()
     const query = store.filter.trim().toLowerCase()
-    const values = [custom(), ...integrations.list()]
+    // No custom-provider entry: U Code offers only the providers its catalog lists.
+    const values = integrations.list()
     if (!query) return values
     return values.filter((provider) => `${provider.id} ${provider.name}`.toLowerCase().includes(query))
   })

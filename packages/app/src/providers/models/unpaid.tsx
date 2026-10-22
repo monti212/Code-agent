@@ -13,7 +13,7 @@ import { useLanguage } from "@/runtime/i18n/language"
 import { ModelTooltip } from "./tooltip"
 
 type ModelState = ModelSelection
-const featuredProviders = ["uhuru", "openai", "anthropic", "google", "github-copilot", "openrouter"]
+const featuredProviders = ["uhuru", "openai", "anthropic"]
 const displayModelName = (name: string) => name.replace(/\s+(?:\(free\)|free)$/i, "")
 
 export const DialogSelectModelUnpaid: Component<{ model?: ModelState }> = (props) => {
