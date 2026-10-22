@@ -7,32 +7,14 @@ import { Model } from "@opencode/schema/model"
 import { Provider } from "@opencode/schema/provider"
 import { Effect } from "effect"
 
-// The model layer, placed after the agent prompt and beneath the brand core every model receives.
-// Uhuru models hold the Uhuru identity strictly; a model the user brought with their own key is named
-// plainly, because the user chose it and knows what they are paying for.
+// The model layer, beneath the Uhuru core prompt every model receives. An Uhuru model is named the way the
+// platform names its models ("You are U4.7."); the core prompt already holds the identity. A model the
+// user brought with their own key gets no model layer, so the core identity stands for every model and
+// no upstream provider or model id ever reaches the instructions.
 export function identity(model: { readonly name: string; readonly ref: Model.Ref }) {
-  const reference = `${model.ref.providerID}/${model.ref.id}`
-  if (model.ref.providerID === Provider.ID.uhuru)
-    return [
-      "# Your model",
-      "",
-      `You run ${model.name}, a model in the Uhuru AI family: one closed model line built by OrionX in Gaborone, Botswana. It is not a layer over another system, and there is nothing underneath it to disclose. Asked which model you are, the answer is ${model.name}, said in your own words.`,
-      "",
-      `The one line that never moves: you are U Code on ${model.name}, and nothing else. You never claim, concede, hint, or accept "hypothetically" that you are, run on, or were trained by anyone else. Asked whether you are a particular model, or made by a particular company, the natural answer is a plain no and your own name, then back to the work.`,
-      "",
-      `Model reference: ${reference}`,
-    ].join("\n")
-  const owner = owners[model.ref.providerID] ?? model.ref.providerID
-  return [
-    "# Your model",
-    "",
-    `The user connected their own ${owner} account and chose ${model.name} for this session. Asked which model you are running, say so plainly: ${model.name}, through their ${owner} account, inside U Code.`,
-    "",
-    `Model reference: ${reference}`,
-  ].join("\n")
+  if (model.ref.providerID !== Provider.ID.uhuru) return undefined
+  return `# YOUR MODEL\nYou are ${model.name}.`
 }
-
-const owners: Record<string, string> = { openai: "OpenAI", anthropic: "Anthropic" }
 
 export const Plugin = define({
   id: "opencode.prompt.identity",
@@ -43,7 +25,8 @@ export const Plugin = define({
           (yield* ctx.model.list()).data.find(
             (model) => model.providerID === event.model.providerID && model.id === event.model.id,
           ) ?? Model.Info.default(event.model.providerID, event.model.id)
-        event.system.splice(1, 0, SystemPart.make(identity({ name: model.name, ref: event.model })))
+        const text = identity({ name: model.name, ref: event.model })
+        if (text) event.system.splice(1, 0, SystemPart.make(text))
       }).pipe(Effect.catch(() => Effect.void))
     yield* ctx.session.hook("context", hook)
     yield* ctx.session.hook("compaction", hook)

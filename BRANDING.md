@@ -63,7 +63,7 @@ Raster app icons (desktop installers, tray, dock) are the Uhuru U Code icon set,
   Issue/source links → `github.com/monti212/Code-agent`. Upstream Discord, X and community links
   are removed, not redirected.
 - Logos, favicons, app icons, ASCII wordmarks, default theme colours.
-- Agent identity in system prompts: the agent is U Code, Uhuru's coding agent.
+- Agent identity: every model runs on the Uhuru platform's core prompt, so it is Uhuru AI inside U Code (see Prompt layering).
 
 ## What stays (internal, on purpose)
 
@@ -93,20 +93,35 @@ clean merges, and it no longer self-activates.
 
 ## Prompt layering
 
-Every request is built in three layers, the same structure the Uhuru platform uses for U4.7:
+U Code does not write its own identity. Its core prompt is the Uhuru platform's, generated from the
+uhuruorionx repository, so the brand identity has one source.
 
-1. **Brand core**: `packages/core/src/session/runner/prompt/brand.txt`, ported from the Uhuru platform's
-   identity protocol (`supabase/functions/_shared/identity_guard.ts` in uhuruorionx). Every model gets it
-   first. It is added in `packages/core/src/session/model-request.ts` after all plugin hooks, so no plugin
-   or custom agent prompt can drop it. Title generation skips it.
-2. **Agent and model prompt**: the default `session/runner/prompt/system.txt`, or the model-family
-   prompt in `plugin/system-prompt/` chosen by `plugin/optimize.ts`, or a custom agent prompt. These carry
-   no identity of their own.
-3. **Your model**: `plugin/identity.ts`. An Uhuru model holds the Uhuru identity strictly: it is that
-   Uhuru model and nothing underneath it, without scripted answers and without refusing to name other AI
-   systems. An OpenAI or Anthropic own-key model is named plainly, because the user chose it.
+1. **Uhuru core prompt** (every model): `packages/core/src/session/runner/prompt/uhuru-core.txt`, exactly
+   what the platform builds for its U Code agent:
+   `injectIdentityProtocol(buildCorePrompt("code-agent", undefined, { includeOutputFormats: false }))`
+   from `supabase/functions/_shared/` (`identity_guard.ts`, `core_prompt.ts`). That is the identity
+   protocol, the shared core identity (with Africa integrity, execution discipline and architecture
+   answers), the voice texture, the `code-agent` role and the product catalog. Output formats are left
+   out because they name chat tools U Code does not have. It is added in
+   `packages/core/src/session/model-request.ts` after all plugin hooks, so no plugin or custom agent
+   prompt can drop it. Title generation skips it.
+2. **Harness and model-family prompt**: `session/runner/prompt/system.txt`, or the model-family prompt in
+   `plugin/system-prompt/` chosen by `plugin/optimize.ts`, or a custom agent prompt. These carry no
+   identity of their own.
+3. **Model layer** (`plugin/identity.ts`): an Uhuru model is named the way the platform names its models
+   (`# YOUR MODEL` / `You are Uhuru 4.5.`). A model the user brought with their own OpenAI or Anthropic
+   key gets no model layer: the platform identity stands for every model, and no upstream provider or
+   model id reaches the instructions.
 
-Change identity wording in `brand.txt` or `identity.ts` only; never repeat it in model prompts.
+**Never edit `uhuru-core.txt` by hand.** Change the platform, then regenerate from a committed checkout:
+
+```bash
+bun script/sync-uhuru-prompt.ts /path/to/uhuruorionx
+```
+
+The script records the platform commit and a SHA-256 in `uhuru-core.json`;
+`packages/core/test/session-uhuru-core.test.ts` fails if the text no longer matches. Re-run the sync
+whenever `identity_guard.ts` or `core_prompt.ts` changes on the platform.
 
 ## Upstream-owned surfaces U Code does not ship
 

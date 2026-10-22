@@ -1,10 +1,11 @@
 export * as SessionSystemPrompt from "./system-prompt.js"
 
 import PROMPT from "./runner/prompt/system.txt"
-import BRAND from "./runner/prompt/brand.txt"
+import CORE from "./runner/prompt/uhuru-core.txt"
 
-// The U Code brand core. Every model receives it first; model-specific prompts layer on top.
-export const brand = BRAND
+// The Uhuru platform core prompt, generated from uhuruorionx by script/sync-uhuru-prompt.ts. Every
+// model receives it first; the harness, model-family and model prompts layer on top. Never edit it here.
+export const core = CORE
 
 export function make(tools: string[]) {
   return render(PROMPT, tools)

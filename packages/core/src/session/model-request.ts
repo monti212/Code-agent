@@ -245,9 +245,9 @@ export const layer = Layer.effect(
         },
         // TODO: Persist cache lineage so nested forks reuse the root session's cache key.
         promptCacheKey: /^ses_[0-9a-f]{64}$/.test(root) ? root.slice(4) : root,
-        // The brand core leads every model's instructions. It is added after the hooks so no plugin or
-        // custom agent prompt can drop it; titles are a one-line utility call and skip it.
-        system: kind === "title" ? shaped.system : [SystemPart.make(SessionSystemPrompt.brand), ...shaped.system],
+        // The Uhuru core prompt leads every model's instructions. It is added after the hooks so no plugin
+        // or custom agent prompt can drop it; titles are a one-line utility call and skip it.
+        system: kind === "title" ? shaped.system : [SystemPart.make(SessionSystemPrompt.core), ...shaped.system],
         messages: boundImages(unsupportedParts(shaped.messages, model.capabilities)),
         tools: Array.from(hooked, ([name, t]) => ({ ...t, name })),
         toolChoice: input.toolChoice,

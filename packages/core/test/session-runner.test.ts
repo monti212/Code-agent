@@ -115,11 +115,6 @@ const testModel = (id: string, limit: ModelLimit = defaultModelLimit) => {
 }
 const model = testModel("fake-model")
 const defaultSystem = SessionSystemPrompt.make([])
-const identity = (providerID: string, id: string) =>
-  IdentityPlugin.identity({ name: id, ref: { providerID: Provider.ID.make(providerID), id: Model.ID.make(id) } })
-const fakeIdentity = identity("fake", "fake-model")
-const replacementIdentity = identity("fake", "replacement")
-const gptIdentity = identity("openai", "gpt-5")
 const replacementModel = testModel("replacement")
 const compactModel = testModel("compact", { context: 4_000, output: 50 })
 const fullOutputModel = testModel("full-output", { context: 262_144, output: 262_144 })
@@ -1570,9 +1565,8 @@ describe("SessionRunnerLLM", () => {
     yield* s.session.resume(forked.id)
 
     expect(s.requests.at(-1)?.system.map((part) => part.text)).toEqual([
-      SessionSystemPrompt.brand,
+      SessionSystemPrompt.core,
       defaultSystem,
-      fakeIdentity,
       "Latest context",
     ])
     // Copied history keeps the frozen chronological update; no new update is emitted.
@@ -1638,9 +1632,8 @@ describe("SessionRunnerLLM", () => {
 
     expect(s.requests).toHaveLength(1)
     expect(s.requests[0]?.system.map((part) => part.text)).toEqual([
-      SessionSystemPrompt.brand,
+      SessionSystemPrompt.core,
       defaultSystem,
-      fakeIdentity,
       "Initial context",
     ])
     expect(messageRoles(s.requests[0])).toEqual(["user", "user"])
@@ -1678,8 +1671,8 @@ describe("SessionRunnerLLM", () => {
     expect(s.requests[0].messages).toHaveLength(1)
     expect(s.requests[1].messages.slice(0, 1)).toEqual([...s.requests[0].messages])
     expect(s.requests.map((request) => request.system.map((part) => part.text))).toEqual([
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context"],
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
     ])
     expect(messageRoles(s.requests[1])).toEqual(["user", "system", "user"])
     expect(s.requests[1]?.messages.at(1)?.content).toEqual([Expected.text("Changed context")])
@@ -1717,9 +1710,8 @@ describe("SessionRunnerLLM", () => {
     yield* s.resume
 
     expect(s.requests.at(-1)?.system.map((part) => part.text)).toEqual([
-      SessionSystemPrompt.brand,
+      SessionSystemPrompt.core,
       expect.stringContaining("# Delegation"),
-      gptIdentity,
       "Initial context",
     ])
   })
@@ -1739,9 +1731,8 @@ describe("SessionRunnerLLM", () => {
     yield* s.resume
 
     expect(s.requests.at(-1)?.system.map((part) => part.text)).toEqual([
-      SessionSystemPrompt.brand,
+      SessionSystemPrompt.core,
       expect.stringContaining("# Delegation"),
-      gptIdentity,
       "Initial context",
     ])
   })
@@ -1760,9 +1751,8 @@ describe("SessionRunnerLLM", () => {
     yield* s.resume
 
     expect(s.requests.at(-1)?.system.map((part) => part.text)).toEqual([
-      SessionSystemPrompt.brand,
+      SessionSystemPrompt.core,
       "Build agent instructions",
-      fakeIdentity,
       "Initial context",
     ])
   })
@@ -1786,9 +1776,8 @@ describe("SessionRunnerLLM", () => {
     yield* s.resume
 
     expect(s.requests.at(-1)?.system.map((part) => part.text)).toEqual([
-      SessionSystemPrompt.brand,
+      SessionSystemPrompt.core,
       "Reviewer instructions",
-      fakeIdentity,
       "Initial context",
     ])
     expect((yield* s.messages)[0]).toMatchObject({ type: "assistant", agent: "reviewer" })
@@ -1814,9 +1803,8 @@ describe("SessionRunnerLLM", () => {
     yield* s.resume
 
     expect(s.requests.at(-1)?.system.map((part) => part.text)).toEqual([
-      SessionSystemPrompt.brand,
+      SessionSystemPrompt.core,
       "Reviewer instructions",
-      fakeIdentity,
       "Initial context",
     ])
     expect((yield* s.messages)[0]).toMatchObject({ type: "assistant", agent: "reviewer" })
@@ -1860,8 +1848,8 @@ describe("SessionRunnerLLM", () => {
     yield* s.runPrompt("Second")
 
     expect(s.requests.map((request) => request.system.map((part) => part.text))).toEqual([
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context\n\nBuild skills"],
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context\n\nBuild skills"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context\n\nBuild skills"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context\n\nBuild skills"],
     ])
     expect(systemTexts(s.requests[1])).toContainEqual(expect.stringContaining("Reviewer skills"))
   })
@@ -1883,7 +1871,7 @@ describe("SessionRunnerLLM", () => {
     yield* s.runPrompt("First")
 
     expect(s.requests.map((request) => request.system.map((part) => part.text))).toEqual([
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context\n\nBuild skills"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context\n\nBuild skills"],
     ])
   })
 
@@ -1902,7 +1890,7 @@ describe("SessionRunnerLLM", () => {
     yield* s.runPrompt("First")
     expect(s.requests.map((request) => request.model)).toEqual([model])
     expect(s.requests.map((request) => request.system.map((part) => part.text))).toEqual([
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
     ])
   })
 
@@ -1925,9 +1913,8 @@ describe("SessionRunnerLLM", () => {
 
     // String values render verbatim inside the initial tagged block.
     expect(s.requests[0]?.system.map((part) => part.text)).toEqual([
-      SessionSystemPrompt.brand,
+      SessionSystemPrompt.core,
       defaultSystem,
-      fakeIdentity,
       ["Initial context", "", '<context key="deploy-target">', "production", "</context>"].join("\n"),
     ])
 
@@ -2015,9 +2002,9 @@ describe("SessionRunnerLLM", () => {
     yield* s.runPrompt("Third")
 
     expect(s.requests.map((request) => request.system.map((part) => part.text))).toEqual([
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context"],
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context"],
-      [SessionSystemPrompt.brand, defaultSystem, replacementIdentity, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
     ])
     expect(messageRoles(s.requests[1])).toEqual(["user", "system", "user"])
     expect(s.requests[2]?.messages.filter((message) => message.role === "system")).toHaveLength(2)
@@ -2079,9 +2066,9 @@ describe("SessionRunnerLLM", () => {
     yield* s.runPrompt("Third")
 
     expect(s.requests.map((request) => request.system.map((part) => part.text))).toEqual([
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context"],
-      [SessionSystemPrompt.brand, defaultSystem, replacementIdentity, "Initial context"],
-      [SessionSystemPrompt.brand, defaultSystem, replacementIdentity, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
     ])
   })
 
@@ -2097,9 +2084,9 @@ describe("SessionRunnerLLM", () => {
     yield* s.runPrompt("Second")
 
     expect(s.requests.map((request) => request.system.map((part) => part.text))).toEqual([
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context"],
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context"],
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
     ])
     expect(messageRoles(s.requests[2])).toEqual(["user", "system", "user"])
     expect(s.requests[2]?.messages.at(1)?.content).toEqual([Expected.text("Replacement context")])
@@ -3062,9 +3049,8 @@ describe("SessionRunnerLLM", () => {
     expect(s.requests).toHaveLength(3)
     expect(s.requests[2]?.model).toBe(replacementModel)
     expect(s.requests[2]?.system.map((part) => part.text)).toEqual([
-      SessionSystemPrompt.brand,
+      SessionSystemPrompt.core,
       defaultSystem,
-      replacementIdentity,
       "Initial context",
     ])
     expect(systemTexts(s.requests[2])).toContain("Changed during compaction")
@@ -3258,9 +3244,8 @@ describe("SessionRunnerLLM", () => {
 
     // Compaction already moved current values into the new epoch before the unavailable read.
     expect(s.requests.at(-1)?.system.map((part) => part.text)).toEqual([
-      SessionSystemPrompt.brand,
+      SessionSystemPrompt.core,
       defaultSystem,
-      fakeIdentity,
       "Changed context",
     ])
     expect(systemTexts(s.requests.at(-1)!)).not.toContain("Changed context")
@@ -3399,8 +3384,8 @@ describe("SessionRunnerLLM", () => {
 
     expect(s.requests.map((request) => request.model)).toEqual([model, replacementModel])
     expect(s.requests.map((request) => request.system.map((part) => part.text))).toEqual([
-      [SessionSystemPrompt.brand, defaultSystem, fakeIdentity, "Initial context"],
-      [SessionSystemPrompt.brand, defaultSystem, replacementIdentity, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
+      [SessionSystemPrompt.core, defaultSystem, "Initial context"],
     ])
     expect(systemTexts(s.requests[1])).toContain("Replacement context")
   })
