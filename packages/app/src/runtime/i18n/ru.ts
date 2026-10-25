@@ -202,15 +202,9 @@ export const dict = {
   "dialog.provider.empty": "Провайдеры не найдены",
   "dialog.provider.group.popular": "Популярные",
   "dialog.provider.group.other": "Другие",
-  "dialog.provider.custom.label": "Пользовательский провайдер, совместимый с OpenAI",
   "dialog.provider.tag.recommended": "Рекомендуемые",
-  "dialog.provider.opencode.note": "Отобранные модели, включая Claude, GPT, Gemini и другие",
   "dialog.provider.opencode.tagline": "Надёжные оптимизированные модели",
   "dialog.provider.opencodeGo.tagline": "Доступная подписка для всех",
-  "dialog.provider.anthropic.note": "Прямой доступ к моделям Claude, включая Pro и Max",
-  "dialog.provider.copilot.note": "ИИ-модели для помощи в кодировании через GitHub Copilot",
-  "dialog.provider.openai.note": "Модели GPT для быстрых и мощных задач общего ИИ",
-  "dialog.provider.google.note": "Модели Gemini для быстрых и структурированных ответов",
   "dialog.provider.openrouter.note": "Доступ ко всем поддерживаемым моделям через одного провайдера",
   "dialog.provider.vercel.note": "Единый доступ к ИИ-моделям с умной маршрутизацией",
 
@@ -221,7 +215,6 @@ export const dict = {
   "dialog.model.manage.description": "Настройте, какие модели отображаются при выборе модели",
   "dialog.model.manage.provider.toggle": "Переключить все модели {{provider}}",
 
-  "dialog.model.unpaid.freeModels.title": "Бесплатные модели от OpenCode Zen",
   "dialog.model.unpaid.addMore.title": "Добавьте больше моделей от популярных провайдеров",
   "dialog.model.unpaid.viewMoreProviders": "Посмотреть ещё более 70 провайдеров",
 
@@ -241,10 +234,6 @@ export const dict = {
   "provider.connect.apiKey.label": "Ключ API {{provider}}",
   "provider.connect.apiKey.placeholder": "Ключ API",
   "provider.connect.apiKey.required": "Требуется ключ API",
-  "provider.connect.opencodeZen.line1":
-    "OpenCode Zen даёт вам доступ к отобранным надёжным оптимизированным моделям для агентов программирования.",
-  "provider.connect.opencodeZen.line2":
-    "С одним ключом API вы получите доступ к таким моделям, как Claude, GPT, Gemini, GLM и другие.",
   "provider.connect.opencodeZen.visit.prefix": "Посетите ",
   "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": ", чтобы получить ключ API.",
@@ -266,7 +255,6 @@ export const dict = {
 
   "provider.custom.title": "Пользовательский провайдер",
   "provider.custom.unavailable": "Пользовательские провайдеры недоступны на этом сервере",
-  "provider.custom.description.prefix": "Настройте провайдера, совместимого с OpenAI. См. ",
   "provider.custom.description.link": "документацию по настройке провайдера",
   "provider.custom.description.suffix": ".",
   "provider.custom.field.providerID.label": "ID провайдера",
@@ -719,8 +707,6 @@ export const dict = {
   "home.sessions.group.today": "Сегодня",
   "home.sessions.group.yesterday": "Вчера",
   "home.sessions.group.older": "Ранее",
-  "home.providerTip":
-    "Подключитесь к более чем 75 провайдерам, чтобы использовать другие модели, включая Claude, GPT, Gemini и другие",
 
   "session.tab.session": "Сессия",
   "session.tab.review": "Обзор",
@@ -834,9 +820,6 @@ export const dict = {
   "sidebar.workspaces.enable": "Включить рабочие пространства",
   "sidebar.workspaces.disable": "Отключить рабочие пространства",
   "sidebar.gettingStarted.title": "Начало работы",
-  "sidebar.gettingStarted.line1": "OpenCode Zen включает бесплатные модели, чтобы вы могли начать сразу.",
-  "sidebar.gettingStarted.line2":
-    "Подключите любого провайдера для использования моделей, включая Claude, GPT, Gemini и др.",
   "sidebar.project.recentSessions": "Недавние сессии",
   "sidebar.project.viewAllSessions": "Посмотреть все сессии",
   "sidebar.project.clearNotifications": "Очистить уведомления",
@@ -1108,7 +1091,6 @@ export const dict = {
   "common.time.hoursAgo.short": "{{count}} ч назад",
   "common.time.daysAgo.short": "{{count}} д назад",
   "settings.providers.connected.environmentDescription": "Подключено из ваших переменных окружения",
-  "settings.providers.custom.description": "Добавить провайдера, совместимого с OpenAI, по базовому URL.",
 
   "app.server.unreachable": "Не удалось связаться с {{server}}",
   "app.server.retrying": "Автоматическая повторная попытка…",

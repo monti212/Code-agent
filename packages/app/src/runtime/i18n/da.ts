@@ -102,15 +102,9 @@ export const dict = {
   "dialog.provider.empty": "Ingen udbydere fundet",
   "dialog.provider.group.popular": "Populære",
   "dialog.provider.group.other": "Andre",
-  "dialog.provider.custom.label": "Brugerdefineret OpenAI-kompatibel udbyder",
   "dialog.provider.tag.recommended": "Anbefalet",
-  "dialog.provider.opencode.note": "Udvalgte modeller inklusive Claude, GPT, Gemini og flere",
   "dialog.provider.opencode.tagline": "Pålidelige optimerede modeller",
   "dialog.provider.opencodeGo.tagline": "Billigt abonnement for alle",
-  "dialog.provider.anthropic.note": "Direkte adgang til Claude-modeller, inklusive Pro og Max",
-  "dialog.provider.copilot.note": "AI-modeller til kodningsassistance via GitHub Copilot",
-  "dialog.provider.openai.note": "GPT-modeller til hurtige, kompetente generelle AI-opgaver",
-  "dialog.provider.google.note": "Gemini-modeller til hurtige, strukturerede svar",
   "dialog.provider.openrouter.note": "Få adgang til alle understøttede modeller fra én udbyder",
   "dialog.provider.vercel.note": "Samlet adgang til AI-modeller med smart routing",
 
@@ -121,7 +115,6 @@ export const dict = {
   "dialog.model.manage.description": "Tilpas hvilke modeller der vises i modelvælgeren.",
   "dialog.model.manage.provider.toggle": "Skift alle {{provider}}-modeller",
 
-  "dialog.model.unpaid.freeModels.title": "Gratis modeller leveret af OpenCode Zen",
   "dialog.model.unpaid.addMore.title": "Tilføj flere modeller fra populære udbydere",
   "dialog.model.unpaid.viewMoreProviders": "Se mere end 70 yderligere udbydere",
 
@@ -141,10 +134,6 @@ export const dict = {
   "provider.connect.apiKey.label": "API-nøgle til {{provider}}",
   "provider.connect.apiKey.placeholder": "API-nøgle",
   "provider.connect.apiKey.required": "API-nøgle er påkrævet",
-  "provider.connect.opencodeZen.line1":
-    "OpenCode Zen giver dig adgang til et udvalg af pålidelige optimerede modeller til kodningsagenter.",
-  "provider.connect.opencodeZen.line2":
-    "Med en enkelt API-nøgle får du adgang til modeller som Claude, GPT, Gemini, GLM og flere.",
   "provider.connect.opencodeZen.visit.prefix": "Besøg ",
   "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": " for at hente din API-nøgle.",
@@ -166,7 +155,6 @@ export const dict = {
 
   "provider.custom.title": "Brugerdefineret udbyder",
   "provider.custom.unavailable": "Brugerdefinerede udbydere er ikke tilgængelige på denne server",
-  "provider.custom.description.prefix": "Konfigurer en OpenAI-kompatibel udbyder. Se ",
   "provider.custom.description.link": "dokumentation for udbyderkonfiguration",
   "provider.custom.description.suffix": ".",
   "provider.custom.field.providerID.label": "Udbyder-ID",
@@ -615,8 +603,6 @@ export const dict = {
   "home.sessions.group.today": "I dag",
   "home.sessions.group.yesterday": "I går",
   "home.sessions.group.older": "Ældre",
-  "home.providerTip":
-    "Opret forbindelse til mere end 75 udbydere for at bruge andre modeller, herunder Claude, GPT, Gemini og flere",
 
   "session.tab.session": "Session",
   "session.tab.review": "Gennemgang",
@@ -729,8 +715,6 @@ export const dict = {
   "sidebar.workspaces.enable": "Aktiver arbejdsområder",
   "sidebar.workspaces.disable": "Deaktiver arbejdsområder",
   "sidebar.gettingStarted.title": "Kom i gang",
-  "sidebar.gettingStarted.line1": "OpenCode Zen inkluderer gratis modeller så du kan starte med det samme.",
-  "sidebar.gettingStarted.line2": "Forbind enhver udbyder for at bruge modeller, inkl. Claude, GPT, Gemini osv.",
   "sidebar.project.recentSessions": "Seneste sessioner",
   "sidebar.project.viewAllSessions": "Vis alle sessioner",
   "sidebar.project.clearNotifications": "Ryd notifikationer",
@@ -998,7 +982,6 @@ export const dict = {
   "common.time.hoursAgo.short": "{{count}}t siden",
   "common.time.daysAgo.short": "{{count}}d siden",
   "settings.providers.connected.environmentDescription": "Tilsluttet fra dine miljøvariabler",
-  "settings.providers.custom.description": "Tilføj en OpenAI-kompatibel udbyder via basis-URL.",
 
   "app.server.unreachable": "Kunne ikke nå {{server}}",
   "app.server.retrying": "Prøver igen automatisk…",

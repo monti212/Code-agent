@@ -79,6 +79,7 @@
 
         [data-slot="dialog-title"] {
           margin: 0;
+          font-family: var(--font-family-display);
           flex: none;
           flex-grow: 0;
           user-select: none;

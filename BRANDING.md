@@ -29,16 +29,38 @@ operation. A rename that no user can see buys nothing and costs a conflict on ev
 TypeScript code uses `import { Brand } from "@opencode/util/brand"` rather than repeating literals.
 Static files (markdown, JSON, HTML, i18n tables) use the literal values above.
 
-### Palette (Uhuru AI brand book, `docs/brand-book/03-color-system.md` in uhuruorionx)
+### Look: the Uhuru chat's
 
-| Token               | Hex       | Use                                            |
-| ------------------- | --------- | ---------------------------------------------- |
-| teal-500 (primary)  | `#0096B3` | primary actions, active states, the mark       |
-| teal-300            | `#4DC1D8` | primary on dark backgrounds                    |
-| teal-700            | `#006F8A` | pressed / hover on light                       |
-| orange-500 (accent) | `#FF6A00` | accent, agent indicator, the mark's dot        |
-| deep navy           | `#002F4B` | primary text on light, dark surfaces           |
-| near-black          | `#0A0A0B` | dark background (matches the U Code app shell) |
+U Code looks like the Uhuru chat (uhuruai.co), so the two read as one product. The default theme,
+"U Code" (id `oc-2`, kept for merges), wears the chat's own palette; the values live in one place,
+`packages/ui/src/theme/ucode-brand.ts`, copied from the chat's `src/site/styles/site.css` (the
+`--o-*` night tokens) and `src/components/Chat/v3/styles/colors_and_type.css` (sand and navy) in
+uhuruorionx. Change them there first, then in `ucode-brand.ts`, then run `bun run generate:v2-oc2`
+in `packages/ui`; `ucode-brand.test.ts` fails if `oc-2.json` drifts from the module.
+
+| Role                      | Dark      | Light     |
+| ------------------------- | --------- | --------- |
+| Ground (shell, `bg-deep`) | `#08131F` | `#F7F5F2` |
+| Panel (`bg-base`)         | `#0A1725` | `#FFFFFF` |
+| Raised (`layer-01`)       | `#0C1B2B` | `#F7F5F2` |
+| Line                      | `#1B3243` | `#EAE7E3` |
+| Text                      | `#F2EFEA` | `#19324A` |
+| Muted text                | `#A9BAC7` | `#486D8D` |
+| Accent / links            | `#2AB6D0` | `#006F8A` |
+| Primary action            | `#0089A3` | `#0089A3` |
+| Brand teal (the mark)     | `#0096B3` | `#0096B3` |
+| Orange (the mark's dot)   | `#FF6A00` | `#FF6A00` |
+
+Light muted text is the chat's navy-300 one step darker, so it holds 4.5:1 on sand as well as white.
+
+Type follows the chat too: **Space Grotesk** for titles (dialog titles, settings headings),
+**Inter** for reading, **JetBrains Mono** for code. All three are bundled (`packages/app/public/assets`,
+`services/www/src/docs/assets/fonts`, with their OFL licences), so the desktop app never fetches a font.
+
+The chat's mud-cloth print (`packages/app/public/assets/pattern-mask.png`) is drawn faintly on the home
+screen and the desktop splash when the U Code theme is on, never behind code, diffs or the terminal.
+The terminal UI's `ucode` theme (`packages/tui/src/theme/assets/ucode.json`) and the docs
+(`services/www`, `packages/web`) use the same palette.
 
 ### The mark
 
@@ -79,7 +101,15 @@ Raster app icons (desktop installers, tray, dock) are the Uhuru U Code icon set,
 ## Third-party providers are not us
 
 Users may still connect other model providers. Their names are ordinary provider names in a picker,
-never part of U Code's identity. In particular **OpenCode Zen** and **OpenCode Go** (the provider
+never part of U Code's identity. **U Code's own copy never advertises other vendors' models** (Monti,
+2026-10-25): no "Claude, GPT, Gemini" in tips, notes or upsells, and no third-party gateway named on
+every web search. A provider's name appears where the user picks or signs in to that provider (the
+connect list, its sign-in options), because they bring their own key and need to know which is which.
+Custom providers are described by capability ("the standard chat-completions API"), not by vendor.
+Translations of that copy were removed rather than left naming vendors, so other languages fall
+back to the neutral English until they are retranslated.
+
+In particular **OpenCode Zen** and **OpenCode Go** (the provider
 with id `opencode`) are upstream's hosted gateway: keep their names exactly as a third-party
 provider, never rename them to "U Code Zen", never describe them as provided by U Code, and never
 present them as the recommended or default provider. Uhuru is the recommended and default provider.

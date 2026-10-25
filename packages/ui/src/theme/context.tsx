@@ -8,6 +8,7 @@ import oc2ThemeJson from "./themes/oc-2.json"
 import { resolveThemeVariant, themeToCss } from "./resolve"
 import { resolveThemeVariantV2, themeV2ToCss } from "./v2/resolve"
 import type { DesktopTheme } from "./types"
+import { UCODE_GROUND } from "./ucode-brand"
 
 export type ColorScheme = "light" | "dark" | "system"
 
@@ -138,9 +139,7 @@ function applyThemeCss(theme: DesktopTheme, themeId: string, mode: "light" | "da
   const css = themeToCss(tokens)
   const v2 = themeV2ToCss(resolveThemeVariantV2(variant, isDark))
 
-  if (themeId !== "oc-2") {
-    write(isDark ? STORAGE_KEYS.THEME_CSS_DARK : STORAGE_KEYS.THEME_CSS_LIGHT, `${css}\n  ${v2}`)
-  }
+  write(isDark ? STORAGE_KEYS.THEME_CSS_DARK : STORAGE_KEYS.THEME_CSS_LIGHT, `${css}\n  ${v2}`)
 
   const fullCss = `:root {
   color-scheme: ${mode};
@@ -153,15 +152,14 @@ function applyThemeCss(theme: DesktopTheme, themeId: string, mode: "light" | "da
   ensureThemeStyleElement().textContent = fullCss
   document.documentElement.dataset.theme = themeId
   document.documentElement.dataset.colorScheme = mode
-  document.documentElement.style.backgroundColor = isDark ? "#080808" : "#fafafa"
+  document.documentElement.style.backgroundColor = UCODE_GROUND[mode]
 
   // Update theme-color meta tag to match light/dark mode
   const meta = document.querySelector('meta[name="theme-color"]')
-  if (meta) meta.setAttribute("content", isDark ? "#080808" : "#fafafa")
+  if (meta) meta.setAttribute("content", UCODE_GROUND[mode])
 }
 
-function cacheThemeVariants(theme: DesktopTheme, themeId: string) {
-  if (themeId === "oc-2") return
+function cacheThemeVariants(theme: DesktopTheme) {
   for (const mode of ["light", "dark"] as const) {
     const isDark = mode === "dark"
     const variant = isDark ? theme.dark : theme.light
@@ -251,7 +249,7 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
         }
         void load(next).then((theme) => {
           if (!theme || store.themeId !== next) return
-          cacheThemeVariants(theme, next)
+          cacheThemeVariants(theme)
         })
       }
       if (e.key === STORAGE_KEYS.COLOR_SCHEME && e.newValue) {
@@ -282,7 +280,7 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
       setStore("mode", savedScheme === "system" ? getSystemMode() : savedScheme)
       void load(savedTheme).then((theme) => {
         if (!theme || store.themeId !== savedTheme) return
-        cacheThemeVariants(theme, savedTheme)
+        cacheThemeVariants(theme)
       })
     })
 
@@ -310,7 +308,7 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
       }
       void load(next).then((theme) => {
         if (!theme || store.themeId !== next) return
-        cacheThemeVariants(theme, next)
+        cacheThemeVariants(theme)
         write(STORAGE_KEYS.THEME_ID, next)
       })
     }

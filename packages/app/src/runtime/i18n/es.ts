@@ -203,15 +203,9 @@ export const dict = {
   "dialog.provider.empty": "No se encontraron proveedores",
   "dialog.provider.group.popular": "Populares",
   "dialog.provider.group.other": "Otros",
-  "dialog.provider.custom.label": "Proveedor personalizado compatible con OpenAI",
   "dialog.provider.tag.recommended": "Recomendado",
-  "dialog.provider.opencode.note": "Selección de modelos como Claude, GPT, Gemini y otros",
   "dialog.provider.opencode.tagline": "Modelos optimizados y fiables",
   "dialog.provider.opencodeGo.tagline": "Suscripción económica para todos",
-  "dialog.provider.anthropic.note": "Acceso directo a modelos Claude, incluidos Pro y Max",
-  "dialog.provider.copilot.note": "Modelos de IA para asistencia de codificación a través de GitHub Copilot",
-  "dialog.provider.openai.note": "Modelos GPT para tareas de IA generales rápidas y capaces",
-  "dialog.provider.google.note": "Modelos Gemini para respuestas rápidas y estructuradas",
   "dialog.provider.openrouter.note": "Accede a todos los modelos compatibles desde un solo proveedor",
   "dialog.provider.vercel.note": "Acceso unificado a modelos de IA con enrutamiento inteligente",
 
@@ -222,7 +216,6 @@ export const dict = {
   "dialog.model.manage.description": "Personalizar qué modelos aparecen en el selector de modelos.",
   "dialog.model.manage.provider.toggle": "Mostrar u ocultar todos los modelos de {{provider}}",
 
-  "dialog.model.unpaid.freeModels.title": "Modelos gratuitos proporcionados por OpenCode Zen",
   "dialog.model.unpaid.addMore.title": "Añadir más modelos de proveedores populares",
   "dialog.model.unpaid.viewMoreProviders": "Ver más de 70 proveedores",
 
@@ -242,10 +235,6 @@ export const dict = {
   "provider.connect.apiKey.label": "Clave API de {{provider}}",
   "provider.connect.apiKey.placeholder": "Clave API",
   "provider.connect.apiKey.required": "La clave API es obligatoria",
-  "provider.connect.opencodeZen.line1":
-    "OpenCode Zen te da acceso a un conjunto curado de modelos fiables optimizados para agentes de programación.",
-  "provider.connect.opencodeZen.line2":
-    "Con una sola clave API obtendrás acceso a modelos como Claude, GPT, Gemini, GLM y más.",
   "provider.connect.opencodeZen.visit.prefix": "Visita ",
   "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": " para obtener tu clave API.",
@@ -267,7 +256,6 @@ export const dict = {
 
   "provider.custom.title": "Proveedor personalizado",
   "provider.custom.unavailable": "Los proveedores personalizados no están disponibles en este servidor",
-  "provider.custom.description.prefix": "Configurar un proveedor compatible con OpenAI. Ver la ",
   "provider.custom.description.link": "documentación de configuración del proveedor",
   "provider.custom.description.suffix": ".",
   "provider.custom.field.providerID.label": "ID del proveedor",
@@ -722,8 +710,6 @@ export const dict = {
   "home.sessions.group.today": "Hoy",
   "home.sessions.group.yesterday": "Ayer",
   "home.sessions.group.older": "Anteriores",
-  "home.providerTip":
-    "Conéctate a más de 75 proveedores para usar otros modelos, como Claude, GPT, Gemini y muchos más",
 
   "session.tab.session": "Sesión",
   "session.tab.review": "Revisión",
@@ -839,8 +825,6 @@ export const dict = {
   "sidebar.workspaces.enable": "Habilitar espacios de trabajo",
   "sidebar.workspaces.disable": "Deshabilitar espacios de trabajo",
   "sidebar.gettingStarted.title": "Primeros pasos",
-  "sidebar.gettingStarted.line1": "OpenCode Zen incluye modelos gratuitos para que puedas empezar inmediatamente.",
-  "sidebar.gettingStarted.line2": "Conecta cualquier proveedor para usar modelos como Claude, GPT o Gemini.",
   "sidebar.project.recentSessions": "Sesiones recientes",
   "sidebar.project.viewAllSessions": "Ver todas las sesiones",
   "sidebar.project.clearNotifications": "Borrar notificaciones",
@@ -1113,7 +1097,6 @@ export const dict = {
   "common.time.hoursAgo.short": "hace {{count}} h",
   "common.time.daysAgo.short": "hace {{count}} d",
   "settings.providers.connected.environmentDescription": "Conectado desde tus variables de entorno",
-  "settings.providers.custom.description": "Añade un proveedor compatible con OpenAI por su URL base.",
 
   "app.server.unreachable": "No se pudo conectar con {{server}}",
   "app.server.retrying": "Reintentando automáticamente…",

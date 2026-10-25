@@ -3,7 +3,8 @@ import { Splash } from "@opencode/ui/logo"
 export function LoadingSplash(props: { deep: boolean }) {
   return (
     <div
-      class="h-dvh w-screen flex flex-col items-center justify-center"
+      data-component="loading-splash"
+      class="relative h-dvh w-screen flex flex-col items-center justify-center"
       classList={{
         "bg-v2-background-bg-deep": props.deep,
         "bg-v2-background-bg-base": !props.deep,
