@@ -24,7 +24,7 @@ operation. A rename that no user can see buys nothing and costs a conflict on ev
 | Global dirs            | `~/.config/ucode`, `~/.local/share/ucode`, `~/.cache/ucode`, `~/.local/state/ucode` | `packages/util/src/global.ts`                |
 | Project config         | `ucode.json` / `ucode.jsonc`, `.ucode/`                                             | `packages/core/src/config/discovery.ts`      |
 | Env vars               | `UCODE_*` (aliased onto the upstream `OPENCODE_*` reads)                            | `packages/util/src/brand-env.ts`             |
-| Default model provider | Uhuru (`uhuru`), Uhuru Public API                                                   | `packages/core/src/plugin/provider/uhuru.ts` |
+| Default model provider | Uhuru (`uhuru`): U4.0 and U5.0 through the U Code endpoint (`ucode-api`)            | `packages/core/src/plugin/provider/uhuru.ts` |
 
 TypeScript code uses `import { Brand } from "@opencode/util/brand"` rather than repeating literals.
 Static files (markdown, JSON, HTML, i18n tables) use the literal values above.

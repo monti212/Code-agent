@@ -67,7 +67,7 @@ Uhuru AI is U Code's default provider. Create an API key at [uhuruai.co](https:/
    └ enter
    ```
 
-3. Run `/models` and select **Uhuru 4.5** (`uhuru/uhuru-4.5`).
+3. Run `/models` and select **U4.0** (`uhuru/uhuru-4.0`), or **U5.0** (`uhuru/uhuru-5.0`) for the hardest work.
 
    ```txt
    /models
@@ -83,21 +83,22 @@ To pin the endpoint yourself, configure it as a provider that speaks the standar
       "npm": "@ai-sdk/openai-compatible",
       "name": "Uhuru AI",
       "options": {
-        "baseURL": "https://ucloud.orionx.xyz/functions/v1/uhuru-public-api/v1",
+        "baseURL": "https://ucloud.orionx.xyz/functions/v1/ucode-api/v1",
         "apiKey": "{env:UHURU_API_KEY}"
       },
       "models": {
-        "uhuru-4.5": { "name": "Uhuru 4.5" }
+        "uhuru-4.0": { "name": "U4.0" },
+        "uhuru-5.0": { "name": "U5.0" }
       }
     }
   },
-  "model": "uhuru/uhuru-4.5"
+  "model": "uhuru/uhuru-4.0"
 }
 ```
 
-:::caution
-The Uhuru Public API does not accept tool definitions yet. With an Uhuru model, U Code can answer and write code in
-its replies, but it cannot call tools such as file edits or shell commands until tool support reaches the API.
+:::note
+U4.0 and U5.0 can use U Code's tools, such as file edits and shell commands, and accept images. Access is opening in
+stages: if a request is refused with "U Code is not enabled for your account yet", your account is not included yet.
 :::
 
 ---

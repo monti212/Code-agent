@@ -7,40 +7,44 @@ import { Provider } from "../../provider.js"
 
 // Uhuru AI is U Code's own provider: listed first, and the default model whenever a key is
 // present and the user has not chosen one. Keys come from uhuruai.co Settings -> API Keys.
+//
+// It calls the U Code endpoint on Uhuru Cloud, which serves U4.0 and U5.0 with tools. U Code's
+// own instructions are applied there, server-side, so improving them never needs a client release.
 const providerID = Provider.ID.uhuru
 const integrationID = Integration.ID.make(providerID)
 const packageName = "@opencode/ai/providers/openai-compatible"
-const baseURL = "https://ucloud.orionx.xyz/functions/v1/uhuru-public-api/v1"
-const defaultModelID = Model.ID.make("uhuru-4.5")
+const baseURL = "https://ucloud.orionx.xyz/functions/v1/ucode-api/v1"
+const defaultModelID = Model.ID.make("uhuru-4.0")
+const deepModelID = Model.ID.make("uhuru-5.0")
+const family = Model.Family.make("uhuru")
+// Usage is metered per Uhuru account rather than priced per token here, hence the zero cost.
 const free = {
   input: Money.USDPerMillionTokens.zero,
   output: Money.USDPerMillionTokens.zero,
   cache: { read: Money.USDPerMillionTokens.zero, write: Money.USDPerMillionTokens.zero },
 }
+// Every U Code model takes these reasoning levels; the endpoint applies the model's own default
+// when none is chosen (U4.0 medium, U5.0 high).
+const efforts = ["low", "medium", "high", "xhigh", "max"] as const
+const variants = efforts.map((effort) => ({ id: Model.VariantID.make(effort), settings: { reasoningEffort: effort } }))
 
-// Only models verified live on the public API are listed. The public API drops client-defined
-// tools today, so the model answers in chat but cannot run U Code's tools; `tools: false` says
-// so in the model pickers. Flip it once uhuru-public-api forwards `tools` and returns `tool_calls`.
-// Usage is billed per Uhuru plan rather than per token, hence the zero cost.
-const models: Model.Info[] = [
-  {
-    id: defaultModelID,
-    modelID: defaultModelID,
-    providerID,
-    name: "Uhuru 4.5",
-    family: Model.Family.make("uhuru"),
-    settings: { provider: providerID },
-    capabilities: { tools: false, input: ["text"], output: ["text"] },
-    variants: [],
-    time: { released: Date.parse("2026-08-17") },
-    cost: [free],
-    status: "active",
-    enabled: true,
-    // The public API caps visible output at 16384 tokens; the context window is a
-    // conservative assumption until the API publishes one.
-    limit: { context: 128_000, output: 16_384 },
-  },
-]
+const model = (id: Model.ID, name: string): Model.Info => ({
+  id,
+  modelID: id,
+  providerID,
+  name,
+  family,
+  settings: { provider: providerID },
+  capabilities: { tools: true, input: ["text", "image"], output: ["text"] },
+  variants,
+  time: { released: Date.parse("2026-10-25") },
+  cost: [free],
+  status: "active",
+  enabled: true,
+  limit: { context: 1_000_000, output: 64_000 },
+})
+
+const models: Model.Info[] = [model(defaultModelID, "U4.0"), model(deepModelID, "U5.0")]
 
 export const UhuruPlugin = define({
   id: "opencode.provider.uhuru",
