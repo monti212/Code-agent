@@ -100,6 +100,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes ffmpeg
 
+      # GitHub-hosted images do not ship rg, and core's search tests fail rather than download it.
+      - name: Install ripgrep
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            choco install ripgrep --yes --no-progress
+          else
+            sudo apt-get install --yes ripgrep
+          fi
+
       - name: Cache Turbo
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:

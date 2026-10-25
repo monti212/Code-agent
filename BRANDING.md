@@ -169,6 +169,9 @@ keep our label, and map any label upstream adds to the GitHub-hosted image of th
 | `blacksmith-4vcpu-ubuntu-2404-arm` | `ubuntu-24.04-arm` |
 | `blacksmith-4vcpu-windows-2025`    | `windows-2025`     |
 
+GitHub-hosted images do not ship ripgrep, which core's search tests need on `PATH`, so the `unit` job in
+`test.yml` installs it. Keep that step.
+
 Jobs wired to upstream's own product (its `opencode` CLI from `opencode.ai`, its model gateway, its
 GitHub App, its release artifacts) are limited to `github.repository == 'anomalyco/opencode'`, so they
 skip here: triage, duplicate-issues, review, the `/oc` agent, pr-management's duplicate check and the
