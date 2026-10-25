@@ -2,9 +2,9 @@ name: check
 
 on:
   push:
-    branches: [dev, v2]
+    branches: [dev, v2, acp-command-lifecycle]
   pull_request:
-    branches: [dev, v2]
+    branches: [dev, v2, acp-command-lifecycle]
   workflow_dispatch:
 
 jobs:

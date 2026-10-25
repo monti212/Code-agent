@@ -2,9 +2,9 @@ name: nix-eval
 
 on:
   push:
-    branches: [dev]
+    branches: [dev, acp-command-lifecycle]
   pull_request:
-    branches: [dev]
+    branches: [dev, acp-command-lifecycle]
   workflow_dispatch:
 
 concurrency:
