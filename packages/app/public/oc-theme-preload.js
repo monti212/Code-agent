@@ -8,13 +8,13 @@
 
   document.documentElement.dataset.theme = themeId
   document.documentElement.dataset.colorScheme = mode
-  document.documentElement.style.backgroundColor = isDark ? "#080808" : "#fafafa"
+  // The U Code ground (ui/src/theme/ucode-brand.ts, UCODE_GROUND), so the first frame is the chat's night or sand.
+  var ground = isDark ? "#08131F" : "#F7F5F2"
+  document.documentElement.style.backgroundColor = ground
 
   // Update theme-color meta tag to match app color scheme
   var metas = document.querySelectorAll("meta[name='theme-color']")
-  if (metas.length > 0) metas[0].setAttribute("content", isDark ? "#080808" : "#fafafa")
-
-  if (themeId === "oc-2") return
+  if (metas.length > 0) metas[0].setAttribute("content", ground)
 
   var css = localStorage.getItem("opencode-theme-css-" + mode)
   if (css) {
