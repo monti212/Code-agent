@@ -203,15 +203,9 @@ export const dict = {
   "dialog.provider.empty": "Nema pronađenih provajdera",
   "dialog.provider.group.popular": "Popularno",
   "dialog.provider.group.other": "Ostalo",
-  "dialog.provider.custom.label": "Prilagođeni provajder kompatibilan s OpenAI-jem",
   "dialog.provider.tag.recommended": "Preporučeno",
-  "dialog.provider.opencode.note": "Kurirani modeli uključujući Claude, GPT, Gemini i druge",
   "dialog.provider.opencode.tagline": "Pouzdani optimizovani modeli",
   "dialog.provider.opencodeGo.tagline": "Povoljna pretplata za sve",
-  "dialog.provider.anthropic.note": "Direktan pristup Claude modelima, uključujući Pro i Max",
-  "dialog.provider.copilot.note": "AI modeli za pomoć pri kodiranju putem GitHub Copilot",
-  "dialog.provider.openai.note": "GPT modeli za brze, sposobne opšte AI zadatke",
-  "dialog.provider.google.note": "Gemini modeli za brze, strukturirane odgovore",
   "dialog.provider.openrouter.note": "Pristup svim podržanim modelima preko jednog provajdera",
   "dialog.provider.vercel.note": "Jedinstven pristup AI modelima uz pametno rutiranje",
 
@@ -222,7 +216,6 @@ export const dict = {
   "dialog.model.manage.description": "Prilagodi koji se modeli prikazuju u izborniku modela.",
   "dialog.model.manage.provider.toggle": "Uključi/isključi sve {{provider}} modele",
 
-  "dialog.model.unpaid.freeModels.title": "Besplatni modeli koje obezbjeđuje OpenCode Zen",
   "dialog.model.unpaid.addMore.title": "Dodaj još modela od popularnih provajdera",
   "dialog.model.unpaid.viewMoreProviders": "Pogledaj još više od 70 provajdera",
 
@@ -242,10 +235,6 @@ export const dict = {
   "provider.connect.apiKey.label": "{{provider}} API ključ",
   "provider.connect.apiKey.placeholder": "API ključ",
   "provider.connect.apiKey.required": "API ključ je obavezan",
-  "provider.connect.opencodeZen.line1":
-    "OpenCode Zen ti daje pristup kuriranom skupu pouzdanih, optimizovanih modela za coding agente.",
-  "provider.connect.opencodeZen.line2":
-    "Sa jednim API ključem dobijaš pristup modelima kao što su Claude, GPT, Gemini, GLM i drugi.",
   "provider.connect.opencodeZen.visit.prefix": "Posjeti ",
   "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": " da preuzmeš svoj API ključ.",
@@ -267,7 +256,6 @@ export const dict = {
 
   "provider.custom.title": "Prilagođeni provajder",
   "provider.custom.unavailable": "Prilagođeni provajderi nisu dostupni na ovom serveru",
-  "provider.custom.description.prefix": "Konfiguriši OpenAI-kompatibilnog provajdera. Pogledaj ",
   "provider.custom.description.link": "dokumentaciju za konfiguraciju provajdera",
   "provider.custom.description.suffix": ".",
   "provider.custom.field.providerID.label": "ID provajdera",
@@ -719,8 +707,6 @@ export const dict = {
   "home.sessions.group.today": "Danas",
   "home.sessions.group.yesterday": "Jučer",
   "home.sessions.group.older": "Starije",
-  "home.providerTip":
-    "Poveži se s više od 75 provajdera da koristiš druge modele, uključujući Claude, GPT, Gemini i druge",
 
   "session.tab.session": "Sesija",
   "session.tab.review": "Pregled",
@@ -836,8 +822,6 @@ export const dict = {
   "sidebar.workspaces.enable": "Omogući radne prostore",
   "sidebar.workspaces.disable": "Onemogući radne prostore",
   "sidebar.gettingStarted.title": "Početak",
-  "sidebar.gettingStarted.line1": "OpenCode Zen uključuje besplatne modele, tako da možeš odmah početi.",
-  "sidebar.gettingStarted.line2": "Poveži bilo kojeg provajdera da koristiš modele, npr. Claude, GPT, Gemini itd.",
   "sidebar.project.recentSessions": "Nedavne sesije",
   "sidebar.project.viewAllSessions": "Prikaži sve sesije",
   "sidebar.project.clearNotifications": "Očisti obavijesti",
@@ -1108,7 +1092,6 @@ export const dict = {
   "common.time.hoursAgo.short": "prije {{count}} h",
   "common.time.daysAgo.short": "prije {{count}} d",
   "settings.providers.connected.environmentDescription": "Povezano s tvojim varijablama okruženja",
-  "settings.providers.custom.description": "Dodaj provajdera kompatibilnog s OpenAI putem baznog URL-a.",
 
   "app.server.unreachable": "Nije moguće pristupiti {{server}}",
   "app.server.retrying": "Automatski ponovni pokušaj…",

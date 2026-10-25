@@ -203,15 +203,9 @@ export const dict = {
   "dialog.provider.empty": "Провайдерів не знайдено",
   "dialog.provider.group.popular": "Популярні",
   "dialog.provider.group.other": "Інші",
-  "dialog.provider.custom.label": "Користувацький провайдер, сумісний з OpenAI",
   "dialog.provider.tag.recommended": "Рекомендовані",
-  "dialog.provider.opencode.note": "Відібрані моделі, включаючи Claude, GPT, Gemini та інші",
   "dialog.provider.opencode.tagline": "Надійні оптимізовані моделі",
   "dialog.provider.opencodeGo.tagline": "Недорога підписка для всіх",
-  "dialog.provider.anthropic.note": "Прямий доступ до моделей Claude, включаючи Pro та Max",
-  "dialog.provider.copilot.note": "Моделі ШІ для допомоги в кодуванні через GitHub Copilot",
-  "dialog.provider.openai.note": "Моделі GPT для швидких і універсальних завдань ШІ",
-  "dialog.provider.google.note": "Моделі Gemini для швидких структурованих відповідей",
   "dialog.provider.openrouter.note": "Доступ до всіх підтримуваних моделей від одного провайдера",
   "dialog.provider.vercel.note": "Уніфікований доступ до моделей ШІ з інтелектуальною маршрутизацією",
 
@@ -222,7 +216,6 @@ export const dict = {
   "dialog.model.manage.description": "Налаштуйте, які моделі відображатимуться у виборі моделей.",
   "dialog.model.manage.provider.toggle": "Перемкнути всі моделі {{provider}}",
 
-  "dialog.model.unpaid.freeModels.title": "Безкоштовні моделі від OpenCode Zen",
   "dialog.model.unpaid.addMore.title": "Додати більше моделей від популярних провайдерів",
   "dialog.model.unpaid.viewMoreProviders": "Переглянути ще понад 70 провайдерів",
 
@@ -242,10 +235,6 @@ export const dict = {
   "provider.connect.apiKey.label": "Ключ API {{provider}}",
   "provider.connect.apiKey.placeholder": "Ключ API",
   "provider.connect.apiKey.required": "Ключ API обов'язковий",
-  "provider.connect.opencodeZen.line1":
-    "OpenCode Zen надає доступ до відібраного набору надійних оптимізованих моделей для агентів кодування.",
-  "provider.connect.opencodeZen.line2":
-    "З одним ключем API ви отримаєте доступ до таких моделей, як Claude, GPT, Gemini, GLM та інших.",
   "provider.connect.opencodeZen.visit.prefix": "Відвідайте ",
   "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": ", щоб отримати ключ API.",
@@ -267,7 +256,6 @@ export const dict = {
 
   "provider.custom.title": "Користувацький провайдер",
   "provider.custom.unavailable": "Користувацькі провайдери недоступні на цьому сервері",
-  "provider.custom.description.prefix": "Налаштуйте провайдера, сумісного з OpenAI. Перегляньте ",
   "provider.custom.description.link": "документацію з налаштування провайдера",
   "provider.custom.description.suffix": ".",
   "provider.custom.field.providerID.label": "ID провайдера",
@@ -741,8 +729,6 @@ export const dict = {
   "home.sessions.group.today": "Сьогодні",
   "home.sessions.group.yesterday": "Учора",
   "home.sessions.group.older": "Раніше",
-  "home.providerTip":
-    "Підключіться до понад 75 провайдерів, щоб використовувати інші моделі, зокрема Claude, GPT, Gemini та інші",
 
   "session.tab.session": "Сесія",
   "session.tab.review": "Огляд",
@@ -905,9 +891,6 @@ export const dict = {
   "sidebar.workspaces.enable": "Увімкнути робочі області",
   "sidebar.workspaces.disable": "Вимкнути робочі області",
   "sidebar.gettingStarted.title": "Початок роботи",
-  "sidebar.gettingStarted.line1": "OpenCode Zen містить безкоштовні моделі, тому ви можете почати негайно.",
-  "sidebar.gettingStarted.line2":
-    "Підключіть будь-якого провайдера, щоб використовувати моделі, включаючи Claude, GPT, Gemini тощо.",
   "sidebar.project.recentSessions": "Нещодавні сесії",
   "sidebar.project.viewAllSessions": "Переглянути всі сесії",
   "sidebar.project.clearNotifications": "Очистити сповіщення",
@@ -1117,7 +1100,6 @@ export const dict = {
   "settings.providers.connected.empty": "Немає підключених провайдерів",
   "settings.providers.connected.environmentDescription": "Підключено зі змінних середовища",
   "settings.providers.section.popular": "Популярні провайдери",
-  "settings.providers.custom.description": "Додайте провайдера, сумісного з OpenAI, за базовим URL.",
   "settings.providers.tag.environment": "Середовище",
   "settings.providers.tag.config": "Конфігурація",
   "settings.providers.tag.custom": "Користувацький",

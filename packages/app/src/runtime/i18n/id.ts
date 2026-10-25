@@ -203,15 +203,9 @@ export const dict = {
   "dialog.provider.empty": "Penyedia tidak ditemukan",
   "dialog.provider.group.popular": "Populer",
   "dialog.provider.group.other": "Lainnya",
-  "dialog.provider.custom.label": "Penyedia kustom yang kompatibel dengan OpenAI",
   "dialog.provider.tag.recommended": "Direkomendasikan",
-  "dialog.provider.opencode.note": "Model pilihan, termasuk Claude, GPT, Gemini, dan lainnya",
   "dialog.provider.opencode.tagline": "Model andal yang dioptimalkan",
   "dialog.provider.opencodeGo.tagline": "Langganan terjangkau untuk semua orang",
-  "dialog.provider.anthropic.note": "Akses langsung ke model Claude, termasuk Pro dan Max",
-  "dialog.provider.copilot.note": "Model AI untuk bantuan pengodean melalui GitHub Copilot",
-  "dialog.provider.openai.note": "Model GPT untuk tugas AI umum yang cepat dan mumpuni",
-  "dialog.provider.google.note": "Model Gemini untuk respons cepat dan terstruktur",
   "dialog.provider.openrouter.note": "Akses semua model yang didukung dari satu penyedia",
   "dialog.provider.vercel.note": "Akses terpadu ke model AI dengan perutean cerdas",
 
@@ -222,7 +216,6 @@ export const dict = {
   "dialog.model.manage.description": "Sesuaikan model mana yang muncul di pemilih model.",
   "dialog.model.manage.provider.toggle": "Alihkan semua model {{provider}}",
 
-  "dialog.model.unpaid.freeModels.title": "Model gratis disediakan oleh OpenCode Zen",
   "dialog.model.unpaid.addMore.title": "Tambahkan lebih banyak model dari penyedia populer",
   "dialog.model.unpaid.viewMoreProviders": "Lihat 70+ penyedia lainnya",
 
@@ -242,10 +235,6 @@ export const dict = {
   "provider.connect.apiKey.label": "Kunci API {{provider}}",
   "provider.connect.apiKey.placeholder": "Kunci API",
   "provider.connect.apiKey.required": "Kunci API diperlukan",
-  "provider.connect.opencodeZen.line1":
-    "OpenCode Zen memberi Anda akses ke serangkaian model andal yang dioptimalkan untuk agen pengodean.",
-  "provider.connect.opencodeZen.line2":
-    "Dengan satu kunci API, Anda akan mendapatkan akses ke model seperti Claude, GPT, Gemini, GLM dan lainnya.",
   "provider.connect.opencodeZen.visit.prefix": "Kunjungi ",
   "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": " untuk mendapatkan kunci API Anda.",
@@ -267,7 +256,6 @@ export const dict = {
 
   "provider.custom.title": "Penyedia kustom",
   "provider.custom.unavailable": "Penyedia kustom tidak tersedia di server ini",
-  "provider.custom.description.prefix": "Konfigurasikan penyedia yang kompatibel dengan OpenAI. Lihat ",
   "provider.custom.description.link": "dokumen konfigurasi penyedia",
   "provider.custom.description.suffix": ".",
   "provider.custom.field.providerID.label": "ID Penyedia",
@@ -737,8 +725,6 @@ export const dict = {
   "home.sessions.group.today": "Hari ini",
   "home.sessions.group.yesterday": "Kemarin",
   "home.sessions.group.older": "Lebih lama",
-  "home.providerTip":
-    "Hubungkan ke 75+ penyedia untuk menggunakan model lain, termasuk Claude, GPT, Gemini, dan lainnya",
 
   "session.tab.session": "Sesi",
   "session.tab.review": "Tinjauan",
@@ -898,9 +884,6 @@ export const dict = {
   "sidebar.workspaces.enable": "Aktifkan ruang kerja",
   "sidebar.workspaces.disable": "Nonaktifkan ruang kerja",
   "sidebar.gettingStarted.title": "Memulai",
-  "sidebar.gettingStarted.line1": "OpenCode Zen menyertakan model gratis sehingga Anda dapat memulai dengan segera.",
-  "sidebar.gettingStarted.line2":
-    "Hubungkan penyedia mana pun untuk menggunakan model, termasuk Claude, GPT, Gemini, dll.",
   "sidebar.project.recentSessions": "Sesi terbaru",
   "sidebar.project.viewAllSessions": "Lihat semua sesi",
   "sidebar.project.clearNotifications": "Hapus notifikasi",
@@ -1106,7 +1089,6 @@ export const dict = {
   "settings.providers.connected.empty": "Tidak ada penyedia terhubung",
   "settings.providers.connected.environmentDescription": "Terhubung dari variabel lingkungan Anda",
   "settings.providers.section.popular": "Penyedia populer",
-  "settings.providers.custom.description": "Tambahkan penyedia yang kompatibel dengan OpenAI berdasarkan URL dasar.",
   "settings.providers.tag.environment": "Lingkungan",
   "settings.providers.tag.config": "Konfigurasi",
   "settings.providers.tag.custom": "Kustom",

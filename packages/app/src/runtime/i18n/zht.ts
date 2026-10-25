@@ -205,15 +205,9 @@ export const dict = {
   "dialog.provider.empty": "找不到提供者",
   "dialog.provider.group.popular": "熱門",
   "dialog.provider.group.other": "其他",
-  "dialog.provider.custom.label": "自訂 OpenAI 相容提供者",
   "dialog.provider.tag.recommended": "推薦",
-  "dialog.provider.opencode.note": "精選模型，包含 Claude、GPT、Gemini 等等",
   "dialog.provider.opencode.tagline": "經過最佳化的可靠模型",
   "dialog.provider.opencodeGo.tagline": "適合所有人的低成本訂閱",
-  "dialog.provider.anthropic.note": "直接存取 Claude 模型，包括 Pro 和 Max",
-  "dialog.provider.openai.note": "適合快速且功能強大的通用 AI 工作之 GPT 模型",
-  "dialog.provider.copilot.note": "透過 GitHub Copilot 使用程式設計輔助 AI 模型",
-  "dialog.provider.google.note": "Gemini 模型，提供快速且結構化的回應",
   "dialog.provider.openrouter.note": "從單一提供者存取所有支援的模型",
   "dialog.provider.vercel.note": "透過智慧路由統一存取 AI 模型",
 
@@ -224,7 +218,6 @@ export const dict = {
   "dialog.model.manage.description": "自訂模型選擇器中顯示的模型。",
   "dialog.model.manage.provider.toggle": "切換所有 {{provider}} 模型",
 
-  "dialog.model.unpaid.freeModels.title": "OpenCode Zen 提供的免費模型",
   "dialog.model.unpaid.addMore.title": "從熱門提供者新增更多模型",
   "dialog.model.unpaid.viewMoreProviders": "查看另外 70 多個提供者",
 
@@ -244,8 +237,6 @@ export const dict = {
   "provider.connect.apiKey.label": "{{provider}} API 金鑰",
   "provider.connect.apiKey.placeholder": "API 金鑰",
   "provider.connect.apiKey.required": "API 金鑰為必填",
-  "provider.connect.opencodeZen.line1": "OpenCode Zen 為你提供一組精選的可靠最佳化模型，用於程式碼代理程式。",
-  "provider.connect.opencodeZen.line2": "只需一個 API 金鑰，你就能使用 Claude、GPT、Gemini、GLM 等模型。",
   "provider.connect.opencodeZen.visit.prefix": "造訪 ",
   "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": " 取得你的 API 金鑰。",
@@ -265,7 +256,6 @@ export const dict = {
 
   "provider.custom.title": "自訂提供者",
   "provider.custom.unavailable": "此伺服器無法使用自訂提供者",
-  "provider.custom.description.prefix": "設定與 OpenAI 相容的提供者。請參閱",
   "provider.custom.description.link": "提供者設定文件",
   "provider.custom.description.suffix": "。",
   "provider.custom.field.providerID.label": "提供者 ID",
@@ -708,7 +698,6 @@ export const dict = {
   "home.sessions.group.today": "今天",
   "home.sessions.group.yesterday": "昨天",
   "home.sessions.group.older": "更早",
-  "home.providerTip": "連線 75 個以上的提供者，使用 Claude、GPT、Gemini 等其他模型",
 
   "session.tab.session": "工作階段",
   "session.tab.review": "檢閱",
@@ -818,8 +807,6 @@ export const dict = {
   "sidebar.workspaces.enable": "啟用工作區",
   "sidebar.workspaces.disable": "停用工作區",
   "sidebar.gettingStarted.title": "開始使用",
-  "sidebar.gettingStarted.line1": "OpenCode Zen 提供免費模型，你可以立即開始使用。",
-  "sidebar.gettingStarted.line2": "連線任意提供者即可使用更多模型，如 Claude、GPT、Gemini 等。",
   "sidebar.project.recentSessions": "最近工作階段",
   "sidebar.project.viewAllSessions": "查看全部工作階段",
   "sidebar.project.clearNotifications": "清除通知",
@@ -1079,7 +1066,6 @@ export const dict = {
   "common.time.hoursAgo.short": "{{count}}小時前",
   "common.time.daysAgo.short": "{{count}}天前",
   "settings.providers.connected.environmentDescription": "已從環境變數連線",
-  "settings.providers.custom.description": "透過基底 URL 新增與 OpenAI 相容的提供者。",
 
   "app.server.unreachable": "無法連線至 {{server}}",
   "app.server.retrying": "正在自動重試…",
