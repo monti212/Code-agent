@@ -188,15 +188,15 @@ describe("settings font families", () => {
     expect(sansFontFamily("Custom Sans")).toStartWith('"Custom Sans", "Inter", ')
   })
 
-  test("defaults monospace text to IBM Plex Mono", () => {
-    expect(monoDefault).toBe("IBM Plex Mono")
-    expect(monoFontFamily(undefined)).toStartWith('"IBM Plex Mono", ')
-    expect(monoFontFamily("")).toStartWith('"IBM Plex Mono", ')
-    expect(monoFontFamily("   ")).toStartWith('"IBM Plex Mono", ')
+  test("defaults monospace text to JetBrains Mono", () => {
+    expect(monoDefault).toBe("JetBrains Mono")
+    expect(monoFontFamily(undefined)).toStartWith('"JetBrains Mono", ')
+    expect(monoFontFamily("")).toStartWith('"JetBrains Mono", ')
+    expect(monoFontFamily("   ")).toStartWith('"JetBrains Mono", ')
   })
 
   test("keeps custom monospace fonts ahead of the default", () => {
-    expect(monoFontFamily("Custom Mono")).toStartWith('"Custom Mono", "IBM Plex Mono", ')
+    expect(monoFontFamily("Custom Mono")).toStartWith('"Custom Mono", "JetBrains Mono", ')
   })
 
   test("preserves the separate terminal font default", () => {
