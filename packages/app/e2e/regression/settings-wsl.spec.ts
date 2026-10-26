@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test"
+import { Brand } from "@opencode/util/brand"
 import { mockOpenCodeServer } from "../utils/mock-server"
 
 test.use({ viewport: { width: 1280, height: 900 } })
@@ -35,9 +36,9 @@ for (const mode of ["failed", "stopped", "ready"] as const) {
       await expect(page.getByLabel("WSL actions")).toHaveText("start:wsl:Ubuntu")
     }
     await expect(settings.getByRole("tab", { name: "Projects", exact: true })).toBeEnabled()
-    await connection.getByRole("button", { name: "Update OpenCode", exact: true }).click()
+    await connection.getByRole("button", { name: `Update ${Brand.name}`, exact: true }).click()
     await expect(page.getByLabel("WSL actions")).toContainText("update:Ubuntu")
-    await expect(connection.getByRole("button", { name: "Update OpenCode", exact: true })).toHaveCount(0)
+    await expect(connection.getByRole("button", { name: `Update ${Brand.name}`, exact: true })).toHaveCount(0)
 
     await connection.getByRole("button", { name: "More options", exact: true }).click()
     await page.getByRole("menuitem", { name: "Remove", exact: true }).click()
