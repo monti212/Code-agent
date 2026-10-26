@@ -172,6 +172,11 @@ keep our label, and map any label upstream adds to the GitHub-hosted image of th
 GitHub-hosted images do not ship ripgrep, which core's search tests need on `PATH`, so the `unit` job in
 `test.yml` installs it. Keep that step.
 
+This repository's trunk is `acp-command-lifecycle` (GitHub's default branch, where pull requests merge),
+while upstream's workflows only name `dev` and `v2`. It is added to the branch filters of `check`
+(typecheck), `test` (push), `storybook` and `nix-eval`, so pull requests into it get a typecheck and
+merges to it run the tests. Keep it in those filters.
+
 Jobs wired to upstream's own product (its `opencode` CLI from `opencode.ai`, its model gateway, its
 GitHub App, its release artifacts) are limited to `github.repository == 'anomalyco/opencode'`, so they
 skip here: triage, duplicate-issues, review, the `/oc` agent, pr-management's duplicate check and the
@@ -179,9 +184,10 @@ final publish job. Give a new upstream job of that kind the same guard. Jobs tha
 credential this repository can hold itself (publish-vscode for the `orionx` publisher, notify-discord,
 the nix-hashes commit) stay enabled and fail until that secret is set.
 
-After a merge, the first command must print nothing; the second lists new upstream wiring to guard:
+After a merge, the first two commands must print nothing; the third lists new upstream wiring to guard:
 
 ```bash
 grep -rnE 'blacksmith-[0-9]+vcpu' .github/
+grep -L acp-command-lifecycle .github/workflows/{check,test,storybook,nix-eval}.yml
 git diff ORIG_HEAD -- .github/ | grep -nE '^\+.*(OPENCODE_API_KEY|opencode\.ai/install|anomalyco/opencode/github)'
 ```

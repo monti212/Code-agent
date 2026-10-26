@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import os from "os"
 import path from "path"
+import { Brand } from "@opencode/util/brand"
 import { Global } from "@opencode/util/global"
 
 describe("Core test environment", () => {
@@ -15,10 +16,10 @@ describe("Core test environment", () => {
 
     expect(os.homedir()).toBe(home)
     expect(Global.Path.home).toBe(home)
-    expect(Global.Path.config).toBe(path.join(home, ".config", "opencode"))
-    expect(Global.Path.data).toBe(path.join(home, ".local", "share", "opencode"))
-    expect(Global.Path.cache).toBe(path.join(home, ".cache", "opencode"))
-    expect(Global.Path.state).toBe(path.join(home, ".local", "state", "opencode"))
+    expect(Global.Path.config).toBe(path.join(home, ".config", Brand.app))
+    expect(Global.Path.data).toBe(path.join(home, ".local", "share", Brand.app))
+    expect(Global.Path.cache).toBe(path.join(home, ".cache", Brand.app))
+    expect(Global.Path.state).toBe(path.join(home, ".local", "state", Brand.app))
     expect(os.tmpdir()).toBe(path.join(home, "tmp"))
     expect(process.env.OPENCODE_CONFIG_DIR).toBe(Global.Path.config)
     expect(process.env.OPENCODE_CONFIG).toBeUndefined()
