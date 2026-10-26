@@ -220,6 +220,10 @@ const makeCrossSpawnSpawner = Effect.gen(function* () {
     Effect.suspend(() => {
       let sink: Sink.Sink<void, unknown, never, PlatformError.PlatformError> = Sink.drain
       if (Predicate.isNotNull(proc.stdin)) {
+        // Bun flushes stdin when the stream is destroyed, after the sink has stopped listening. A child that
+        // exits without reading its input, as git does on a broken config, fails that flush with EPIPE, an
+        // uncaught exception without this listener. The exit code and stderr already say why it stopped.
+        proc.stdin.on("error", () => {})
         sink = NodeSink.fromWritable({
           evaluate: () => proc.stdin!,
           onError: (err) => toPlatformError("fromWritable(stdin)", toError(err), command),
