@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test"
 import { timelinePresets } from "@opencode/session-ui/timeline/detail"
+import { UCODE_CHAT, UCODE_THEME } from "@opencode/ui/theme/ucode-brand"
 import {
   assistantID,
   assistantMessage,
@@ -71,12 +72,13 @@ test("transitions a streaming shell from writing through command execution", asy
   await expect(title).toHaveCSS("font-family", /^Inter,/)
   await expect(title).toHaveCSS("font-weight", "530")
   await expect(title).toHaveCSS("line-height", "16px")
-  await expect(title).toHaveCSS("color", "rgb(22, 22, 22)")
+  // U Code's light text: the chat's navy ink for the title, its muted navy (grey 700) for the subtitle.
+  await expect(title).toHaveCSS("color", rgb(UCODE_CHAT.light.ink))
   await expect(subtitle).toHaveCSS("font-size", "13px")
   await expect(subtitle).toHaveCSS("font-family", /^Inter,/)
   await expect(subtitle).toHaveCSS("font-weight", "440")
   await expect(subtitle).toHaveCSS("line-height", "16px")
-  await expect(subtitle).toHaveCSS("color", "rgb(92, 92, 92)")
+  await expect(subtitle).toHaveCSS("color", rgb(UCODE_THEME.light.v2Overrides["v2-grey-700"]))
 
   const input = JSON.stringify({ command })
   await timeline.send(toolInputEnded({ sessionID, assistantMessageID: assistantID, id, text: input }))
@@ -227,4 +229,9 @@ test("does not infer Thinking from busy, retry, or recovery without reasoning", 
 
 function lines(count: number) {
   return Array.from({ length: count }, (_, index) => `line ${index + 1}`).join("\n")
+}
+
+// A palette hex (`#rrggbb` or `#rrggbbaa`) as the browser reports an opaque computed color.
+function rgb(hex: string) {
+  return `rgb(${[1, 3, 5].map((index) => parseInt(hex.slice(index, index + 2), 16)).join(", ")})`
 }

@@ -151,7 +151,8 @@ test("disposes the old workspace's shell while destination history is loading", 
 })
 
 test("loads the transcript code font before opening rich history", async ({ page }) => {
-  const font = page.waitForResponse((response) => /IBMPlexMono-Text[^/]*\.woff2/.test(response.url()))
+  // U Code sets code in JetBrains Mono, bundled with the app (src/index.css).
+  const font = page.waitForResponse((response) => /jetbrains-mono-latin-wght-normal[^/]*\.woff2/.test(response.url()))
   await mockOpenCodeServer(page, {
     directory: fixture.directory,
     project: fixture.project,
@@ -165,7 +166,7 @@ test("loads the transcript code font before opening rich history", async ({ page
   await page.goto(stressSessionHref(fixture.sourceID))
   await expect(page.getByText("A transcript with no code", { exact: true })).toBeVisible()
   expect((await font).ok()).toBe(true)
-  await expect.poll(() => page.evaluate(() => document.fonts.check('440 13px "IBM Plex Mono"'))).toBe(true)
+  await expect.poll(() => page.evaluate(() => document.fonts.check('440 13px "JetBrains Mono"'))).toBe(true)
 })
 
 test("waits for the requested session's history before constructing its cold timeline", async ({ page }) => {

@@ -997,13 +997,14 @@ async function readPromptPositions(page: Page, frames: string[], view: { x: numb
         context.drawImage(image, 0, 0)
         const pixels = context.getImageData(0, 0, image.width, image.height).data
         const scale = image.height / viewport.height
-        // This fixture's only blue content in the top 200px is its user prompt.
+        // This fixture's only accent-colored content in the top 200px is its user prompt. U Code's
+        // accent is the chat's teal, so its ink has green and blue both well above red.
         // Track painted ink, including compositor-only scroll frames.
         for (let y = Math.ceil(view.y * scale); y < Math.min(image.height, (view.y + 200) * scale); y++) {
           let ink = 0
           for (let x = Math.ceil((view.x + 16) * scale); x < (view.x + view.width - 16) * scale; x++) {
             const offset = (y * image.width + x) * 4
-            if (pixels[offset + 2] > pixels[offset] + 50 && pixels[offset + 2] > pixels[offset + 1] + 30) ink++
+            if (pixels[offset + 1] > pixels[offset] + 50 && pixels[offset + 2] > pixels[offset] + 50) ink++
           }
           if (ink < 3) continue
           position.top = y / scale

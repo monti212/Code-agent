@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test"
+import { UCODE_GROUND } from "@opencode/ui/theme/ucode-brand"
 import { mockOpenCodeServer } from "../utils/mock-server"
 import { expectAppVisible } from "../utils/waits"
 
@@ -78,5 +79,11 @@ test("matches the rounded panel corners to the dark new-session background", asy
     },
   )
 
-  expect(corners.every(([red, green, blue, alpha]) => red <= 8 && green <= 8 && blue <= 8 && alpha === 255)).toBe(true)
+  // The corners show U Code's dark ground, the chat's night, not the panel or a light page behind it.
+  const ground = [1, 3, 5].map((index) => parseInt(UCODE_GROUND.dark.slice(index, index + 2), 16))
+  expect(
+    corners.every(
+      (pixel) => ground.every((channel, index) => Math.abs(pixel[index] - channel) <= 2) && pixel[3] === 255,
+    ),
+  ).toBe(true)
 })

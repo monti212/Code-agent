@@ -136,7 +136,11 @@ test("routes typing to the composer unless the open terminal is focused", async 
   await page.keyboard.type("x")
   await expect(composer).toHaveText("")
 
-  await page.waitForTimeout(300)
+  // The terminal takes focus back when its connection opens. Its first output can only arrive after
+  // that, so wait for it to render before moving focus away.
+  await expect.poll(() => sendPtyOutput).toBeDefined()
+  sendPtyOutput?.("ready")
+  await expect(terminal).toHaveCSS("opacity", "1")
   await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur())
   await page.keyboard.type("a")
 

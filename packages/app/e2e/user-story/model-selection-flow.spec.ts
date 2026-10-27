@@ -101,13 +101,15 @@ test("creates a session in a new project and selects its model", async ({ page }
   await modelControl.click()
   const modelSearch = page.getByPlaceholder("Search models", { exact: true })
   await expect(modelSearch).toBeFocused()
-  await modelSearch.press("ArrowDown")
+  // U Code does not feature upstream's gateways, so they sort by name like any provider:
+  // OpenCode's free model is listed above OpenCode Go's.
+  await modelSearch.press("ArrowUp")
   await modelSearch.press("Enter")
   await expect(modelControl).toContainText("Free Model")
 
   await modelControl.click()
   await expect(modelSearch).toBeFocused()
-  await modelSearch.press("ArrowUp")
+  await modelSearch.press("ArrowDown")
   await modelSearch.press("Enter")
 
   await expect(modelControl).toContainText("Go Model 1")
