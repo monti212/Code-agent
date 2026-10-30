@@ -113,43 +113,34 @@ name appears only where the user picks or signs in to OpenAI or Anthropic with t
 they need to know which is which. Translations of that copy were removed rather than left naming
 vendors, so other languages fall back to the neutral English until they are retranslated.
 
-Uhuru models appear under Uhuru names only (for example "Uhuru 4.5"). OpenAI and Anthropic models keep
-their real names, because the user chose them and pays for them through their own account.
+Uhuru models appear under Uhuru names only (U4.0, U5.0). OpenAI and Anthropic models keep their real names in
+the picker, because the user chose them and pays for them through their own account. Own-key models need a
+connected Uhuru AI account too: that is how they receive U Code's identity (see Prompt layering).
 
 Upstream's hosted gateway (OpenCode Zen / Go, provider id `opencode`) is not offered. Its code stays for
 clean merges, and it no longer self-activates.
 
 ## Prompt layering
 
-U Code does not write its own identity. Its core prompt is the Uhuru platform's, generated from the
-uhuruorionx repository, so the brand identity has one source.
+U Code's identity is written once, on the Uhuru platform, in `supabase/functions/ucode-api/prompt.ts` in the
+uhuruorionx repository: the shared identity protocol, then the U Code doctrine. It never lives in this
+repository, so it improves for every user without a client release and stays out of public source.
 
-1. **Uhuru core prompt** (every model): `packages/core/src/session/runner/prompt/uhuru-core.txt`, exactly
-   what the platform builds for its U Code agent:
-   `injectIdentityProtocol(buildCorePrompt("code-agent", undefined, { includeOutputFormats: false }))`
-   from `supabase/functions/_shared/` (`identity_guard.ts`, `core_prompt.ts`). That is the identity
-   protocol, the shared core identity (with Africa integrity, execution discipline and architecture
-   answers), the voice texture, the `code-agent` role and the product catalog. Output formats are left
-   out because they name chat tools U Code does not have. It is added in
-   `packages/core/src/session/model-request.ts` after all plugin hooks, so no plugin or custom agent
-   prompt can drop it. Title generation skips it.
-2. **Harness and model-family prompt**: `session/runner/prompt/system.txt`, or the model-family prompt in
+1. **Uhuru models (U4.0, U5.0):** `ucode-api` leads every request with that prompt, server-side. The client
+   adds no identity text of its own.
+2. **Own-key OpenAI and Anthropic models:** these never pass through the platform, so
+   `packages/core/src/plugin/ucode-prompt.ts` fetches the same prompt from `ucode-api` (`GET /v1/prompt`)
+   with the user's Uhuru key and puts it first in those requests. It refreshes hourly and when the Uhuru
+   sign-in changes, and keeps the last good copy through a failed refresh. **Until the prompt is in hand,
+   every non-Uhuru model is disabled**, so no model runs in U Code without the identity.
+3. **Harness and model-family prompt:** `session/runner/prompt/system.txt`, or the model-family prompt in
    `plugin/system-prompt/` chosen by `plugin/optimize.ts`, or a custom agent prompt. These carry no
-   identity of their own.
-3. **Model layer** (`plugin/identity.ts`): an Uhuru model is named the way the platform names its models
-   (`# YOUR MODEL` / `You are Uhuru 4.5.`). A model the user brought with their own OpenAI or Anthropic
-   key gets no model layer: the platform identity stands for every model, and no upstream provider or
+   identity.
+4. **Model layer** (`plugin/identity.ts`): an Uhuru model is named the way the platform names its models
+   (`# YOUR MODEL` / `You are U4.0.`). An own-key model gets no model layer, so no upstream provider or
    model id reaches the instructions.
 
-**Never edit `uhuru-core.txt` by hand.** Change the platform, then regenerate from a committed checkout:
-
-```bash
-bun script/sync-uhuru-prompt.ts /path/to/uhuruorionx
-```
-
-The script records the platform commit and a SHA-256 in `uhuru-core.json`;
-`packages/core/test/session-uhuru-core.test.ts` fails if the text no longer matches. Re-run the sync
-whenever `identity_guard.ts` or `core_prompt.ts` changes on the platform.
+Never write identity text into this repository. Change `ucode-api/prompt.ts` on the platform instead.
 
 ## Upstream-owned surfaces U Code does not ship
 

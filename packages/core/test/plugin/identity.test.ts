@@ -18,10 +18,10 @@ const it = testEffect(PluginTestLayer)
 test("names an Uhuru model the way the platform does", () => {
   expect(
     IdentityPlugin.identity({
-      name: "Uhuru 4.5",
-      ref: Model.Ref.make({ providerID: Provider.ID.uhuru, id: Model.ID.make("uhuru-4.5") }),
+      name: "U4.0",
+      ref: Model.Ref.make({ providerID: Provider.ID.uhuru, id: Model.ID.make("uhuru-4.0") }),
     }),
-  ).toBe("# YOUR MODEL\nYou are Uhuru 4.5.")
+  ).toBe("# YOUR MODEL\nYou are U4.0.")
 })
 
 test("gives a model brought with the user's own key no model layer", () => {
@@ -50,17 +50,17 @@ it.effect("inserts the model layer after the agent prompt for Uhuru models only"
     const plugins = yield* Plugin.Service
     const pluginHost = yield* PluginHost.make(plugins)
     yield* catalog.transform((editor) => {
-      editor.models.update(Provider.ID.uhuru, Model.ID.make("uhuru-4.5"), (model) => {
-        model.name = "Uhuru 4.5"
+      editor.models.update(Provider.ID.uhuru, Model.ID.make("uhuru-4.0"), (model) => {
+        model.name = "U4.0"
       })
     })
     yield* IdentityPlugin.Plugin.effect(pluginHost)
 
-    const named = context(Provider.ID.uhuru, "uhuru-4.5")
+    const named = context(Provider.ID.uhuru, "uhuru-4.0")
     yield* hooks.trigger("session", "context", named)
     expect(named.system.map((part) => part.text)).toEqual([
       "Agent prompt",
-      "# YOUR MODEL\nYou are Uhuru 4.5.",
+      "# YOUR MODEL\nYou are U4.0.",
       "Initial context",
     ])
 

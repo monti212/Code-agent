@@ -1,11 +1,6 @@
 export * as SessionSystemPrompt from "./system-prompt.js"
 
 import PROMPT from "./runner/prompt/system.txt"
-import CORE from "./runner/prompt/uhuru-core.txt"
-
-// The Uhuru platform core prompt, generated from uhuruorionx by script/sync-uhuru-prompt.ts. Every
-// model receives it first; the harness, model-family and model prompts layer on top. Never edit it here.
-export const core = CORE
 
 export function make(tools: string[]) {
   return render(PROMPT, tools)
