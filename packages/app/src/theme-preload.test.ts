@@ -24,7 +24,7 @@ describe("theme preload", () => {
 
     expect(document.documentElement.dataset.theme).toBe("oc-2")
     expect(document.documentElement.dataset.colorScheme).toBe("light")
-    expect(document.documentElement.style.backgroundColor).toBe("#fafafa")
+    expect(document.documentElement.style.backgroundColor).toBe("#F7F5F2")
   })
 
   test("restores explicit dark mode on a light system", () => {
@@ -32,7 +32,7 @@ describe("theme preload", () => {
     run()
 
     expect(document.documentElement.dataset.colorScheme).toBe("dark")
-    expect(document.documentElement.style.backgroundColor).toBe("#080808")
+    expect(document.documentElement.style.backgroundColor).toBe("#08131F")
   })
 
   test("restores explicit light mode on a dark system", () => {
@@ -41,7 +41,7 @@ describe("theme preload", () => {
     run()
 
     expect(document.documentElement.dataset.colorScheme).toBe("light")
-    expect(document.documentElement.style.backgroundColor).toBe("#fafafa")
+    expect(document.documentElement.style.backgroundColor).toBe("#F7F5F2")
   })
 
   test("resolves persisted system mode before paint", () => {
@@ -50,7 +50,16 @@ describe("theme preload", () => {
     run()
 
     expect(document.documentElement.dataset.colorScheme).toBe("dark")
-    expect(document.documentElement.style.backgroundColor).toBe("#080808")
+    expect(document.documentElement.style.backgroundColor).toBe("#08131F")
+  })
+
+  test("restores the cached U Code palette before paint", () => {
+    localStorage.setItem("opencode-color-scheme", "dark")
+    localStorage.setItem("opencode-theme-css-dark", "--v2-grey-1200:#08131fff;")
+    run()
+
+    expect(document.documentElement.dataset.theme).toBe("oc-2")
+    expect(document.getElementById("oc-theme-preload")?.textContent).toContain("--v2-grey-1200:#08131fff;")
   })
 
   test("keeps cached css for non-default themes", () => {

@@ -2,15 +2,15 @@ name: check
 
 on:
   push:
-    branches: [dev, v2]
+    branches: [dev, v2, acp-command-lifecycle]
   pull_request:
-    branches: [dev, v2]
+    branches: [dev, v2, acp-command-lifecycle]
   workflow_dispatch:
 
 jobs:
   check:
     name: typecheck
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1

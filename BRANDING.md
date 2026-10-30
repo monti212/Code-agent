@@ -24,21 +24,43 @@ operation. A rename that no user can see buys nothing and costs a conflict on ev
 | Global dirs            | `~/.config/ucode`, `~/.local/share/ucode`, `~/.cache/ucode`, `~/.local/state/ucode` | `packages/util/src/global.ts`                |
 | Project config         | `ucode.json` / `ucode.jsonc`, `.ucode/`                                             | `packages/core/src/config/discovery.ts`      |
 | Env vars               | `UCODE_*` (aliased onto the upstream `OPENCODE_*` reads)                            | `packages/util/src/brand-env.ts`             |
-| Default model provider | Uhuru (`uhuru`), Uhuru Public API                                                   | `packages/core/src/plugin/provider/uhuru.ts` |
+| Default model provider | Uhuru (`uhuru`): U4.0 and U5.0 through the U Code endpoint (`ucode-api`)            | `packages/core/src/plugin/provider/uhuru.ts` |
 
 TypeScript code uses `import { Brand } from "@opencode/util/brand"` rather than repeating literals.
 Static files (markdown, JSON, HTML, i18n tables) use the literal values above.
 
-### Palette (Uhuru AI brand book, `docs/brand-book/03-color-system.md` in uhuruorionx)
+### Look: the Uhuru chat's
 
-| Token               | Hex       | Use                                            |
-| ------------------- | --------- | ---------------------------------------------- |
-| teal-500 (primary)  | `#0096B3` | primary actions, active states, the mark       |
-| teal-300            | `#4DC1D8` | primary on dark backgrounds                    |
-| teal-700            | `#006F8A` | pressed / hover on light                       |
-| orange-500 (accent) | `#FF6A00` | accent, agent indicator, the mark's dot        |
-| deep navy           | `#002F4B` | primary text on light, dark surfaces           |
-| near-black          | `#0A0A0B` | dark background (matches the U Code app shell) |
+U Code looks like the Uhuru chat (uhuruai.co), so the two read as one product. The default theme,
+"U Code" (id `oc-2`, kept for merges), wears the chat's own palette; the values live in one place,
+`packages/ui/src/theme/ucode-brand.ts`, copied from the chat's `src/site/styles/site.css` (the
+`--o-*` night tokens) and `src/components/Chat/v3/styles/colors_and_type.css` (sand and navy) in
+uhuruorionx. Change them there first, then in `ucode-brand.ts`, then run `bun run generate:v2-oc2`
+in `packages/ui`; `ucode-brand.test.ts` fails if `oc-2.json` drifts from the module.
+
+| Role                      | Dark      | Light     |
+| ------------------------- | --------- | --------- |
+| Ground (shell, `bg-deep`) | `#08131F` | `#F7F5F2` |
+| Panel (`bg-base`)         | `#0A1725` | `#FFFFFF` |
+| Raised (`layer-01`)       | `#0C1B2B` | `#F7F5F2` |
+| Line                      | `#1B3243` | `#EAE7E3` |
+| Text                      | `#F2EFEA` | `#19324A` |
+| Muted text                | `#A9BAC7` | `#486D8D` |
+| Accent / links            | `#2AB6D0` | `#006F8A` |
+| Primary action            | `#0089A3` | `#0089A3` |
+| Brand teal (the mark)     | `#0096B3` | `#0096B3` |
+| Orange (the mark's dot)   | `#FF6A00` | `#FF6A00` |
+
+Light muted text is the chat's navy-300 one step darker, so it holds 4.5:1 on sand as well as white.
+
+Type follows the chat too: **Space Grotesk** for titles (dialog titles, settings headings),
+**Inter** for reading, **JetBrains Mono** for code. All three are bundled (`packages/app/public/assets`,
+`services/www/src/docs/assets/fonts`, with their OFL licences), so the desktop app never fetches a font.
+
+The chat's mud-cloth print (`packages/app/public/assets/pattern-mask.png`) is drawn faintly on the home
+screen and the desktop splash when the U Code theme is on, never behind code, diffs or the terminal.
+The terminal UI's `ucode` theme (`packages/tui/src/theme/assets/ucode.json`) and the docs
+(`services/www`, `packages/web`) use the same palette.
 
 ### The mark
 
@@ -85,6 +107,12 @@ server sign-ins are kept). The app has no custom-provider entry. A provider a us
 their own `ucode.json` still loads, because config is applied after the allowlist; U Code neither offers
 nor documents that path.
 
+**U Code's own copy never advertises other vendors' models** (Monti, 2026-10-25): no "Claude, GPT,
+Gemini" in tips, notes or upsells, and no third-party gateway named on every web search. A provider's
+name appears only where the user picks or signs in to OpenAI or Anthropic with their own key, because
+they need to know which is which. Translations of that copy were removed rather than left naming
+vendors, so other languages fall back to the neutral English until they are retranslated.
+
 Uhuru models appear under Uhuru names only (for example "Uhuru 4.5"). OpenAI and Anthropic models keep
 their real names, because the user chose them and pays for them through their own account.
 
@@ -129,7 +157,8 @@ These packages run upstream's own hosted business (billing console, stats, enter
 infrastructure) and are not deployed by U Code. They are left untouched so merges stay clean:
 `packages/console`, `packages/stats`, `packages/enterprise`, `packages/function`, `packages/posts`,
 `services/update`, `services/files`, `infra/`, `sst.config.ts`, `artifacts/`, `perf/`, `specs/`, and
-the upstream release workflows under `.github/`.
+the upstream release workflows under `.github/` (apart from runner labels and upstream-only guards, see
+[CI runners](#ci-runners)).
 
 `services/www` is the exception: it holds the current docs and is branded, built for
 `code.uhuruai.co/docs`. Its `wrangler.jsonc` deliberately still carries upstream's worker names and
@@ -159,4 +188,40 @@ strings:
 
 ```bash
 git diff ORIG_HEAD -- packages/{app,ui,session-ui,tui,cli,desktop,web,core} | grep -n '^+.*OpenCode'
+```
+
+### CI runners
+
+Upstream runs CI on Blacksmith, a paid runner provider whose `blacksmith-*` labels do not exist for this
+repository: a job that keeps one waits in the queue until GitHub cancels it. Runner labels in
+`.github/workflows/` are therefore ours. When a merge conflicts on a `runs-on` or matrix `host` line,
+keep our label, and map any label upstream adds to the GitHub-hosted image of the same OS:
+
+| Upstream label                     | U Code label       |
+| ---------------------------------- | ------------------ |
+| `blacksmith-4vcpu-ubuntu-2404`     | `ubuntu-24.04`     |
+| `blacksmith-4vcpu-ubuntu-2404-arm` | `ubuntu-24.04-arm` |
+| `blacksmith-4vcpu-windows-2025`    | `windows-2025`     |
+
+GitHub-hosted images do not ship ripgrep, which core's search tests need on `PATH`, so the `unit` job in
+`test.yml` installs it. Keep that step.
+
+This repository's trunk is `acp-command-lifecycle` (GitHub's default branch, where pull requests merge),
+while upstream's workflows only name `dev` and `v2`. It is added to the branch filters of `check`
+(typecheck), `test` (push), `storybook` and `nix-eval`, so pull requests into it get a typecheck and
+merges to it run the tests. Keep it in those filters.
+
+Jobs wired to upstream's own product (its `opencode` CLI from `opencode.ai`, its model gateway, its
+GitHub App, its release artifacts) are limited to `github.repository == 'anomalyco/opencode'`, so they
+skip here: triage, duplicate-issues, review, the `/oc` agent, pr-management's duplicate check and the
+final publish job. Give a new upstream job of that kind the same guard. Jobs that need only a
+credential this repository can hold itself (publish-vscode for the `orionx` publisher, notify-discord,
+the nix-hashes commit) stay enabled and fail until that secret is set.
+
+After a merge, the first two commands must print nothing; the third lists new upstream wiring to guard:
+
+```bash
+grep -rnE 'blacksmith-[0-9]+vcpu' .github/
+grep -L acp-command-lifecycle .github/workflows/{check,test,storybook,nix-eval}.yml
+git diff ORIG_HEAD -- .github/ | grep -nE '^\+.*(OPENCODE_API_KEY|opencode\.ai/install|anomalyco/opencode/github)'
 ```

@@ -1,16 +1,17 @@
 :root {
-  --sl-color-bg: hsl(0, 20%, 99%);
-  --sl-color-gray-5: hsl(0, 1%, 85%);
+  /* The Uhuru chat's palette: sand and navy in light, its night ground and panels in dark. */
+  --sl-color-bg: #fcfcfb;
+  --sl-color-gray-5: #eae7e3;
   --sl-nav-gap: 40px;
-  --sl-color-text: hsl(0, 1%, 39%);
-  --sl-border-color: hsl(0, 1%, 85%);
-  --sl-color-hairline-shade: hsl(0, 1%, 85%);
+  --sl-color-text: #2e4a6a;
+  --sl-border-color: #eae7e3;
+  --sl-color-hairline-shade: #eae7e3;
 
-  --color-background: hsl(0, 20%, 99%);
-  --color-background-weak: hsl(0, 8%, 97%);
-  --color-background-weak-hover: hsl(0, 8%, 94%);
-  --color-background-strong: hsl(0, 5%, 12%);
-  --color-background-strong-hover: hsl(0, 5%, 18%);
+  --color-background: #fcfcfb;
+  --color-background-weak: #f7f5f2;
+  --color-background-weak-hover: #f0eeea;
+  --color-background-strong: #19324a;
+  --color-background-strong-hover: #2e4a6a;
   /* Uhuru teal (brand book teal-100 / teal-50). */
   --color-background-interactive: #b3e6ef;
   --color-background-interactive-weaker: #e6f7fa;
@@ -18,16 +19,16 @@
   --sl-color-accent: #0096b3;
   --sl-color-accent-high: #006f8a;
 
-  --color-text: hsl(0, 1%, 39%);
-  --color-text-weak: hsl(0, 1%, 60%);
-  --color-text-weaker: hsl(0, 3%, 88%);
-  --color-text-strong: hsl(0, 5%, 12%);
-  --color-text-inverted: hsl(0, 20%, 99%);
+  --color-text: #2e4a6a;
+  --color-text-weak: #6e8daa;
+  --color-text-weaker: #d9d4cc;
+  --color-text-strong: #19324a;
+  --color-text-inverted: #fcfcfb;
 
-  --color-border: hsl(30, 2%, 81%);
-  --color-border-weak: hsl(0, 1%, 85%);
+  --color-border: #d9d4cc;
+  --color-border-weak: #eae7e3;
 
-  --color-icon: hsl(0, 1%, 55%);
+  --color-icon: #8ba3bc;
 
   /* For the share component */
   --sl-color-bg-surface: var(--sl-color-bg-nav);
@@ -39,32 +40,32 @@ body {
   font-size: 14px !important;
 
   @media (prefers-color-scheme: dark) {
-    --sl-color-bg: hsl(0, 9%, 7%);
-    --sl-color-gray-5: hsl(0, 4%, 23%);
-    --sl-color-text: hsl(0, 4%, 71%);
-    --sl-border-color: hsl(0, 4%, 23%);
-    --sl-color-hairline-shade: hsl(0, 4%, 23%);
+    --sl-color-bg: #08131f;
+    --sl-color-gray-5: #1b3243;
+    --sl-color-text: #a9bac7;
+    --sl-border-color: #1b3243;
+    --sl-color-hairline-shade: #1b3243;
 
-    --color-background: hsl(0, 9%, 7%);
-    --color-background-weak: hsl(0, 6%, 10%);
-    --color-background-strong: hsl(0, 15%, 94%);
-    --color-background-strong-hover: hsl(0, 15%, 97%);
+    --color-background: #08131f;
+    --color-background-weak: #0a1725;
+    --color-background-strong: #f2efea;
+    --color-background-strong-hover: #ffffff;
     --color-background-interactive: #80d4e3;
     --color-background-interactive-weaker: #003a59;
     --sl-color-accent-low: #003a59;
-    --sl-color-accent: #4dc1d8;
+    --sl-color-accent: #2ab6d0;
     --sl-color-accent-high: #e6f7fa;
 
-    --color-text: hsl(0, 4%, 71%);
-    --color-text-weak: hsl(0, 2%, 49%);
-    --color-text-weaker: hsl(0, 3%, 28%);
-    --color-text-strong: hsl(0, 15%, 94%);
-    --color-text-inverted: hsl(0, 9%, 7%);
+    --color-text: #a9bac7;
+    --color-text-weak: #7f97aa;
+    --color-text-weaker: #476580;
+    --color-text-strong: #f2efea;
+    --color-text-inverted: #08131f;
 
-    --color-border: hsl(0, 3%, 28%);
-    --color-border-weak: hsl(0, 4%, 23%);
+    --color-border: #2a4257;
+    --color-border-weak: #1b3243;
 
-    --color-icon: hsl(10, 3%, 43%);
+    --color-icon: #7f97aa;
   }
 }
 

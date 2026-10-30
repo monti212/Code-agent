@@ -265,7 +265,8 @@ function webSearchProviderLabel(provider: unknown, i18n: ReturnType<typeof useI1
       : provider === "tinyfish"
         ? "TinyFish"
         : provider === "opencode"
-          ? "OpenCode Zen"
+          ? // A third-party gateway, not something to name on every search: the label stays plain "Web search".
+            undefined
           : `${provider[0].toUpperCase()}${provider.slice(1)}`
   if (name) return i18n.t("ui.tool.websearch.provider", { provider: name })
   return i18n.t("ui.tool.websearch")

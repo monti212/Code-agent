@@ -17,6 +17,74 @@
   font-style: normal;
 }
 
+/* Space Grotesk for titles and JetBrains Mono for code, as in the Uhuru chat. Latin and Latin Extended
+   only, bundled so the desktop app never reaches out for a font. */
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/space-grotesk-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/space-grotesk-latin-ext-wght-normal.woff2") format("woff2-variations");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/jetbrains-mono-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/jetbrains-mono-latin-ext-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/jetbrains-mono-latin-wght-italic.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-style: italic;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/jetbrains-mono-latin-ext-wght-italic.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-style: italic;
+  font-display: swap;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 @font-face {
   font-family: "IBM Plex Mono";
   src: url("@ibm/plex/IBM-Plex-Mono/fonts/complete/woff2/IBMPlexMono-Text.woff2") format("woff2");
@@ -619,4 +687,34 @@
     height: 24px;
     padding-block: 0;
   }
+}
+
+/* The Uhuru print (the chat's mud-cloth motif), drawn faintly across the top of the new-session screen and the
+   desktop splash when the U Code theme is on: the chat's dark recipe, the mask in 7% of the body text, and a
+   lighter touch on sand. It sits under the content and never behind code, diffs or the terminal. */
+[data-theme="oc-2"] :is([data-component="new-session"], [data-component="loading-splash"]) {
+  isolation: isolate;
+}
+
+[data-theme="oc-2"] :is([data-component="new-session"], [data-component="loading-splash"])::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: color-mix(in oklch, var(--v2-text-text-base) 3%, transparent);
+  /* The tile is not seamless top to bottom, so the print fades out before its first edge (650px at this size). */
+  -webkit-mask:
+    url("/assets/pattern-mask.png") 0 0 / 520px auto repeat-x,
+    linear-gradient(#000 0, #000 360px, transparent 640px) 0 0 / 100% 100% no-repeat;
+  -webkit-mask-composite: source-in;
+  mask:
+    url("/assets/pattern-mask.png") 0 0 / 520px auto repeat-x,
+    linear-gradient(#000 0, #000 360px, transparent 640px) 0 0 / 100% 100% no-repeat;
+  mask-composite: intersect;
+}
+
+[data-theme="oc-2"][data-color-scheme="dark"]
+  :is([data-component="new-session"], [data-component="loading-splash"])::before {
+  background: color-mix(in oklch, var(--v2-text-text-muted) 7%, transparent);
 }

@@ -1,19 +1,29 @@
 #!/usr/bin/env bun
 
 import { V2_PRIMITIVES_DEFAULT } from "../src/theme/v2/default-primitives"
+import { UCODE_THEME } from "../src/theme/ucode-brand"
 import type { DesktopTheme } from "../src/theme/types"
 
 const themePath = import.meta.dir + "/../src/theme/themes/oc-2.json"
 const theme = (await Bun.file(themePath).json()) as DesktopTheme
 const css = await Bun.file(import.meta.dir + "/../src/styles/tokens/theme.css").text()
 
-const light = { ...V2_PRIMITIVES_DEFAULT, ...readTokens("light") }
-const dark = { ...V2_PRIMITIVES_DEFAULT, ...readTokens("dark") }
+// The U Code palette goes on last, so regenerating from the stock tokens keeps the brand.
+const light = { ...V2_PRIMITIVES_DEFAULT, ...readTokens("light"), ...UCODE_THEME.light.v2Overrides }
+const dark = { ...V2_PRIMITIVES_DEFAULT, ...readTokens("dark"), ...UCODE_THEME.dark.v2Overrides }
 
 const next: DesktopTheme = {
   ...theme,
-  light: { ...theme.light, v2Overrides: light },
-  dark: { ...theme.dark, v2Overrides: dark },
+  light: {
+    palette: UCODE_THEME.light.palette,
+    overrides: { ...theme.light.overrides, ...UCODE_THEME.light.overrides },
+    v2Overrides: light,
+  },
+  dark: {
+    palette: UCODE_THEME.dark.palette,
+    overrides: { ...theme.dark.overrides, ...UCODE_THEME.dark.overrides },
+    v2Overrides: dark,
+  },
 }
 
 await Bun.write(themePath, JSON.stringify(next, null, 2) + "\n")
