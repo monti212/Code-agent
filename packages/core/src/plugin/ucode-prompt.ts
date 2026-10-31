@@ -10,14 +10,18 @@ import { Bus } from "../bus.js"
 import { Credential } from "../credential.js"
 import { Integration } from "../integration.js"
 import { Provider } from "../provider.js"
+import { allowed } from "./provider/allowlist.js"
 import { baseURL } from "./provider/uhuru.js"
 
 // U Code's system prompt lives on the Uhuru platform (ucode-api/prompt.ts), not in this repository. Uhuru models
 // get it server-side on every request. A model the user brings with their own key never passes through the
 // platform, so this plugin fetches the same prompt with the user's Uhuru key and leads those requests with it.
-// Until the prompt is in hand, every non-Uhuru model is disabled: no model runs in U Code without the identity.
+// Until the prompt is in hand, the own-key providers U Code offers (OpenAI, Anthropic) are disabled, so no model U
+// Code offers runs without the identity. A provider the user writes into their own config is theirs: it gets the
+// prompt once it is available and is otherwise left as they configured it.
 const Payload = Schema.Struct({ object: Schema.Literal("prompt"), version: Schema.String, prompt: Schema.String })
 const uhuru = Integration.ID.make(Provider.ID.uhuru)
+const ownKey = allowed.filter((id) => id !== Provider.ID.uhuru)
 
 export const Plugin = define<HttpClient.HttpClient | Bus.Service | Scope.Scope>({
   id: "opencode.prompt.ucode",
@@ -57,7 +61,7 @@ export const Plugin = define<HttpClient.HttpClient | Bus.Service | Scope.Scope>(
     yield* ctx.model.transform((models) => {
       if (state.prompt) return
       for (const model of models.list()) {
-        if (model.providerID === Provider.ID.uhuru) continue
+        if (!ownKey.includes(Provider.ID.make(model.providerID))) continue
         models.update(model.providerID, model.id, (draft) => {
           draft.enabled = false
         })

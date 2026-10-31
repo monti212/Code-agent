@@ -132,7 +132,9 @@ repository, so it improves for every user without a client release and stays out
    `packages/core/src/plugin/ucode-prompt.ts` fetches the same prompt from `ucode-api` (`GET /v1/prompt`)
    with the user's Uhuru key and puts it first in those requests. It refreshes hourly and when the Uhuru
    sign-in changes, and keeps the last good copy through a failed refresh. **Until the prompt is in hand,
-   every non-Uhuru model is disabled**, so no model runs in U Code without the identity.
+   OpenAI and Anthropic models are disabled**, so no model U Code offers runs without the identity. A
+   provider the user writes into their own config gets the prompt once it is available and is otherwise
+   left as they configured it.
 3. **Harness and model-family prompt:** `session/runner/prompt/system.txt`, or the model-family prompt in
    `plugin/system-prompt/` chosen by `plugin/optimize.ts`, or a custom agent prompt. These carry no
    identity.
