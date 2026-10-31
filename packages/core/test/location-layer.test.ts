@@ -461,9 +461,10 @@ describe("LocationServiceMap", () => {
             Effect.gen(function* () {
               yield* Reference.Service
               const providers = yield* Provider.Service
-              yield* providers.transform((editor) => editor.update(providerID, () => {}))
               const plugins = yield* Plugin.Service
+              // Register after activation so the built-in provider allowlist does not prune the test provider.
               yield* plugins.awaitActivation
+              yield* providers.transform((editor) => editor.update(providerID, () => {}))
               const registry = yield* Tool.Service
               return {
                 providers: yield* providers.all(),

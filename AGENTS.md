@@ -3,7 +3,8 @@
 - This repository is U Code, the Uhuru coding agent, built on upstream opencode. Read `BRANDING.md` before changing anything a user can read, type or install.
 - User-visible text says U Code, `ucode`, `ucode.json`, `.ucode/` and `UCODE_*`. Internal identifiers (`@opencode/*` packages, service tags, plugin ids, `OPENCODE_*` reads) keep their upstream spelling so upstream merges stay cheap.
 - TypeScript reads product identity from `@opencode/util/brand` instead of repeating literals.
-- Uhuru (`packages/core/src/plugin/provider/uhuru.ts`) is the recommended and default provider. Third-party providers, including upstream's OpenCode Zen, are never presented as U Code's own.
+- U Code offers Uhuru models (`packages/core/src/plugin/provider/uhuru.ts`, the default) plus OpenAI and Anthropic for users with their own key; `plugin/provider/allowlist.ts` removes every other provider.
+- Identity comes from the Uhuru platform, never from this repo: `ucode-api` applies U Code's prompt to Uhuru models server-side, and `plugin/ucode-prompt.ts` fetches the same prompt for own-key models (OpenAI and Anthropic stay disabled until it is in hand). The only identity text here is the one-line model layer in `plugin/identity.ts`. See `BRANDING.md` → Prompt layering.
 
 - After changing the public Protocol or Server `HttpApi`, run `bun run generate` from `packages/client`. Do not edit generated client files directly.
 - Keep runtime dependencies directed from Schema to Core and Protocol, then from Core and Protocol to Server. Client runtime code may depend on Schema and Protocol but never Core or Server; `sdk` composes Client, Core, and Server.
