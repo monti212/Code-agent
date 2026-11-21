@@ -22,7 +22,7 @@ Want to take on an issue? Leave a comment and a maintainer may assign it unless 
 
 ## Adding Providers
 
-New providers should rarely require U Code changes. The provider catalog comes from [models.dev](https://models.dev); add a provider there first. Uhuru AI, the default provider, is built in.
+U Code offers three providers: Uhuru AI (built in and the default), plus OpenAI and Anthropic for users who bring their own API key. The allowlist lives in `packages/core/src/plugin/provider/allowlist.ts`; changing it is a product decision, so open an issue before proposing another provider.
 
 ## Development
 

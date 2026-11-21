@@ -3,7 +3,7 @@ title: Modeller
 description: Konfigurere en LLM leverandør og modell.
 ---
 
-U Code bruker [AI SDK](https://ai-sdk.dev/) og [Models.dev](https://models.dev) for å støtte **75+ LLM leverandører** og den støtter kjøring av lokale modeller.
+U Code offers Uhuru models, plus OpenAI and Anthropic models when you bring your own API key for them.
 
 ---
 
@@ -37,12 +37,11 @@ Imidlertid er det bare noen få av dem som er gode til både å generere kode og
 
 Her er flere modeller som fungerer godt med U Code, uten spesiell rekkefølge. (Dette er ikke en uttømmende liste og er heller ikke nødvendigvis oppdatert):
 
+- U4.0
 - GPT 5.2
 - GPT 5.1 Codex
 - Claude Opus 4.5
 - Claude Sonnet 4.5
-- Minimax M2.1
-- Gemini 3 Pro
 
 ---
 
@@ -54,13 +53,12 @@ U Code-konfigurasjon.
 ```json title="ucode.json" {3}
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "lmstudio/google/gemma-3n-e4b"
+  "model": "uhuru/uhuru-4.0"
 }
 ```
 
-Her er hele ID `provider_id/model_id`. For eksempel, hvis du bruker [OpenCode Zen](/docs/providers#opencode-zen), vil du bruke `opencode/gpt-5.1-codex` for GPT 5.1 Codex.
+Her er hele ID `provider_id/model_id`. For eksempel, hvis du bruker [Uhuru AI](/docs/providers#uhuru-ai), vil du bruke `uhuru/uhuru-4.0` for U4.0.
 
-Hvis du har konfigurert en [egendefinert leverandør](/docs/providers#custom), er `provider_id` nøkkelen fra `provider`-delen av konfigurasjonen din, og `model_id` er nøkkelen fra `provider.models`.
 
 ---
 

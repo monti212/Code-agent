@@ -3,7 +3,7 @@ title: 模型
 description: 配置 LLM 提供商和模型。
 ---
 
-U Code 使用 [AI SDK](https://ai-sdk.dev/) 和 [Models.dev](https://models.dev) 支持 **75+ LLM 提供商**，并支持运行本地模型。
+U Code offers Uhuru models, plus OpenAI and Anthropic models when you bring your own API key for them.
 
 ---
 
@@ -37,12 +37,11 @@ U Code 使用 [AI SDK](https://ai-sdk.dev/) 和 [Models.dev](https://models.dev)
 
 以下是与 U Code 配合良好的几个模型，排名不分先后（此列表并非详尽无遗，也不一定是最新的）：
 
+- U4.0
 - GPT 5.2
 - GPT 5.1 Codex
 - Claude Opus 4.5
 - Claude Sonnet 4.5
-- Minimax M2.1
-- Gemini 3 Pro
 
 ---
 
@@ -53,13 +52,12 @@ U Code 使用 [AI SDK](https://ai-sdk.dev/) 和 [Models.dev](https://models.dev)
 ```json title="ucode.json" {3}
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "lmstudio/google/gemma-3n-e4b"
+  "model": "uhuru/uhuru-4.0"
 }
 ```
 
-这里完整的 ID 格式为 `provider_id/model_id`。例如，如果你使用 [OpenCode Zen](/docs/providers#opencode-zen)，则 GPT 5.1 Codex 对应的值为 `opencode/gpt-5.1-codex`。
+这里完整的 ID 格式为 `provider_id/model_id`。例如，如果你使用 [Uhuru AI](/docs/providers#uhuru-ai)，则 U4.0 对应的值为 `uhuru/uhuru-4.0`。
 
-如果你配置了[自定义提供商](/docs/providers#custom)，`provider_id` 是配置中 `provider` 部分的键名，`model_id` 是 `provider.models` 中的键名。
 
 ---
 

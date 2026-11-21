@@ -259,42 +259,6 @@ Le opzioni del provider possono includere `timeout` e `setCacheKey`:
 - `timeout` - Timeout della richiesta in millisecondi (predefinito: 300000). Imposta a `false` per disabilitare.
 - `setCacheKey` - Assicura che venga sempre impostata una cache key per il provider indicato.
 
-Puoi anche configurare i [modelli locali](/docs/models#local). [Scopri di piu](/docs/models).
-
----
-
-#### Opzioni specifiche del provider
-
-Alcuni provider supportano opzioni di configurazione aggiuntive oltre alle impostazioni generiche `timeout` e `apiKey`.
-
-##### Amazon Bedrock
-
-Amazon Bedrock supporta una configurazione specifica per AWS:
-
-```json title="ucode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-east-1",
-        "profile": "my-aws-profile",
-        "endpoint": "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com"
-      }
-    }
-  }
-}
-```
-
-- `region` - Regione AWS per Bedrock (default: variabile d'ambiente `AWS_REGION` oppure `us-east-1`)
-- `profile` - Profilo AWS nominato da `~/.aws/credentials` (default: variabile d'ambiente `AWS_PROFILE`)
-- `endpoint` - URL endpoint personalizzato per gli endpoint VPC. E un alias dell'opzione generica `baseURL` usando la terminologia AWS. Se sono specificati sia `endpoint` sia `baseURL`, `endpoint` ha precedenza.
-
-:::note
-I bearer token (`AWS_BEARER_TOKEN_BEDROCK` o `/connect`) hanno precedenza sull'autenticazione basata su profilo. Vedi [ordine di precedenza dell'autenticazione](/docs/providers#authentication-precedence) per i dettagli.
-:::
-
-[Scopri di piu sulla configurazione di Amazon Bedrock](/docs/providers#amazon-bedrock).
 
 ---
 
@@ -572,7 +536,7 @@ Puoi disabilitare i provider caricati automaticamente tramite l'opzione `disable
 ```json title="ucode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "disabled_providers": ["openai", "gemini"]
+  "disabled_providers": ["anthropic"]
 }
 ```
 

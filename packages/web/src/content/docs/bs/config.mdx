@@ -259,42 +259,6 @@ Opcije provajdera mogu uključivati ​​`timeout` i `setCacheKey`:
 - `timeout` - Vrijeme čekanja zahtjeva u milisekundama (podrazumevano: 300000). Postavite na `false` da onemogućite.
 - `setCacheKey` - Osigurajte da je ključ keš memorije uvijek postavljen za određenog provajdera.
 
-Također možete konfigurirati [lokalne modele](/docs/models#local). [Saznajte više](/docs/models).
-
----
-
-#### Opcije specifične za provajdere
-
-Neki provajderi podržavaju dodatne opcije konfiguracije osim generičkih postavki `timeout` i `apiKey`.
-
-##### Amazon Bedrock
-
-Amazon Bedrock podržava konfiguraciju specifičnu za AWS:
-
-```json title="ucode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-east-1",
-        "profile": "my-aws-profile",
-        "endpoint": "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com"
-      }
-    }
-  }
-}
-```
-
-- `region` - AWS regija za Bedrock (zadano na `AWS_REGION` env var ili `us-east-1`)
-- `profile` - AWS imenovani profil iz `~/.aws/credentials` (zadano na `AWS_PROFILE` env var)
-- `endpoint` - URL prilagođene krajnje tačke za VPC krajnje tačke. Ovo je alias za generičku opciju `baseURL` koristeći terminologiju specifičnu za AWS. Ako su oba navedena, `endpoint` ima prednost.
-
-:::note
-Tokeni nosioca (`AWS_BEARER_TOKEN_BEDROCK` ili `/connect`) imaju prednost nad autentifikacijom zasnovanom na profilu. Pogledajte [prednost autentifikacije](/docs/providers#authentication-precedence) za detalje.
-:::
-
-[Saznajte više o konfiguraciji Amazon Bedrock](/docs/providers#amazon-bedrock).
 
 ---
 
@@ -572,7 +536,7 @@ Možete onemogućiti dobavljače koji se automatski učitavaju preko opcije `dis
 ```json title="ucode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "disabled_providers": ["openai", "gemini"]
+  "disabled_providers": ["anthropic"]
 }
 ```
 

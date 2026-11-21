@@ -85,6 +85,7 @@ import { AgentPlugin } from "./agent.js"
 import BrowserPlugin from "@opencode/plugin-browser"
 import { CommandPlugin } from "./command.js"
 import { IdentityPlugin } from "./identity.js"
+import { UCodePromptPlugin } from "./ucode-prompt.js"
 import { PlanPlugin } from "./plan.js"
 import { ModelsDevPlugin } from "./models-dev.js"
 import { McpCodeModeExclusionPlugin } from "./mcp-codemode-exclusion.js"
@@ -218,6 +219,8 @@ const pre = [
   // Render model prompts after the patch plugin selects the available editing tools.
   ...OptimizePlugin.Plugins,
   IdentityPlugin.Plugin,
+  // After the model prompts, so the platform prompt leads an own-key model's instructions.
+  UCodePromptPlugin.Plugin,
   EditTool.Plugin,
   GlobTool.Plugin,
   GrepTool.Plugin,

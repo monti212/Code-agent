@@ -260,42 +260,6 @@ Sağlayıcı seçenekleri `timeout` ve `setCacheKey` içerebilir:
 - `timeout` - Milisaniye cinsinden istek zaman aşımı (varsayılan: 300000). Devre dışı bırakmak için `false` olarak ayarlayın.
 - `setCacheKey` - Belirlenen sağlayıcı için her zaman bir önbellek anahtarının ayarlandığından emin olun.
 
-Ayrıca [local models](/docs/models#local) ayarlayabilirsiniz. [Daha fazla bilgi](/docs/models).
-
----
-
-#### Sağlayıcıya Özel Seçenekler
-
-Bazı sağlayıcılar genel `timeout` ve `apiKey` ayarlarının ötesinde ek yapılandırma seçeneklerini destekler.
-
-##### Amazon Bedrock
-
-Amazon Bedrock, AWS'a özgü yapılandırmayı destekler:
-
-```json title="ucode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-east-1",
-        "profile": "my-aws-profile",
-        "endpoint": "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com"
-      }
-    }
-  }
-}
-```
-
-- `region` - Bedrock için AWS bölgesi (varsayılanı `AWS_REGION` env var veya `us-east-1`'dir)
-- `profile` - `~/.aws/credentials`'den AWS adlı profil (varsayılanı `AWS_PROFILE` env var'dır)
-- `endpoint` - VPC uç noktaları için özel uç nokta URL. Bu, AWS'e özgü terminolojiyi kullanan genel `baseURL` seçeneğinin takma adıdır. Her ikisi de belirtilirse `endpoint` öncelikli olur.
-
-:::note
-Taşıyıcı belirteçleri (`AWS_BEARER_TOKEN_BEDROCK` veya `/connect`) profil tabanlı kimlik doğrulamaya göre önceliklidir. Ayrıntılar için [authentication precedence](/docs/providers#authentication-precedence)'ye bakın.
-:::
-
-[Amazon Bedrock yapılandırması hakkında daha fazla bilgi](/docs/providers#amazon-bedrock).
 
 ---
 
@@ -574,7 +538,7 @@ Bu, talimat dosyalarına giden bir dizi yolu ve glob desenini alır. [Kurallar h
 ```json title="ucode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "disabled_providers": ["openai", "gemini"]
+  "disabled_providers": ["anthropic"]
 }
 ```
 

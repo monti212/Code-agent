@@ -85,7 +85,7 @@ Raster app icons (desktop installers, tray, dock) are the Uhuru U Code icon set,
   Issue/source links → `github.com/monti212/Code-agent`. Upstream Discord, X and community links
   are removed, not redirected.
 - Logos, favicons, app icons, ASCII wordmarks, default theme colours.
-- Agent identity in system prompts: the agent is U Code, Uhuru's coding agent.
+- Agent identity: every model runs on the Uhuru platform's core prompt, so it is Uhuru AI inside U Code (see Prompt layering).
 
 ## What stays (internal, on purpose)
 
@@ -98,24 +98,51 @@ Raster app icons (desktop installers, tray, dock) are the Uhuru U Code icon set,
   docs): a sample has to run, so the real package name stays, as in Uhuru's SDK-interoperability rule.
 - `LICENSE`: the upstream MIT notice must stay; it is a licence condition.
 
-## Third-party providers are not us
+## Models and providers
 
-Users may still connect other model providers. Their names are ordinary provider names in a picker,
-never part of U Code's identity. **U Code's own copy never advertises other vendors' models** (Monti,
-2026-10-25): no "Claude, GPT, Gemini" in tips, notes or upsells, and no third-party gateway named on
-every web search. A provider's name appears where the user picks or signs in to that provider (the
-connect list, its sign-in options), because they bring their own key and need to know which is which.
-Custom providers are described by capability ("the standard chat-completions API"), not by vendor.
-Translations of that copy were removed rather than left naming vendors, so other languages fall
-back to the neutral English until they are retranslated.
+U Code serves **Uhuru models**, plus **OpenAI** and **Anthropic** for users who bring their own API key.
+Nothing else is offered. `packages/core/src/plugin/provider/allowlist.ts` runs after every other provider
+plugin and removes every other catalog, gateway and local-server provider, along with their sign-ins (MCP
+server sign-ins are kept). The app has no custom-provider entry. A provider a user writes by hand into
+their own `ucode.json` still loads, because config is applied after the allowlist; U Code neither offers
+nor documents that path.
 
-In particular **OpenCode Zen** and **OpenCode Go** (the provider
-with id `opencode`) are upstream's hosted gateway: keep their names exactly as a third-party
-provider, never rename them to "U Code Zen", never describe them as provided by U Code, and never
-present them as the recommended or default provider. Uhuru is the recommended and default provider.
+**U Code's own copy never advertises other vendors' models** (Monti, 2026-10-25): no "Claude, GPT,
+Gemini" in tips, notes or upsells, and no third-party gateway named on every web search. A provider's
+name appears only where the user picks or signs in to OpenAI or Anthropic with their own key, because
+they need to know which is which. Translations of that copy were removed rather than left naming
+vendors, so other languages fall back to the neutral English until they are retranslated.
 
-The agent itself never claims to be, run on, or be trained by another provider's model, whichever
-model the user picks. Other AI companies are ordinary subject matter.
+Uhuru models appear under Uhuru names only (U4.0, U5.0). OpenAI and Anthropic models keep their real names in
+the picker, because the user chose them and pays for them through their own account. Own-key models need a
+connected Uhuru AI account too: that is how they receive U Code's identity (see Prompt layering).
+
+Upstream's hosted gateway (OpenCode Zen / Go, provider id `opencode`) is not offered. Its code stays for
+clean merges, and it no longer self-activates.
+
+## Prompt layering
+
+U Code's identity is written once, on the Uhuru platform, in `supabase/functions/ucode-api/prompt.ts` in the
+uhuruorionx repository: the shared identity protocol, then the U Code doctrine. It never lives in this
+repository, so it improves for every user without a client release and stays out of public source.
+
+1. **Uhuru models (U4.0, U5.0):** `ucode-api` leads every request with that prompt, server-side. The client
+   adds no identity text of its own.
+2. **Own-key OpenAI and Anthropic models:** these never pass through the platform, so
+   `packages/core/src/plugin/ucode-prompt.ts` fetches the same prompt from `ucode-api` (`GET /v1/prompt`)
+   with the user's Uhuru key and puts it first in those requests. It refreshes hourly and when the Uhuru
+   sign-in changes, and keeps the last good copy through a failed refresh. **Until the prompt is in hand,
+   OpenAI and Anthropic models are disabled**, so no model U Code offers runs without the identity. A
+   provider the user writes into their own config gets the prompt once it is available and is otherwise
+   left as they configured it.
+3. **Harness and model-family prompt:** `session/runner/prompt/system.txt`, or the model-family prompt in
+   `plugin/system-prompt/` chosen by `plugin/optimize.ts`, or a custom agent prompt. These carry no
+   identity.
+4. **Model layer** (`plugin/identity.ts`): an Uhuru model is named the way the platform names its models
+   (`# YOUR MODEL` / `You are U4.0.`). An own-key model gets no model layer, so no upstream provider or
+   model id reaches the instructions.
+
+Never write identity text into this repository. Change `ucode-api/prompt.ts` on the platform instead.
 
 ## Upstream-owned surfaces U Code does not ship
 

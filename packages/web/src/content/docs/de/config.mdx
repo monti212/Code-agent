@@ -260,42 +260,6 @@ Zu den Anbieteroptionen können `timeout` und `setCacheKey` gehören:
 - `timeout` – Anforderungszeitlimit in Millisekunden (Standard: 300000). Zum Deaktivieren auf `false` setzen.
 - `setCacheKey` – Stellen Sie sicher, dass immer ein Cache-Schlüssel für den angegebenen Anbieter festgelegt ist.
 
-Sie können auch [lokale Modelle](/docs/models#local) konfigurieren. [Mehr erfahren](/docs/models).
-
----
-
-#### Anbieterspezifische Optionen
-
-Einige Anbieter unterstützen zusätzliche Konfigurationsoptionen über die allgemeinen Einstellungen `timeout` und `apiKey` hinaus.
-
-##### Amazon Bedrock
-
-Amazon Bedrock unterstützt AWS-spezifische Konfigurationen:
-
-```json title="ucode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-east-1",
-        "profile": "my-aws-profile",
-        "endpoint": "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com"
-      }
-    }
-  }
-}
-```
-
-- `region` – AWS-Region für Bedrock (standardmäßig `AWS_REGION` env var oder `us-east-1`)
-- `profile` – AWS benanntes Profil von `~/.aws/credentials` (standardmäßig `AWS_PROFILE` Umgebungsvariable)
-- `endpoint` – Benutzerdefinierter Endpunkt URL für VPC-Endpunkte. Dies ist ein Alias ​​​​für die generische Option `baseURL` unter Verwendung der AWS-spezifischen Terminologie. Wenn beide angegeben sind, hat `endpoint` Vorrang.
-
-:::note
-Inhabertoken (`AWS_BEARER_TOKEN_BEDROCK` oder `/connect`) haben Vorrang vor der profilbasierten Authentifizierung. Weitere Informationen finden Sie unter [Authentifizierungs-Rangfolge](/docs/providers#authentication-precedence).
-:::
-
-[Erfahren Sie mehr über die Amazon Bedrock-Konfiguration](/docs/providers#amazon-bedrock).
 
 ---
 
@@ -571,7 +535,7 @@ Sie können Anbieter, die automatisch geladen werden, über die Option `disabled
 ```json title="ucode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "disabled_providers": ["openai", "gemini"]
+  "disabled_providers": ["anthropic"]
 }
 ```
 

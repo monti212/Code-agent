@@ -3,7 +3,7 @@ title: โมเดล
 description: การกำหนดค่าผู้ให้บริการและรุ่น LLM
 ---
 
-U Code ใช้ [AI SDK](https://ai-sdk.dev/) และ [Models.dev](https://models.dev) เพื่อรองรับผู้ให้บริการ **75+ LLM** และรองรับการใช้งานโมเดลท้องถิ่น
+U Code offers Uhuru models, plus OpenAI and Anthropic models when you bring your own API key for them.
 
 ---
 
@@ -37,12 +37,12 @@ U Code ใช้ [AI SDK](https://ai-sdk.dev/) และ [Models.dev](https://mo
 
 ต่อไปนี้เป็นโมเดลหลายรุ่นที่ทำงานได้ดีกับ U Code โดยไม่เรียงลำดับเป็นพิเศษ (นี่ไม่ใช่รายการที่ครอบคลุมและไม่จำเป็นต้องเป็นข้อมูลล่าสุด):
 
+- U4.0
 - GPT 5.2
 - GPT 5.1 Codex
 - Claude Opus 4.5
 - Claude Sonnet 4.5
 - MiniMax M2.1
-- Gemini 3 Pro
 
 ---
 
@@ -54,11 +54,11 @@ U Code ใช้ [AI SDK](https://ai-sdk.dev/) และ [Models.dev](https://mo
 ```json title="ucode.json" {3}
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "lmstudio/google/gemma-3n-e4b"
+  "model": "uhuru/uhuru-4.0"
 }
 ```
 
-ID แบบเต็มคือ `provider_id/model_id` ตัวอย่างเช่น หากคุณใช้ [OpenCode Zen](/docs/providers#opencode-zen) คุณจะใช้ `opencode/gpt-5.1-codex` สำหรับ GPT 5.1 Codex
+ID แบบเต็มคือ `provider_id/model_id` ตัวอย่างเช่น หากคุณใช้ [Uhuru AI](/docs/providers#uhuru-ai) คุณจะใช้ `uhuru/uhuru-4.0` สำหรับ U4.0
 
 หากคุณได้กำหนดค่า [ผู้ให้บริการที่กำหนดเอง](/docs/providers#กำหนดเอง) `provider_id` จะเป็นคีย์จากส่วน `provider` ของการกำหนดค่าของคุณ และ `model_id` จะเป็นคีย์จาก `provider.models`
 

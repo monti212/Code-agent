@@ -260,42 +260,6 @@ Las opciones de proveedores pueden incluir `timeout` y `setCacheKey`:
 - `timeout`: tiempo de espera de solicitud en milisegundos (predeterminado: 300000). Establezca en `false` para desactivar.
 - `setCacheKey`: asegúrese de que siempre haya una clave de caché configurada para el proveedor designado.
 
-También puede configurar [modelos locales](/docs/models#local). [Más información](/docs/models).
-
----
-
-#### Opciones específicas del proveedor
-
-Algunos proveedores admiten opciones de configuración adicionales más allá de las configuraciones genéricas `timeout` y `apiKey`.
-
-##### Amazon Bedrock
-
-Amazon Bedrock admite la configuración específica de AWS:
-
-```json title="ucode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-east-1",
-        "profile": "my-aws-profile",
-        "endpoint": "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com"
-      }
-    }
-  }
-}
-```
-
-- `region` - AWS región para Bedrock (el valor predeterminado es `AWS_REGION` env var o `us-east-1`)
-- `profile` - AWS perfil con nombre de `~/.aws/credentials` (el valor predeterminado es `AWS_PROFILE` var env)
-- `endpoint`: URL de punto de enlace personalizada para puntos de enlace de VPC. Este es un alias para la opción genérica `baseURL` que utiliza terminología específica de AWS. Si se especifican ambos, `endpoint` tiene prioridad.
-
-:::note
-Los tokens de portador (`AWS_BEARER_TOKEN_BEDROCK` o `/connect`) tienen prioridad sobre la autenticación basada en perfil. Consulte [precedencia de autenticación](/docs/providers#authentication-precedence) para obtener más detalles.
-:::
-
-[Obtenga más información sobre la configuración de Amazon Bedrock](/docs/providers#amazon-bedrock).
 
 ---
 
@@ -572,7 +536,7 @@ Puede deshabilitar proveedores que se cargan automáticamente a través de la op
 ```json title="ucode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "disabled_providers": ["openai", "gemini"]
+  "disabled_providers": ["anthropic"]
 }
 ```
 

@@ -12,7 +12,8 @@ U Code is an AI coding agent from [Uhuru AI](https://uhuruai.co), built by Orion
 your terminal, in a desktop app, and in the browser: it reads your project, plans changes, edits files, runs commands
 with your permission, and explains what it did.
 
-U Code is built for Uhuru models and also works with any other LLM provider you connect.
+U Code is built for Uhuru models. If you already pay for OpenAI or Anthropic, you can also bring your own API key for
+them.
 
 ## Install from source
 
@@ -48,16 +49,18 @@ app.
    export UHURU_API_KEY=uhuru_sk_...
    ```
 
-3. Start U Code and pick **Uhuru 4.5** with `/models`.
+3. Start U Code and pick **U4.0** (`uhuru/uhuru-4.0`) with `/models`, or **U5.0** (`uhuru/uhuru-5.0`) for the hardest work.
 
 > [!NOTE]
-> The Uhuru Public API does not accept tool definitions yet. With an Uhuru model, U Code can answer and write code in
-> its replies, but it cannot run tools such as file edits or shell commands until tool support reaches the API.
+> U4.0 and U5.0 can use U Code's tools, such as file edits and shell commands, and accept images. Access is opening in
+> stages: if a request is refused with "U Code is not enabled for your account yet", your account is not included yet.
 
-### Other providers
+### Bring your own OpenAI or Anthropic key
 
-Other providers from the [models.dev](https://models.dev) catalog work too. Connect one with `ucode auth login` or
-`/connect` in the TUI.
+If you already pay for OpenAI or Anthropic, connect your own API key with `ucode auth login` or `/connect` in the TUI,
+or set `OPENAI_API_KEY` / `ANTHROPIC_API_KEY`. Those models keep their own names and are billed by that provider.
+They also need your Uhuru AI account connected (step 1 above): until it is, they stay unavailable in U Code.
+U Code offers no other providers.
 
 ## Configure
 
@@ -68,7 +71,7 @@ the `ucode` ones win.
 ```jsonc title="ucode.jsonc"
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "uhuru/uhuru-4.5",
+  "model": "uhuru/uhuru-4.0",
 }
 ```
 

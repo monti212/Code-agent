@@ -3,7 +3,7 @@ title: Modeli
 description: Konfiguriranje LLM provajdera i modela.
 ---
 
-U Code koristi [AI SDK](https://ai-sdk.dev/) i [Models.dev](https://models.dev) za podršku **75+ LLM providera**, uključujući lokalne modele.
+U Code offers Uhuru models, plus OpenAI and Anthropic models when you bring your own API key for them.
 
 ## Provajderi
 
@@ -32,12 +32,11 @@ Razmislite o korištenju jednog od modela koje preporučujemo.
 Međutim, postoji samo nekoliko njih koji su dobri i u generiranju koda i u pozivanju alata.
 Evo nekoliko modela koji dobro rade sa U Code, bez posebnog redosleda. (Ovo nije potpuna lista niti je nužno ažurirana):
 
+- U4.0
 - GPT 5.2
 - Codex GPT 5.1
 - Claude Opus 4.5
 - Claude Sonnet 4.5
-- Minimax M2.1
-- Gemini 3 Pro
 
 ---
 
@@ -49,12 +48,11 @@ U Code config.
 ```json title="ucode.json" {3}
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "lmstudio/google/gemma-3n-e4b"
+  "model": "uhuru/uhuru-4.0"
 }
 ```
 
-Ovdje je puni ID `provider_id/model_id`. Na primjer, ako koristite [OpenCode Zen](/docs/providers#opencode-zen), koristili biste `opencode/gpt-5.1-codex` za GPT 5.1 Codex.
-Ako ste konfigurirali [prilagođenog provajdera](/docs/providers#custom), `provider_id` je ključ iz `provider` dijela vaše konfiguracije, a `model_id` je ključ iz `provider.models`.
+Ovdje je puni ID `provider_id/model_id`. Na primjer, ako koristite [Uhuru AI](/docs/providers#uhuru-ai), koristili biste `uhuru/uhuru-4.0` za U4.0.
 
 ---
 

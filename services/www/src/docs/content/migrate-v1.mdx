@@ -334,11 +334,10 @@ Rename the singular `provider` map to `providers`. V2 separates the runtime pack
 // V1
 {
   "provider": {
-    "acme": {
-      "npm": "@ai-sdk/openai-compatible",
-      "api": "https://llm.example.com/v1",
+    "anthropic": {
       "options": {
-        "apiKey": "{env:ACME_API_KEY}"
+        "baseURL": "https://llm-proxy.example.com/anthropic",
+        "apiKey": "{env:ANTHROPIC_API_KEY}"
       }
     }
   }
@@ -347,30 +346,21 @@ Rename the singular `provider` map to `providers`. V2 separates the runtime pack
 // V2
 {
   "providers": {
-    "acme": {
-      "package": "aisdk:@ai-sdk/openai-compatible",
+    "anthropic": {
       "settings": {
-        "baseURL": "https://llm.example.com/v1",
-        "apiKey": "{env:ACME_API_KEY}"
+        "baseURL": "https://llm-proxy.example.com/anthropic",
+        "apiKey": "{env:ANTHROPIC_API_KEY}"
       }
     }
   }
 }
 ```
 
-V1 `npm` becomes `package`, and AI SDK packages receive the `aisdk:` prefix. `api` becomes `settings.baseURL`. Provider
-`options` are separated into `settings`, `headers`, and `body` according to their request role. See [Providers](/providers).
+V1 `npm` becomes `package`, and `api` becomes `settings.baseURL`. Provider `options` are separated into `settings`,
+`headers`, and `body` according to their request role. See [Providers](/providers).
 
-V2 consolidated two legacy provider namespaces:
-
-| V1 provider ID             | Canonical V2 provider ID |
-| -------------------------- | ------------------------ |
-| `azure-cognitive-services` | `azure`                  |
-| `google-vertex-anthropic`  | `google-vertex`          |
-
-Migration of unambiguous V1 provider, agent, command, and provider-filter fields uses these canonical IDs. The shared
-top-level `model` field keeps its exact provider ID because the same syntax is valid in native V2 config; update that field
-to the canonical ID when migrating a legacy built-in provider.
+U Code offers Uhuru AI, plus OpenAI and Anthropic for your own API key. Entries in a migrated config for other
+providers do not appear in `/connect` or `/models`.
 
 ### Models and variants
 

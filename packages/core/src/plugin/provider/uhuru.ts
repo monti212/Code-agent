@@ -13,7 +13,7 @@ import { Provider } from "../../provider.js"
 const providerID = Provider.ID.uhuru
 const integrationID = Integration.ID.make(providerID)
 const packageName = "@opencode/ai/providers/openai-compatible"
-const baseURL = "https://ucloud.orionx.xyz/functions/v1/ucode-api/v1"
+export const baseURL = "https://ucloud.orionx.xyz/functions/v1/ucode-api/v1"
 const defaultModelID = Model.ID.make("uhuru-4.0")
 const deepModelID = Model.ID.make("uhuru-5.0")
 const family = Model.Family.make("uhuru")
